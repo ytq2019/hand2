@@ -1,0 +1,10 @@
+{
+    "navigationBarTitleText": "收支明细",
+    "usingComponents": {
+        "zan-row": "../../libs/zanui/row/index",
+        "zan-col": "../../libs/zanui/col/index",
+        "cu-custom": "/libs/colorui/components/cu-custom",
+        "dialog": "/components/dialog/index",
+        "empty": "/components/empty/index"
+    }
+}

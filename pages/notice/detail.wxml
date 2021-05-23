@@ -1,0 +1,12 @@
+<include src="../templates/page-meta.wxml"></include>
+<view class="container" wx:if="{{!Loading}}">
+    <cu-custom bgColor="bg-gradual-{{ThemeStyle.gradual}}" isBack="{{true}}">
+        <view slot="backText"></view>
+        <view slot="content">公告详情</view>
+    </cu-custom>
+    <view class="text-xl text-black text-bold text-center padding solid-bottom">{{noticeInfo.title}}</view>
+    <view class="padding text-right text-sm text-gray">{{noticeInfo.createtime}}</view>
+    <view class="padding text-sm">
+        <rich-text nodes="{{noticeInfo.content}}"></rich-text>
+    </view>
+</view>

@@ -1,0 +1,107 @@
+{
+    "pages": [
+        "pages/home/index",
+        "pages/post/index",
+        "pages/post/success",
+        "pages/buying/add",
+        "pages/buying/edit",
+        "pages/list/index",
+        "pages/service/list",
+        "pages/service/add",
+        "pages/service/edit",
+        "pages/service/scoring",
+        "pages/service/admin",
+        "pages/my/index",
+        "pages/my/post",
+        "pages/my_list/index",
+        "pages/ask_item/index",
+        "pages/finance/index",
+        "pages/getcash/index",
+        "pages/money_log/index",
+        "pages/message/index",
+        "pages/message/chat",
+        "pages/message/list",
+        "pages/my_order/index",
+        "pages/my_order/detail",
+        "pages/express_info/index",
+        "pages/item_list/index",
+        "pages/credit_log/index",
+        "pages/cashier/index",
+        "pages/detail/index",
+        "pages/bind_phone/index",
+        "pages/recycle/index",
+        "pages/recycle/post",
+        "pages/recycle/list",
+        "pages/recycle/detail",
+        "pages/login/index",
+        "pages/shop/join",
+        "pages/region/index",
+        "pages/help/index",
+        "pages/404/index",
+        "pages/webview/index",
+        "pages/exchange/index",
+        "pages/notice/detail",
+        "pages/help_sell/index",
+        "pages/admin/audit/list",
+        "pages/broadcast/index",
+        "__plugin__/wx76a9a06e5b4e693e/pages/index/index",
+        "__plugin__/wx76a9a06e5b4e693e/pages/search/search",
+        "__plugin__/wx2b03c6e691cd7370/pages/live-player-plugin",
+        "__plugin__/wx2b03c6e691cd7370/wxlive-components/ext-player/address-preview/address-preview",
+        "__plugin__/wx2b03c6e691cd7370/wxlive-components/ext-player/complaint-comment/complaint-comment",
+        "__plugin__/wx2b03c6e691cd7370/wxlive-components/ext-player/complaint-room/complaint-room"
+    ],
+    "window": {
+        "backgroundTextStyle": "dark",
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarTitleText": "超人二手市场",
+        "navigationStyle": "custom",
+        "navigationBarTextStyle": "black",
+        "backgroundColor": "#ffffff"
+    },
+    "subPackages": [
+        {
+            "name": "tide",
+            "root": "plugin/tide/",
+            "pages": [
+                "pages/index/index"
+            ]
+        },
+        {
+            "name": "recharge",
+            "root": "plugin/recharge/",
+            "pages": [
+                "pages/index/index"
+            ]
+        }
+    ],
+    "preloadRule": {
+        "plugin/tide/pages/index/index": {
+            "network": "all",
+            "packages": [
+                "tide"
+            ]
+        },
+        "plugin/recharge/pages/index/index": {
+            "network": "all",
+            "packages": [
+                "recharge"
+            ]
+        }
+    },
+    "sitemapLocation": "sitemap.json",
+    "navigateToMiniProgramAppIdList": [
+        "wxb0485a46fedf4934"
+    ],
+    "plugins": {
+        "chooseLocation": {
+            "version": "1.0.3",
+            "provider": "wx76a9a06e5b4e693e"
+        }
+    },
+    "permission": {
+        "scope.userLocation": {
+            "desc": "你的位置信息将用于小程序位置接口的效果展示"
+        }
+    }
+}

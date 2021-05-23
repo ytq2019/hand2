@@ -1,0 +1,147 @@
+.image-uploader {
+    position: relative;
+    display: inline-block;
+}
+
+.image-uploader__wrapper {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.image-uploader__slot:empty {
+    display: none;
+}
+
+.image-uploader__slot:not(:empty)+.image-uploader__upload {
+    display: none!important;
+}
+
+.image-uploader__upload {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 144rpx;
+    height: 144rpx;
+    border-radius: 12rpx;
+    font-size: 48rpx;
+    margin: 0 16rpx 16rpx 0;
+    border: 2rpx dotted #999999;
+}
+
+.image-uploader__upload:active {
+    background-color: #f2f3f5;
+}
+
+.image-uploader__upload-icon {
+    font-size: 48rpx;
+}
+
+.image-uploader__upload-text {
+    margin-top: 16rpx;
+    color: #969799;
+    font-size: 24rpx;
+}
+
+.image-uploader__upload--disabled {
+    opacity: .5;
+}
+
+.image-uploader__preview {
+    position: relative;
+    cursor: pointer;
+    margin: 0 16rpx 16rpx 0;
+}
+
+.image-uploader__preview-image {
+    display: block;
+    overflow: hidden;
+    width: 144rpx;
+    height: 144rpx;
+}
+
+.image-uploader__preview-delete {
+    padding: 0 0 16rpx 16rpx;
+}
+
+.image-uploader__preview-delete,.image-uploader__preview-delete:after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 28rpx;
+    height: 28rpx;
+}
+
+.image-uploader__preview-delete:after {
+    content: "";
+    background-color: rgba(0,0,0,.7);
+    border-radius: 0 0 0 24rpx;
+}
+
+.image-uploader__preview-delete-icon {
+    position: absolute;
+    top: -9rpx;
+    right: -4rpx;
+    z-index: 1;
+    transform: scale(.5);
+    font-size: 32rpx;
+    color: #fff;
+}
+
+.image-uploader__file {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 144rpx;
+    height: 144rpx;
+    background-color: #f7f8fa;
+}
+
+.image-uploader__file-icon {
+    color: #646566;
+    font-size: 40rpx;
+}
+
+.image-uploader__file-name {
+    box-sizing: border-box;
+    width: 100%;
+    text-align: center;
+    margin-top: 16rpx;
+    padding: 0 8rpx;
+    color: #646566;
+    font-size: 24rpx;
+}
+
+.image-uploader__mask {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background-color: rgba(50,50,51,.88);
+}
+
+.image-uploader__mask-icon {
+    font-size: 44rpx;
+}
+
+.image-uploader__mask-message {
+    margin-top: 12rpx;
+    padding: 0 8rpx;
+    font-size: 24rpx;
+    line-height: 28rpx;
+}
+
+.image-uploader__loading {
+    width: 44rpx;
+    height: 44rpx;
+    color: #fff!important;
+}

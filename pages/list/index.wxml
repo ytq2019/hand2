@@ -1,0 +1,84 @@
+<include src="../templates/page-meta.wxml"></include>
+<view class="container" wx:if="{{!Loading}}">
+    <cu-custom bgColor="bg-gradual-{{ThemeStyle.gradual}}">
+        <view slot="content">{{pageTitle}}</view>
+    </cu-custom>
+    <form bindsubmit="submitSearch">
+        <view class="cu-bar bg-white search fixed" style="top:{{CustomBar}}px;">
+            <view class="search-form round">
+                <text class="cuIcon-search"></text>
+                <input bindinput="inputKeyword" confirmType="search" name="keyword" placeholder="{{Setting.search_placeholder}}" type="text"></input>
+            </view>
+            <view class="action">
+                <button bindtap="submitSearch" class="cu-btn bg-{{ThemeStyle.gradual}} round">搜索</button>
+            </view>
+        </view>
+    </form>
+    <view class="cu-card dynamic no-card" wx:if="{{itemList.length}}">
+        <block wx:for="{{itemList}}" wx:key="index">
+            <view catchtap="toPage" class="cu-item shadow" data-url="/pages/detail/index?id={{item.id}}">
+                <image class="item_sold" lazyLoad="{{true}}" src="{{SoldImg}}" wx:if="{{item.type==1&&item.status==2}}"></image>
+                <view class="cu-list menu-avatar">
+                    <view class="cu-item">
+                        <view class="cu-avatar round lg" style="background-image:url({{item.avatar}});"></view>
+                        <view class="content flex-sub">
+                            <view class="item_nickname text-cut">{{item.nickname}}</view>
+                            <view class="text-gray text-sm flex justify-between" wx:if="{{PostTime==0}}">
+                                {{item.time_diff}}{{item.time_diff=='刚刚'?'':'前'}}发布
+                            </view>
+                            <view class="text-gray text-sm flex justify-between" wx:if="{{PostTime==2&&item.is_online}}">
+                                <view class="cu-tag round sm">在线</view>
+                            </view>
+                        </view>
+                        <view class="item_price text-right text-red text-xl" wx:if="{{item.type==1}}">
+                            {{item._price}}
+                        </view>
+                    </view>
+                </view>
+                <view class="text-content">
+                    <view>{{item.title}}</view>
+                    <view wx:if="{{item.type==2&&item.title!=item.description}}">{{item.description}}</view>
+                </view>
+                <view class="grid flex-sub padding-lr col-{{item.thumb.length<3?item.thumb.length:3}} grid-square" wx:if="{{item.thumb.length}}">
+                    <view class="bg-img" style="background-image:url({{thumb}});" wx:for="{{item.thumb}}" wx:for-item="thumb" wx:key="index"></view>
+                </view>
+                <view class="video_thumb grid flex-sub padding-lr-sm col-1 grid-square" wx:if="{{!item.thumb.length&&item.video_thumb}}">
+                    <view class="bg-img" style="background-image:url({{item.video_thumb}});">
+                        <text class="cuIcon-videofill lg"></text>
+                    </view>
+                </view>
+                <view class="item_foot flex flex-wrap padding-sm margin-top-sm text-gray text-sm">
+                    <view class="basis-lg text-cut">
+                        <text class="cuIcon-location margin-right-xs" wx:if="{{item.address}}"></text>{{item.address}}
+                    </view>
+                    <view class="basis-sm">
+                        <view class="text-right">
+                            <text class="cuIcon-appreciate margin-lr-xs"></text>{{item.zan>0?item.zan:''}}
+                            <text class="cuIcon-message margin-lr-xs"></text>{{item.message>0?item.message:''}}
+                            <block wx:if="{{Setting.show_page_view}}">
+                                <text class="cuIcon-attention margin-lr-xs"></text>{{item.page_view>0?item.page_view:''}}
+                            </block>
+                        </view>
+                    </view>
+                </view>
+            </view>
+            <view class="wxad_wrap padding-lr-sm padding-bottom-sm" wx:if="{{( index==3||Page>1&&(index==9||index==19||index==29) )&&Setting.wxad_info.id&&showWxad}}">
+                <view style="width: 100%">
+                    <ad binderror="WxadError" unitId="{{Setting.wxad_info.id}}" wx:if="{{Setting.wxad_info.type=='banner'}}"></ad>
+                    <ad adTheme="white" adType="video" binderror="WxadError" unitId="{{Setting.wxad_info.id}}" wx:if="{{Setting.wxad_info.type=='feeds'}}"></ad>
+                    <ad adTheme="white" adType="grid" binderror="WxadError" gridCount="5" gridOpacity="0.8" unitId="{{Setting.wxad_info.id}}" wx:if="{{Setting.wxad_info.type=='grid'}}"></ad>
+                </view>
+            </view>
+        </block>
+        <view class="padding-tb-sm text-center text-gray text-sm margin-bottom-sm" wx:if="{{Paging||Gone}}">
+            <text wx:if="{{Gone}}">没有了</text>
+            <text wx:else>加载中</text>
+        </view>
+    </view>
+    <empty wx:else></empty>
+    <post-button needAvatar="{{true}}" themeStyle="{{ThemeStyle}}" url="{{itemType==1?'/pages/post/index':'/pages/buying/add'}}" wx:if="{{showPostButton}}"></post-button>
+    <view bindtap="goTop" class="back-home" wx:if="{{showGoTop}}">
+        <text class="cuIcon-fold"></text>
+    </view>
+    <footnav bind:ready="readyFootnav" themeStyle="{{ThemeStyle}}"></footnav>
+</view>

@@ -1,0 +1,94 @@
+<include src="../templates/page-meta.wxml"></include>
+<view class="container" wx:if="{{!Loading}}">
+    <cu-custom bgColor="bg-gradual-{{ThemeStyle.gradual}}" isBack="{{true}}">
+        <view slot="content">消息</view>
+    </cu-custom>
+    <view class="tips_wrap cf" wx:if="{{showTips}}">
+        <view class="fl text-orange">
+            <text bindtap="hideTips" class="cuIcon-close"></text>
+            <text class="margin-left-sm">开启实时通知，不错过消息</text>
+        </view>
+        <view class="fr">
+            <button bindtap="showSubscribe" class="cu-btn sm text-black">去开启</button>
+        </view>
+    </view>
+    <view class="msg_wrap bg-white flex flex-wrap text-center" style="{{!showTips?'margin-top:0':''}}">
+        <view class="basis-df">
+            <block wx:if="{{SystemMessage>0}}">
+                <view class="cu-tag badge" wx:if="{{SystemMessage<=99}}">{{SystemMessage}}</view>
+                <view class="cu-tag badge" wx:else>99+</view>
+            </block>
+            <navigator hoverClass="none" url="/pages/message/list?type=system">
+                <image class="png" mode="aspectFit" src="{{AssetsUrl}}/icon/msg_system.png"></image>
+            </navigator>
+            <navigator hoverClass="none" url="/pages/message/list?type=system">
+                <view class="margin-top-xs">系统通知</view>
+            </navigator>
+        </view>
+        <view class="basis-df">
+            <block wx:if="{{OrderMessage>0}}">
+                <view class="cu-tag badge" wx:if="{{OrderMessage<=99}}">{{OrderMessage}}</view>
+                <view class="cu-tag badge" wx:else>99+</view>
+            </block>
+            <navigator hoverClass="none" url="/pages/message/list?type=order">
+                <image class="png" mode="aspectFit" src="{{AssetsUrl}}/icon/msg_order.png"></image>
+            </navigator>
+            <navigator hoverClass="none" url="/pages/message/list?type=order">
+                <view class="margin-top-xs">交易信息</view>
+            </navigator>
+        </view>
+    </view>
+    <view class="cu-list menu-avatar margin-top-sm bg-white" wx:if="{{MessageList.length}}">
+        <view bindtouchend="touchEnd" bindtouchmove="touchMove" bindtouchstart="touchStart" catchtap="openChat" class="cu-item solid-bottom {{modalName=='move-box-'+index?'move-cur':''}}" data-id="{{item.itemid}}" data-target="move-box-{{index}}" data-uid="{{item.from_member.uid}}" wx:for="{{MessageList}}" wx:key="index">
+            <view class="cu-avatar radius lg" style="background-image:url({{item.from_member.avatar}});"></view>
+            <view class="content">
+                <view class="text-black">
+                    <text class="text-cut">{{item.from_member.nickname}}</text>
+                </view>
+                <view class="cf">
+                    <view class="fl msg_content text-cut">{{item.message}}</view>
+                    <view class="fr">
+                        <block wx:if="{{item.unread_total>0}}">
+                            <view class="cu-tag badge" wx:if="{{item.unread_total<=99}}">{{item.unread_total}}</view>
+                            <view class="cu-tag badge" wx:else>99+</view>
+                        </block>
+                    </view>
+                </view>
+                <view class="msg_time text-sm flex">
+                    <text>{{item._updatetime}}</text>
+                </view>
+            </view>
+            <view class="action">
+                <view class="cu-avatar lg radius" style="background-image:url({{item.item_album[0]}});"></view>
+            </view>
+            <view class="move">
+                <view catchtap="toDelete" class="bg-red" data-id="{{item.id}}">删除</view>
+            </view>
+        </view>
+    </view>
+    <view class="bg-white margin-tb-sm padding-xl text-center" wx:else>
+        <text class="text-gray text-sm">空空如也</text>
+    </view>
+    <view class="padding-tb-sm text-center text-gray text-sm" wx:if="{{Paging}}">
+        <text wx:if="{{Gone}}">没有了</text>
+        <text wx:else>加载中</text>
+    </view>
+    <include src="/pages/templates/nav.wxml"></include>
+</view>
+<view class="cu-modal {{showSubscribeModal?'show':''}}">
+    <view class="cu-dialog">
+        <view class="cu-bar bg-white justify-end">
+            <view class="content">开通提示</view>
+            <view bindtap="hideSubscribe" class="action">
+                <text class="cuIcon-close text-red"></text>
+            </view>
+        </view>
+        <view class="padding-xl">进入客服会话回复1，根据提示关注公众号二维码即可开启通知</view>
+        <view class="cu-bar bg-white">
+            <view bindtap="hideSubscribe" class="action flex-sub solid-left">取消</view>
+            <view class="action flex-sub solid-left">
+                <button class="cu-btn text-{{ThemeStyle.color}}" openType="contact">去开启</button>
+            </view>
+        </view>
+    </view>
+</view>

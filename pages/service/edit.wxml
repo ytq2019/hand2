@@ -1,0 +1,9 @@
+<include src="../templates/page-meta.wxml"></include>
+<view class="container" wx:if="{{!Loading}}">
+    <cu-custom bgColor="bg-gradual-{{ThemeStyle.gradual}}" isBack="{{true}}">
+        <view slot="backText"></view>
+        <view slot="content">编辑资料</view>
+    </cu-custom>
+    <service-join-form bind:location="getLocation" categoryData="{{categoryData}}" formData="{{formData}}" locationInfo="{{locationInfo}}" settingData="{{settingData}}" themeStyle="{{ThemeStyle}}"></service-join-form>
+</view>
+<dialog id="dialog"></dialog>

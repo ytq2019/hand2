@@ -1,0 +1,16 @@
+.login_wrap {
+    position: relative;
+    text-align: center;
+}
+
+.login_wrap .cu-avatar {
+    width: 140rpx;
+    height: 140rpx;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.login_wrap .cu-avatar image {
+    width: 100%;
+    height: 100%;
+}

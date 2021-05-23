@@ -1,0 +1,71 @@
+<include src="../templates/page-meta.wxml"></include>
+<cu-custom bgColor="bg-gradual-{{ThemeStyle.gradual}}" isBack="{{true}}">
+    <view slot="backText"></view>
+    <view slot="content">我订阅的</view>
+</cu-custom>
+<view class="container" wx:if="{{completed}}">
+    <view class="post-panel">
+        <form bindsubmit="formSubmit">
+            <view class="weui-cells weui-cells_after-title">
+                <view class="weui-cell weui-cell_input">
+                    <view class="weui-cell__hd">
+                        <view class="weui-label">订阅物品</view>
+                    </view>
+                    <view class="weui-cell__bd">
+                        <input class="weui-input" name="title" placeholder="请输入物品关键词" value="{{detail.title}}"></input>
+                    </view>
+                </view>
+                <view class="weui-cell weui-cell_input">
+                    <view class="weui-cell__hd">
+                        <view class="weui-label">您的位置</view>
+                    </view>
+                    <view class="weui-cell__bd">
+                        <input bindtap="getAddress" class="weui-input" name="address" placeholder="{{placeholder}}" value="{{address}}"></input>
+                    </view>
+                </view>
+                <view class="weui-cell weui-cell_select">
+                    <view class="weui-cell__hd weui-cell__hd_in-select-after">
+                        <view class="weui-label">检索范围</view>
+                    </view>
+                    <view class="weui-cell__bd">
+                        <picker bindchange="showDistance" name="distance" range="{{distance}}" value="{{idx}}">
+                            <view class="weui-select weui-select_in-select-after">
+                                <text>{{distance[idx]}}km</text>
+                            </view>
+                        </picker>
+                    </view>
+                </view>
+            </view>
+            <view class="weui-btn-area padding">
+                <view class="flex flex-direction">
+                    <button class="cu-btn bg-{{ThemeStyle.color}} margin-bottom-sm lg" formType="submit">提交</button>
+                    <button bindtap="deleteItem" class="cu-btn bg-grey lg" wx:if="{{detail}}">删除订阅</button>
+                </view>
+            </view>
+            <view wx:if="{{rule}}">
+                <view class="text-df padding-sm text-gray">订阅规则：</view>
+                <view class="rule-box">
+                    <rich-text nodes="{{rule}}"></rich-text>
+                </view>
+            </view>
+        </form>
+    </view>
+</view>
+<view class="container-loading" wx:else>
+    <image mode="aspectFill" src="{{LoadingImg}}"></image>
+</view>
+<zan-toast id="zan-toast"></zan-toast>
+<zan-toptips content="{{content}}" id="zan-toptips"></zan-toptips>
+<block wx:if="{{showAuth}}">
+    <view class="mask"></view>
+    <view class="modal">
+        <view class="modal-title">系统提示</view>
+        <view class="modal-content">
+            <view>您未允许本小程序获取您的地理位置</view>
+            <view class="margin-small">请确认授权否则将无法自动获取您的定位</view>
+        </view>
+        <view class="modal-footer">
+            <button bindtap="closeAuth" class="modal-btn confirm-btn" openType="openSetting">确定</button>
+        </view>
+    </view>
+</block>

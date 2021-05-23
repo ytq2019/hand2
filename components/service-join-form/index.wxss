@@ -1,0 +1,27 @@
+.service-join-form .cu-form-group .title {
+    min-width: calc(4em + 30rpx);
+}
+
+.service-join-form .desc_wrap {
+    position: relative;
+}
+
+.service-join-form .desc_wrap .action {
+    position: absolute;
+    right: 20rpx;
+    bottom: 10rpx;
+}
+
+.service-join-form .textarea {
+    min-height: 120rpx;
+}
+
+.service-join-form .category_wrap .cu-btn+.cu-btn {
+    margin-left: 20rpx;
+    margin-top: 20rpx;
+}
+
+.join_rule_wrap .message {
+    max-height: 720rpx;
+    overflow-y: auto;
+}

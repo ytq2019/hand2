@@ -1,0 +1,40 @@
+.box {
+    position: fixed;
+    right: 0;
+    z-index: 999;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    flex-direction: column;
+    width: 600rpx;
+}
+
+.arrow {
+    width: 0;
+    height: 0;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent rgba(0,0,0,0.75) transparent;
+}
+
+.body {
+    background-color: rgba(0,0,0,0.75);
+    border-radius: 18rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16rpx;
+}
+
+.tips {
+    flex: 1;
+    color: #fff;
+    font-size: 24rpx;
+}
+
+.logo {
+    height: 80rpx;
+    width: 80rpx;
+    border-radius: 16rpx;
+    margin-right: 20rpx;
+}

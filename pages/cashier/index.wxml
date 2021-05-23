@@ -1,0 +1,91 @@
+<include src="../templates/page-meta.wxml"></include>
+<view class="container" wx:if="{{completed}}">
+    <cu-custom bgColor="bg-gradual-{{ThemeStyle.gradual}}" isBack="{{true}}">
+        <view slot="backText"></view>
+        <view slot="content">收银台</view>
+    </cu-custom>
+    <form>
+        <view catchtap="setAddress" class="cashier-hd" wx:if="{{needAddress}}">
+            <zan-cell isLink class="zan-font-bold" label="{{receiver.provinceName}} {{receiver.cityName}} {{receiver.countyName}} {{receiver.detailInfo}}" title="{{receiver.userName}} {{receiver.telNumber}}" wx:if="{{receiver.userName}}">
+                <zan-icon slot="icon" type="location"></zan-icon>
+            </zan-cell>
+            <zan-cell isLink class="zan-font-bold" title="点击设置收货地址" wx:else>
+                <zan-icon slot="icon" type="location"></zan-icon>
+            </zan-cell>
+            <view class="cashier-address-bg" style="background-image: url('{{AssetsUrl}}/address_bg.gif')"></view>
+        </view>
+        <view class="cashier-bd">
+            <view class="cashier-item">
+                <view class="item-cover">
+                    <image mode="widthFix" src="{{itemDetail.thumb[0]?itemDetail.thumb[0]:AssetsUrl+'/holder.png'}}"></image>
+                </view>
+                <view class="item-info">
+                    <view class="item-title">{{itemDetail.title}}</view>
+                    <view class="item-price text-lg">
+                        <text class="text-red">{{itemDetail._price}}</text>
+                        <text class="text-delete-line text-gray text-df margin-left-sm" wx:if="{{itemDetail.origin_price}}">{{currencyInfo.symbol}}{{itemDetail.origin_price}}</text>
+                    </view>
+                </view>
+                <view class="wholesale_info margin-top-xs text-red text-sm">
+                    <text wx:if="{{itemDetail.sell_type2==1}}">{{itemDetail.wholesale_number}}件以上：{{itemDetail.wholesale_single_price}}{{currencyInfo.title}}/件</text>
+                    <text class="margin-left-sm" wx:if="{{itemDetail.sell_type1==1}}">打包价：{{itemDetail.wholesale_empty_price}}{{currencyInfo.title}}/件</text>
+                </view>
+                <view class="flex margin-top" wx:if="{{itemDetail.stock>1}}">
+                    <view class="buy_total flex-sub">
+                        购买数量：
+                    </view>
+                    <view class="flex-treble">
+                        <zan-stepper bind:change="handleZanStepperChange" max="{{itemDetail.stock}}" min="{{itemCount.min}}" size="small" stepper="{{itemCount.quantity}}"></zan-stepper>
+                        <text bindtap="allBuy" class="cu-tag round line-red margin-left-sm lg padding-lr-lg" wx:if="{{itemDetail.sell_type1==1}}">全部</text>
+                    </view>
+                </view>
+                <view class="padding text-sm text-red text-right" wx:if="{{itemDetail.exchange_total>0}}">每人可兑换{{itemDetail.exchange_total}}次</view>
+            </view>
+            <view class="cu-form-group margin-top" wx:if="{{TradeTypeList.length}}">
+                <view class="title">配送方式</view>
+                <picker bindchange="bindPickChange" range="{{TradeTypeList}}" rangeKey="title" value="{{TradeTypeCur}}">
+                    <view class="picker">{{TradeTypeList[TradeTypeCur].title}}</view>
+                </picker>
+            </view>
+            <view class="text-right text-sm padding-xs" wx:if="{{showExpressFeeTips&&!itemDetail.express_price}}">
+                请提前与卖家沟通，下单后由对方确认运费价格
+            </view>
+            <view class="cu-form-group margin-top" wx:if="{{itemDetail.express_price>0}}">
+                <view class="title">运费</view>
+                <view class="content">{{itemDetail.express_price==0?'包邮':itemDetail.express_price+currencyInfo.title}}</view>
+            </view>
+            <view class="cashier-remark-order">
+                <zan-panel hideBorder title="备注">
+                    <zan-field bind:change="bindChangeRemarkOrder" maxlength="{{remarkOrder.maxlength}}" placeholder="{{remarkOrder.placeholder}}" type="textarea"></zan-field>
+                    <text class="zan-font-14 zan-c-gray cashier-remark-order-wordcount" wx:if="{{remarkOrder.maxlength}}">{{remarkOrder.inputCount}}/{{remarkOrder.maxlength}}</text>
+                </zan-panel>
+            </view>
+        </view>
+        <view class="cashier-ft">
+            <view class="flex flex-direction padding">
+                <button bindtap="submitOrder" class="cu-btn bg-{{ThemeStyle.color}} lg">
+                    {{wechatPay?'确认支付':'确认兑换'}}
+                </button>
+            </view>
+        </view>
+    </form>
+    <view class="mask-layer" wx:if="{{showOpenSetting}}">
+        <view class="cashier-open-setting">
+            <view class="cashier-open-setting-title">系统提示</view>
+            <view class="cashier-open-setting-msg">
+                请开启通讯地址开关，可以方便设置订单收货地址哦~
+            </view>
+            <view class="cashier-open-setting-btn">
+                <zan-row>
+                    <zan-col col="12">
+                        <button catchtap="hideOpenSetting" class="cashier-open-setting-btn-cancel">取消</button>
+                    </zan-col>
+                    <zan-col col="12">
+                        <button bindopensetting="hideOpenSetting" class="cashier-open-setting-btn-confirm" openType="openSetting">确定</button>
+                    </zan-col>
+                </zan-row>
+            </view>
+        </view>
+    </view>
+</view>
+<dialog id="dialog"></dialog>

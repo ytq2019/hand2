@@ -1,0 +1,170 @@
+<include src="../templates/page-meta.wxml"></include>
+<view class="container" wx:if="{{!Loading}}">
+    <view class="UCenter-bg bg-gradual-{{ThemeStyle.gradual}}">
+        <view catchtap="toSign" class="sign_wrap" wx:if="{{SignInfo.open&&Member.avatar}}">
+            <image src="{{AssetsUrl}}/icon/{{!SignInfo.is_sign?'sign':'signed'}}.png"></image>
+            <text class="text-sm">{{!SignInfo.is_sign?'签到':'已签到'}}</text>
+        </view>
+        <block wx:if="{{Member.uid}}">
+            <image bindtap="getUserProfile" class="cu-avatar shadow png" mode="widthFix" src="{{Member.avatar?Member.avatar:AssetsUrl+'/icon/avatar-2.png'}}"></image>
+            <view bindtap="getUserProfile" class="text-df text-bold margin-top-sm">{{Member.avatar?Member.nickname:'点击更新头像'}}</view>
+            <view catchtap="toPage" class="margin-top-xs" data-url="/pages/credit_log/index" wx:if="{{CreditInfo.open&&Member.avatar}}">
+                <text class="text-df">{{CreditInfo.balance}}</text> {{CreditInfo.title}}
+            </view>
+            <view catchtap="toPage" class="text-xs" data-url="/pages/credit_log/index" wx:if="{{CreditInfo.open&&CreditInfo.block_credit>0}}">
+                冻结{{CreditInfo.block_credit}}{{CreditInfo.title}}
+            </view>
+        </block>
+        <view catchtap="toLogin" wx:else>
+            <image class="cu-avatar shadow png" mode="widthFix" src="{{AssetsUrl}}/icon/avatar-2.png"></image>
+            <view class="text-df text-bold margin-top-sm">点击登录</view>
+        </view>
+        <image class="gif-wave" mode="scaleToFill" src="{{waveGif}}"></image>
+    </view>
+    <view class="padding flex text-center text-grey bg-white shadow-warp">
+        <view catchtap="toLogin" class="flex flex-sub flex-direction solid-right" data-url="/pages/item_list/index?type=1">
+            <view class="text-xxl text-red">{{PraiseTotal}}</view>
+            <view class="margin-top-sm">
+                <text class="cuIcon-appreciatefill"></text> 点赞
+            </view>
+        </view>
+        <view catchtap="toLogin" class="flex flex-sub flex-direction solid-right" data-url="/pages/item_list/index?type=2">
+            <view class="text-xxl text-blue">{{FavorTotal}}</view>
+            <view class="margin-top-sm">
+                <text class="cuIcon-favorfill"></text> 收藏
+            </view>
+        </view>
+        <view catchtap="toLogin" class="flex flex-sub flex-direction" data-url="/pages/finance/index">
+            <view class="text-xxl text-yellow">{{Balance}}</view>
+            <view class="margin-top-sm">
+                <text class="cuIcon-moneybagfill"></text> 钱包
+            </view>
+        </view>
+    </view>
+    <view class="wxad_wrap margin-lr margin-top" wx:if="{{WxadInfo.id&&showWxad}}">
+        <view style="width: 100%">
+            <ad binderror="WxadError" unitId="{{WxadInfo.id}}" wx:if="{{WxadInfo.type=='banner'}}"></ad>
+            <ad adTheme="white" adType="video" binderror="WxadError" unitId="{{WxadInfo.id}}" wx:if="{{WxadInfo.type=='feeds'}}"></ad>
+            <ad adTheme="white" adType="grid" binderror="WxadError" gridCount="5" gridOpacity="0.8" unitId="{{WxadInfo.id}}" wx:if="{{WxadInfo.type=='grid'}}"></ad>
+        </view>
+    </view>
+    <view class="cu-list menu card-menu margin-top margin-bottom-sm shadow-lg radius">
+        <view catchtap="toLogin" class="cu-item arrow" data-url="/pages/my/post?type=1" wx:if="{{!Audit.open&&PostInfo.open}}">
+            <view class="content">
+                <image class="png" mode="aspectFit" src="{{AssetsUrl}}/icon/{{ThemeStyle.color}}/post.png"></image>
+                <text class="text-grey">我转让的</text>
+            </view>
+        </view>
+        <view catchtap="toLogin" class="cu-item arrow" data-url="/pages/my/post?type=2" wx:if="{{!Audit.open&&Buying.open}}">
+            <view class="content">
+                <image class="png" mode="aspectFit" src="{{AssetsUrl}}/icon/{{ThemeStyle.color}}/post.png"></image>
+                <text class="text-grey">我求购的</text>
+            </view>
+        </view>
+        <view catchtap="toLogin" class="cu-item arrow" data-url="/pages/my_order/index?type=sell" wx:if="{{!Audit.open}}">
+            <view class="content">
+                <image class="png" mode="aspectFit" src="{{AssetsUrl}}/icon/{{ThemeStyle.color}}/sell.png"></image>
+                <text class="text-grey">我卖出的</text>
+            </view>
+        </view>
+        <view catchtap="toLogin" class="cu-item arrow" data-url="/pages/my_order/index?type=buy">
+            <view class="content">
+                <image class="png" mode="aspectFit" src="{{AssetsUrl}}/icon/{{ThemeStyle.color}}/buy.png"></image>
+                <text class="text-grey">我买到的</text>
+            </view>
+        </view>
+        <view catchtap="toLogin" class="cu-item arrow" data-url="/pages/ask_item/index" wx:if="{{PluginNotice.switch}}">
+            <view class="content">
+                <image class="png" mode="aspectFit" src="{{AssetsUrl}}/icon/{{ThemeStyle.color}}/ask.png"></image>
+                <text class="text-grey">我订阅的</text>
+            </view>
+        </view>
+        <view catchtap="toLogin" class="cu-item arrow" data-url="/pages/credit_log/index" wx:if="{{CreditInfo.open}}">
+            <view class="content">
+                <image class="png" mode="aspectFit" src="{{AssetsUrl}}/icon/{{ThemeStyle.color}}/credit.png"></image>
+                <text class="text-grey">{{CreditInfo.title}}明细</text>
+            </view>
+        </view>
+        <view catchtap="toLogin" class="cu-item arrow" data-url="/pages/recycle/list" wx:if="{{Recycle.open}}">
+            <view class="content">
+                <image class="png" mode="aspectFit" src="{{AssetsUrl}}/icon/{{ThemeStyle.color}}/recycle.png"></image>
+                <text class="text-grey">预约记录</text>
+            </view>
+        </view>
+        <view catchtap="toLogin" class="cu-item arrow" data-url="/pages/shop/join" wx:if="{{Shop.open&&!Audit.open}}">
+            <view class="content">
+                <image class="png" mode="aspectFit" src="{{AssetsUrl}}/icon/{{ThemeStyle.color}}/shop-join.png"></image>
+                <text class="text-grey">商家入驻</text>
+            </view>
+            <view class="action" wx:if="{{Shop.id}}">
+                <view class="cu-tag round bg-red light" wx:if="{{Shop.status==-1}}">
+                    审核未通过
+                </view>
+                <view class="cu-tag round bg-orange light" wx:if="{{Shop.status==0}}">
+                    待审核
+                </view>
+                <view class="cu-tag round bg-green light" wx:if="{{Shop.status==1}}">
+                    已入驻
+                </view>
+            </view>
+        </view>
+        <view catchtap="toLogin" class="cu-item arrow" data-url="/pages/bind_phone/index" wx:if="{{bindPhone}}">
+            <view class="content">
+                <image class="png" mode="aspectFit" src="{{AssetsUrl}}/icon/{{ThemeStyle.color}}/bind-mobile.png"></image>
+                <text class="text-grey">绑定手机</text>
+            </view>
+            <view class="action">
+                <text class="text-sm text-gray">{{Member.mobile}}</text>
+            </view>
+        </view>
+        <view catchtap="toPage" class="cu-item arrow" data-url="/pages/help/index" wx:if="{{Help.open}}">
+            <view class="content">
+                <image class="png" mode="aspectFit" src="{{AssetsUrl}}/icon/{{ThemeStyle.color}}/help.png"></image>
+                <text class="text-grey">使用帮助</text>
+            </view>
+        </view>
+        <view class="cu-item arrow" wx:if="{{isFeedback}}">
+            <button class="cu-btn content" openType="feedback">
+                <image class="png" mode="aspectFit" src="{{AssetsUrl}}/icon/{{ThemeStyle.color}}/feedback.png"></image>
+                <text class="text-grey">意见反馈</text>
+            </button>
+        </view>
+    </view>
+    <view class="cu-list menu card-menu margin-top-xl margin-bottom-sm shadow-lg radius" wx:if="{{Wxapps.length}}">
+        <view catchtap="toPage" class="cu-item arrow" data-appid="{{item.appid}}" data-url="{{item.url}}" wx:for="{{Wxapps}}" wx:key="index">
+            <view class="content">
+                <image class="png" mode="aspectFit" src="{{item.img}}"></image>
+                <text class="text-grey">{{item.title}}</text>
+            </view>
+        </view>
+    </view>
+    <view class="text-gray text-center text-sm margin-bottom-xs" wx:if="{{Copyright}}">{{Copyright}}</view>
+    <view class="text-gray text-center text-xs margin-bottom-xl" wx:if="{{Member.is_admin}}">
+        v{{version}} <text catchtap="toPage" class="margin-left-xs text-grey" data-url="/pages/admin/audit/list">管理</text>
+    </view>
+    <footnav themeStyle="{{ThemeStyle}}"></footnav>
+</view>
+<view class="cu-modal {{showSignModal?'show':''}}">
+    <view class="cu-dialog">
+        <view class="cu-bar bg-white justify-end">
+            <view class="content">签到成功</view>
+            <view bindtap="hideSignModal" class="action">
+                <text class="cuIcon-close text-red"></text>
+            </view>
+        </view>
+        <view class="padding-xl">
+            <view class="text-red text-bold">
+                <text class="text-sl">+</text>
+                <text class="text-sl margin-left-xs">{{signCreditValue}}</text>
+                <text class="text-lg margin-left-xs">{{CreditInfo.title}}</text>
+            </view>
+            <view class="margin-tb">
+                <text class="margin-left-xs cuIcon-favorfill lg {{index+1<=signDays?'text-red':'text-gray'}}" wx:for="{{5}}" wx:key="index"></text>
+            </view>
+            <view class="">连续签到5天，{{CreditInfo.title}}加倍！</view>
+        </view>
+        <view class="cu-bar bg-white">
+            <view bindtap="confirmSignModal" class="action flex-sub text-{{ThemeStyle.color}}">确定</view>
+        </view>
+    </view>
+</view>

@@ -1,0 +1,10 @@
+{
+    "navigationBarTitleText": "预约回收",
+    "enablePullDownRefresh": false,
+    "usingComponents": {
+        "zan-icon": "../../libs/zanui/icon/index",
+        "cu-custom": "/libs/colorui/components/cu-custom",
+        "dialog": "/components/dialog/index",
+        "empty": "/components/empty/index"
+    }
+}

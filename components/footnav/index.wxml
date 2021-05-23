@@ -1,0 +1,75 @@
+<view class="footnav">
+    <view class="cu-bar tabbar bg-white foot">
+        <block wx:for="{{Setting.footnav}}" wx:key="index">
+            <block wx:if="{{Setting.footnav.length==3}}">
+                <block wx:if="{{index==1}}">
+                    <view catchtap="showPostModal" class="action add-action" wx:if="{{item.url==''}}">
+                        <button class="cu-btn cuIcon-add bg-{{themeStyle.color}} shadow"></button>
+                        <view>{{item.title}}</view>
+                    </view>
+                    <view catchtap="toPage" class="action add-action" data-appid="{{item.appid}}" data-url="{{item.url}}" wx:else>
+                        <button class="cu-btn cuIcon-add bg-{{themeStyle.color}} shadow"></button>
+                        <view>{{item.title}}</view>
+                    </view>
+                </block>
+                <view catchtap="click" class="action {{currentUrl==item.url?'text-'+themeStyle.color:''}}" data-appid="{{item.appid}}" data-url="{{item.url}}" wx:else>
+                    <view class="cuIcon-cu-image" wx:if="{{item.is_image}}">
+                        <image src="{{currentUrl==item.url?item.icon_selected:item.icon}}"></image>
+                    </view>
+                    <view class="{{item.icon}}{{currentUrl==item.url?'fill':''}}" wx:else></view>
+                    <view>{{item.title}}</view>
+                </view>
+            </block>
+            <block wx:elif="{{Setting.footnav.length==5}}">
+                <block wx:if="{{index==2}}">
+                    <view catchtap="showPostModal" class="action add-action" wx:if="{{item.url==''}}">
+                        <button class="cu-btn cuIcon-add bg-{{themeStyle.color}} shadow"></button>
+                        <view>{{item.title}}</view>
+                    </view>
+                    <view catchtap="toPage" class="action add-action" data-appid="{{item.appid}}" data-url="{{item.url}}" wx:else>
+                        <button class="cu-btn cuIcon-add bg-{{themeStyle.color}} shadow"></button>
+                        <view>{{item.title}}</view>
+                    </view>
+                </block>
+                <view catchtap="click" class="action {{currentUrl==item.url?'text-'+themeStyle.color:''}}" data-appid="{{item.appid}}" data-url="{{item.url}}" wx:else>
+                    <view class="cuIcon-cu-image" wx:if="{{item.is_image}}">
+                        <image src="{{currentUrl==item.url?item.icon_selected:item.icon}}"></image>
+                    </view>
+                    <view class="{{item.icon}}{{currentUrl==item.url?'fill':''}}" wx:else></view>
+                    <view>{{item.title}}</view>
+                </view>
+            </block>
+            <view catchtap="click" class="action {{currentUrl==item.url?'text-'+themeStyle.color:''}}" data-appid="{{item.appid}}" data-url="{{item.url}}" wx:else>
+                <view class="cuIcon-cu-image" wx:if="{{item.is_image}}">
+                    <image src="{{currentUrl==item.url?item.icon_selected:item.icon}}"></image>
+                </view>
+                <view class="{{item.icon}}{{currentUrl==item.url?'fill':''}}" wx:else></view>
+                <view>{{item.title}}</view>
+            </view>
+        </block>
+    </view>
+    <view bindtap="hidePostModal" class="cu-modal bottom-modal {{showPostModal?'show':''}}">
+        <view class="cu-dialog bg-white text-center">
+            <view class="cu-bar justify-end">
+                <view class="content"></view>
+            </view>
+            <view class="flex">
+                <view catchtap="toPage" class="flex-sub" data-appid="{{item.appid}}" data-need-avatar="{{true}}" data-url="/pages/recycle/post" wx:if="{{Setting.recycle.open}}">
+                    <image class="icon" mode="aspectFill" src="{{AssetsUrl}}/icon/post_recycle.png"></image>
+                    <view class="margin-top-sm">{{Setting.post_recycle_entry}}</view>
+                </view>
+                <view catchtap="toPage" class="flex-sub" data-appid="{{item.appid}}" data-need-avatar="{{true}}" data-url="/pages/post/index" wx:if="{{Setting.post.open}}">
+                    <image class="icon" mode="aspectFill" src="{{AssetsUrl}}/icon/post_item.png"></image>
+                    <view class="margin-top-sm">{{Setting.post_item_entry}}</view>
+                </view>
+                <view catchtap="toPage" class="flex-sub" data-appid="{{item.appid}}" data-need-avatar="{{true}}" data-url="/pages/buying/add" wx:if="{{Setting.buying.open}}">
+                    <image class="icon" mode="aspectFill" src="{{AssetsUrl}}/icon/post_buying.png"></image>
+                    <view class="margin-top-sm">{{Setting.post_buying_entry}}</view>
+                </view>
+            </view>
+            <view catchtap="hidePostModal" class="margin-tb-xl">
+                <image class="close_icon" mode="aspectFill" src="{{AssetsUrl}}/icon/post_close.png"></image>
+            </view>
+        </view>
+    </view>
+</view>

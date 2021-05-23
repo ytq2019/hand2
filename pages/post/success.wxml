@@ -1,0 +1,68 @@
+<include src="../templates/page-meta.wxml"></include>
+<view class="container bg-white" wx:if="{{!Loading}}">
+    <cu-custom bgColor="bg-gradual-{{ThemeStyle.gradual}}" isBack="{{true}}">
+        <view slot="backText"></view>
+        <view slot="content">{{Type==1?'发布闲置':'发布求购'}}</view>
+    </cu-custom>
+    <view class="text-center margin-bottom-lg">
+        <view class="margin-tb-lg">
+            <image class="post_success png" mode="aspectFit" src="{{AssetsUrl}}/post_success.png"></image>
+        </view>
+        <text class="text-xl text-bold text-black" wx:if="{{Type==1}}">闲置物品发布成功</text>
+        <text class="text-xl text-bold text-black" wx:elif="{{Type==2}}">求购信息发布成功</text>
+    </view>
+    <view class="item_wrap" wx:if="{{Item&&Type==1}}">
+        <view class="cu-card article no-card">
+            <view class="cu-item">
+                <view class="content">
+                    <image mode="aspectFill" src="{{Item.thumb[0]}}" wx:if="{{Item.thumb.length}}"></image>
+                    <view class="desc">
+                        <view class="text-content text-black">{{Item.title}}</view>
+                        <view class="cf">
+                            <view class="fl">
+                                <block wx:if="{{Item.buy_type==0&&Item.price>0}}">
+                                    <text class="text-red">{{Item.currencyInfo.symbol}}{{Item._price_integer}}</text>
+                                    <sub class="text-red">.{{Item._price_decimal}}</sub>
+                                    <block wx:if="{{Item.origin_price}}">
+                                        <text class="margin-left-sm text-delete-line text-gray">{{Item.currencyInfo.symbol}}{{Item._origin_price_integer}}</text>
+                                        <sub class="text-gray">.{{Item._origin_price_decimal}}</sub>
+                                    </block>
+                                </block>
+                                <text class="text-red" wx:else>{{Item._price}}</text>
+                            </view>
+                            <view class="fr" wx:if="{{FreeShip}}">
+                                <view class="cu-tag bg-orange">包邮</view>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+                <view class="margin-top-sm text-red">
+                    <text wx:if="{{Item.wholesale_number}}">{{Item.wholesale_number}}件以上：{{Item.wholesale_single_price}}/件</text>
+                    <text class="margin-left" wx:if="{{Item.wholesale_empty_price}}">打包价：{{Item.wholesale_empty_price}}/件</text>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view class="text-center margin-top-sm">
+        <view wx:if="{{ItemRefresh}}">
+            <view>
+                <image class="coin png" mode="aspectFit" src="{{AssetsUrl}}/coin.png"></image>
+                <text class="margin-left-xs">"我的=》我转让的" 每日可刷新，让更多人看到</text>
+            </view>
+        </view>
+        <view class="btn_wrap" wx:if="{{!isSubscribe&&subscribeUrl}}">
+            <button bindtap="toPage" class="cu-btn bg-{{ThemeStyle.gradual}} lg" data-url="{{subscribeUrl}}">请关注公众号，不错过消息通知</button>
+            <view bindtap="toPage" class="margin-top-sm text-center text-grey" data-redirect-type="redirect" data-url="/pages/detail/index?id={{ItemId}}">查看详情</view>
+        </view>
+        <view class="btn_wrap" wx:else>
+            <button bindtap="toPage" class="cu-btn bg-{{ThemeStyle.gradual}} lg" data-redirect-type="redirect" data-url="/pages/detail/index?id={{ItemId}}">查看详情</button>
+        </view>
+    </view>
+    <view class="wxad_wrap margin-lr margin-bottom-xl" style="margin-top:50px;" wx:if="{{WxadInfo.id&&showWxad}}">
+        <view style="width: 100%">
+            <ad binderror="WxadError" unitId="{{WxadInfo.id}}" wx:if="{{WxadInfo.type=='banner'}}"></ad>
+            <ad adTheme="white" adType="video" binderror="WxadError" unitId="{{WxadInfo.id}}" wx:if="{{WxadInfo.type=='feeds'}}"></ad>
+            <ad adTheme="white" adType="grid" binderror="WxadError" gridCount="5" gridOpacity="0.8" unitId="{{WxadInfo.id}}" wx:if="{{WxadInfo.type=='grid'}}"></ad>
+        </view>
+    </view>
+</view>

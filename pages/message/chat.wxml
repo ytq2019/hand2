@@ -1,0 +1,78 @@
+<include src="../templates/page-meta.wxml"></include>
+<view class="container" wx:if="{{!Loading}}">
+    <cu-custom bgColor="bg-gradual-{{ThemeStyle.gradual}}" isBack="{{true}}">
+        <view slot="backText"></view>
+        <view class="text-cut" slot="content">{{FromMember.nickname}}</view>
+    </cu-custom>
+    <view catchtap="showDetail" class="post_wrap bg-white padding-sm flex flex-wrap" data-id="{{ItemPost.id}}" style="margin-top:{{CustomBar}}px">
+        <view class="post_left basis-xs">
+            <image mode="aspectFit" src="{{ItemPost.album.length?ItemPost.album[0]:ItemPost.type==1?AssetsUrl+'/holder.png':FromMember.avatar}}"></image>
+        </view>
+        <view class="post_right basis-xl">
+            <view class="text-black text-cut">
+                <view>
+                    <text class="text-{{ThemeStyle.color}} margin-right-xs" wx:if="{{ItemPost.type==2}}">[求购]</text>
+                    {{ItemPost.title}}
+                </view>
+                <view class="margin-top-xs text-sm" wx:if="{{ItemPost.type==2}}">{{ItemPost.description}}</view>
+            </view>
+            <view class="margin-top-xs">
+                <text class="text-red" wx:if="{{ItemPost.type==1}}">{{ItemPost._price}}</text>
+                <text class="cu-tag round sm line-red margin-left" wx:if="{{ItemPost.free_ship==1}}">包邮</text>
+                <button catchtap="toPage" class="cu-btn round bg-{{ThemeStyle.gradual}}" data-url="/pages/cashier/index?type=wechat&id={{ItemPost.id}}" wx:if="{{ItemPost.type==1&&ItemPost._price!='面议'&&ItemPost.status==1&&ItemPost.seller_uid!=userInfo.memberInfo.uid}}">立即购买</button>
+            </view>
+            <view class="margin-top-xs text-sm">
+                <text class="text-red" wx:if="{{ItemPost.sell_type2==1}}">{{ItemPost.wholesale_number}}件以上：{{ItemPost.wholesale_single_price}}{{currencyInfo.title}}/件</text>
+                <text class="text-red margin-left-sm" wx:if="{{ItemPost.sell_type1==1}}">打包价：{{ItemPost.wholesale_empty_price}}{{currencyInfo.title}}/件</text>
+            </view>
+        </view>
+    </view>
+    <view class="cu-chat">
+        <view class="padding-tb-sm text-center text-gray text-sm" wx:if="{{Paging||Gone}}">
+            <text wx:if="{{Gone}}">没有了</text>
+            <text wx:else>加载中</text>
+        </view>
+        <block wx:for="{{Messages}}" wx:key="index">
+            <view class="cu-item" wx:if="{{item.from_uid==FromMember.uid&&item.to_uid!=FromMember.uid}}">
+                <view class="cu-avatar radius" style="background-image:url({{FromMember.avatar}});"></view>
+                <view class="main">
+                    <view class="content shadow">
+                        <block wx:for="{{item.message}}" wx:for-item="li" wx:key="key">
+                            <text wx:if="{{li.node=='text'}}">{{li.text}}</text>
+                            <image class="box-emoji" src="{{AssetsUrl}}/emojis/{{li.text}}" wx:else></image>
+                        </block>
+                    </view>
+                </view>
+                <view class="date">{{item.createtime}}</view>
+            </view>
+            <view class="cu-item self}}" wx:elif="{{item.to_uid==FromMember.uid}}">
+                <view class="main">
+                    <view class="action" wx:if="{{item.status=='sending'}}">
+                        <text class="cuIcon-loading2 iconfont-spin"></text>
+                    </view>
+                    <view class="content shadow">
+                        <block wx:for="{{item.message}}" wx:for-item="li" wx:key="key">
+                            <text wx:if="{{li.node=='text'}}">{{li.text}}</text>
+                            <image class="box-emoji" src="{{AssetsUrl}}/emojis/{{li.text}}" wx:else></image>
+                        </block>
+                    </view>
+                </view>
+                <view class="cu-avatar radius" style="background-image:url({{ToMember.avatar}});"></view>
+                <view class="date">{{item.createtime}}</view>
+            </view>
+        </block>
+    </view>
+    <view class="cu-bar foot input {{InputBottom!=0?'cur':''}}" style="bottom:{{InputBottom}}px">
+        <input adjustPosition="{{false}}" bindblur="blurInput" bindfocus="focusInput" bindinput="messageInput" class="solid-bottom" cursorSpacing="10" focus="{{false}}" maxlength="300" value="{{InputMessage}}"></input>
+        <view bindtap="showEmoji" class="action">
+            <text class="cuIcon-emoji{{showWxEmojiView?'fill':''}} text-black"></text>
+        </view>
+        <button bindtap="sendMessage" class="cu-btn bg-{{ThemeStyle.color}} shadow">发送</button>
+        <view class="emoji_wrap" wx:if="{{showWxEmojiView}}">
+            <view class="WxEmojiView">
+                <image bindtap="wxPreEmojiTap" class="wxPreEmoji" data-emoji=":{{item.title}}:" src="{{AssetsUrl}}/emojis/{{item.url}}" wx:for="{{WxEmojiObjs.emojiArray}}" wx:key="key"></image>
+            </view>
+        </view>
+    </view>
+    <view class="safe-area-height"></view>
+</view>

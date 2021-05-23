@@ -1,0 +1,12 @@
+{
+    "navigationBarTitleText": "申请提现",
+    "usingComponents": {
+        "zan-cell": "../../libs/zanui/cell/index",
+        "zan-cell-group": "../../libs/zanui/cell-group/index",
+        "zan-toptips": "../../libs/zanui/toptips/index",
+        "zan-toast": "../../libs/zanui/toast/index",
+        "cu-custom": "/libs/colorui/components/cu-custom",
+        "dialog": "/components/dialog/index",
+        "empty": "/components/empty/index"
+    }
+}

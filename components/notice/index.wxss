@@ -1,0 +1,12 @@
+.notice-list {
+    display: flex;
+}
+
+.notice-list .title {
+    display: flex;
+}
+
+.notice-list .swiper {
+    display: flex;
+    flex: 3;
+}

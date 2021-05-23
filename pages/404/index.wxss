@@ -1,0 +1,14 @@
+.img_wrap {
+    margin-top: 100px;
+}
+
+.img_wrap image {
+    width: 200px;
+    height: 114px;
+}
+
+.foot_wrap {
+    width: 100%;
+    position: fixed;
+    bottom: calc(16px + env(safe-area-inset-bottom) / 2);
+}

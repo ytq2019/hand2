@@ -1,0 +1,29 @@
+<include src="../templates/page-meta.wxml"></include>
+<view class="top_wrap text-white">
+    <view slot="backText"></view>
+    <cu-custom isCustom="{{true}}">
+        <view slot="content">绑定手机</view>
+    </cu-custom>
+</view>
+<view class="container">
+    <view class="info-panel">
+        <image mode="widthFix" src="{{AssetsUrl}}/bind.png"></image>
+        <view>根据公安机关互联网安全监督检查规定（公安部令第151号）之要求，为营造良好的网络环境，请绑定您的手机号到本平台</view>
+    </view>
+    <view class="flex flex-direction padding">
+        <button bindgetphonenumber="saveNumber" class="cu-btn bg-{{ThemeStyle.color}} lg" openType="getPhoneNumber">立即绑定</button>
+    </view>
+</view>
+<view class="cu-modal {{showAuth?'show':''}}">
+    <view class="cu-dialog">
+        <view class="cu-bar bg-white justify-end">
+            <view class="content">系统提示</view>
+            <view bindtap="hideModal" class="action">
+                <text class="cuIcon-close text-red"></text>
+            </view>
+        </view>
+        <view class="padding-xl">
+            请绑定手机号到本平台，否则将无法使用发布功能
+        </view>
+    </view>
+</view>

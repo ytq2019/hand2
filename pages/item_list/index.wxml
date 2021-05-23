@@ -1,0 +1,49 @@
+<include src="../templates/page-meta.wxml"></include>
+<cu-custom bgColor="bg-gradual-{{ThemeStyle.gradual}}" isBack="{{true}}">
+    <view slot="backText"></view>
+    <view slot="content">{{title}}</view>
+</cu-custom>
+<view class="container" wx:if="{{!Loading}}">
+    <block wx:if="{{List.length}}">
+        <scroll-view scrollX class="item-scroll" style="width: 100%" wx:for="{{List}}" wx:key="index">
+            <view class="scroll-view-item_H list-item">
+                <navigator hoverClass="none" url="../detail/index?id={{item.id}}">
+                    <view class="inline w20 relative">
+                        <image class="item-img" src="{{item.album.length?item.album[0]:AssetsUrl+'/holder.png'}}"></image>
+                    </view>
+                    <view class="inline w80">
+                        <view class="text-cut text-black">
+                            {{item.title}}
+                        </view>
+                        <view class="flex margin-top-sm" wx:if="{{type==1}}">
+                            <view class="flex-treble text-gray">
+                                <text class="nickname text-cut margin-right-xs">{{item.nickname}}</text>
+                                <text class="suffix">{{item.left_time=='刚刚'?item.left_time:item.left_time+'前'}}赞过</text>
+                            </view>
+                            <view class="flex-sub text-right">
+                                <button catchtap="toPage" class="cu-btn sm bg-{{ThemeStyle.gradual}}" data-url="/pages/message/chat?fromuid={{item.uid}}&itemid={{item.id}}" wx:if="{{item.uid!=userInfo.memberInfo.uid}}">
+                                    和他聊聊
+                                </button>
+                            </view>
+                        </view>
+                        <view class="flex margin-top-sm" wx:elif="{{type==2}}">
+                            <view class="flex-treble text-gray">
+                                {{item.left_time=='刚刚'?item.left_time:item.left_time+'前'}}
+                            </view>
+                            <view class="flex-sub text-right">
+                                <button catchtap="toPage" class="cu-btn sm bg-{{ThemeStyle.gradual}}" data-url="/pages/message/chat?fromuid={{item.uid}}&itemid={{item.id}}" wx:if="{{item.uid!=userInfo.memberInfo.uid}}">
+                                    和他聊聊
+                                </button>
+                            </view>
+                        </view>
+                    </view>
+                </navigator>
+            </view>
+        </scroll-view>
+        <view class="padding-tb-sm text-center text-gray text-sm" wx:if="{{Paging||Gone}}">
+            <text wx:if="{{Gone}}">没有了</text>
+            <text wx:else>加载中</text>
+        </view>
+    </block>
+    <view class="no-data" wx:else>空空如也</view>
+</view>

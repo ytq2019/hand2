@@ -1,0 +1,13 @@
+{
+    "navigationBarTitleText": "物品列表",
+    "enablePullDownRefresh": true,
+    "usingComponents": {
+        "zan-row": "../../libs/zanui/row/index",
+        "zan-col": "../../libs/zanui/col/index",
+        "zan-loading": "../../libs/zanui/loading/index",
+        "zan-card": "../../libs/zanui/card/index",
+        "cu-custom": "/libs/colorui/components/cu-custom",
+        "dialog": "/components/dialog/index",
+        "empty": "/components/empty/index"
+    }
+}

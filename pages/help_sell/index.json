@@ -1,0 +1,8 @@
+{
+    "usingComponents": {
+        "poster": "../../libs/wxa-plugin-canvas/poster/index",
+        "cu-custom": "/libs/colorui/components/cu-custom",
+        "dialog": "/components/dialog/index",
+        "empty": "/components/empty/index"
+    }
+}

@@ -1,0 +1,59 @@
+.container {
+    padding-bottom: calc(10px + env(safe-area-inset-bottom) / 2);
+}
+
+.top_wrap .cu-custom {
+    position: absolute;
+}
+
+.container {
+    padding-bottom: 0;
+}
+
+.my-panel {
+    height: 400rpx;
+    padding-top: 150rpx;
+}
+
+.my-avatar {
+    width: 100rpx;
+    margin: 0 auto;
+}
+
+.my-avatar image {
+    width: 100rpx;
+    height: 100rpx;
+    border-radius: 50%;
+}
+
+.my-info {
+    width: 70%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.nav .cu-item text.cur {
+    display: inline-block;
+    height: 84rpx;
+    border-bottom: 6rpx solid;
+    padding: 0 20rpx;
+}
+
+.album-zan-col {
+    position: relative;
+    margin-bottom: 15rpx;
+}
+
+.item-panel {
+    padding: 10px 15px;
+}
+
+.item-panel .cu-tag {
+    height: 42rpx;
+    padding: 0 12rpx;
+}
+.vd{
+    position:fixed;
+    bottom:0;
+    width: 750rpx;
+}

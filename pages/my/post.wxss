@@ -1,0 +1,60 @@
+.list_wrap {
+    padding-top: 90rpx;
+}
+
+.item_left {
+    flex-basis: 30%;
+    overflow: hidden;
+    height: 180rpx;
+}
+
+.item_left .bg-img {
+    height: 180rpx;
+    position: relative;
+}
+
+.item_left .bg-img .cuIcon-videofill {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    font-size: 80rpx;
+    margin-top: -40rpx;
+    margin-left: -40rpx;
+    color: #fff!important;
+}
+
+.item_left image {
+    border-radius: 6rpx;
+    height: 180rpx;
+}
+
+.item_right {
+    flex-basis: 70%;
+    overflow: hidden;
+}
+
+.item_title {
+    display: -webkit-box;
+    height: 80rpx;
+    overflow: hidden;
+    word-break: break-all;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.refresh_all {
+    position: fixed;
+    bottom: 20rpx;
+    left: 50%;
+    margin-left: -104rpx;
+}
+
+.cu-btn.sm {
+    font-size: 12px;
+}
+
+.btn_wrap {
+    margin-top: 50rpx;
+}

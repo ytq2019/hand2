@@ -1,0 +1,29 @@
+<view class="cu-modal {{show?'show':''}}  {{className}}" style="{{customStyle}}">
+    <view class="cu-dialog">
+        <view class="cu-bar bg-white justify-end  text-black">
+            <view class="content text-bold">
+                <view wx:if="{{title||useTitleSlot}}">
+                    <slot name="title" wx:if="{{useTitleSlot}}"></slot>
+                    <block wx:elif="{{title}}">{{title}}</block>
+                </view>
+            </view>
+            <view bindtap="onClickOverlay" class="action">
+                <text class="cuIcon-close text-red"></text>
+            </view>
+        </view>
+        <slot wx:if="{{useSlot}}"></slot>
+        <view class="message padding-xl" wx:elif="{{message}}">
+            <rich-text nodes="{{message}}" wx:if="{{messageRichText}}"></rich-text>
+            <text class="" wx:else>{{message}}</text>
+        </view>
+        <view class="cu-bar bg-white justify-center" wx:if="{{showCancelButton||showConfirmButton}}">
+            <view class="action">
+                <button bindtap="onCancel" class="cu-btn {{cancelButtonColor}}" wx:if="{{showCancelButton}}">
+                    {{cancelButtonText}}
+                </button>
+                <button appParameter="{{appParameter}}" bindcontact="bindContact" binderror="bindError" bindgetphonenumber="bindGetPhoneNumber" bindgetuserinfo="bindGetUserInfo" bindlaunchapp="bindLaunchApp" bindopensetting="bindOpenSetting" bindtap="onConfirm" businessId="{{businessId}}" class="cu-btn {{confirmButtonColor}} margin-left" openType="{{confirmButtonOpenType}}" sendMessageImg="{{sendMessageImg}}" sendMessagePath="{{sendMessagePath}}" sendMessageTitle="{{sendMessageTitle}}" sessionFrom="{{sessionFrom}}" showMessageCard="{{showMessageCard}}" wx:if="{{showConfirmButton}}">{{confirmButtonText}}
+                </button>
+            </view>
+        </view>
+    </view>
+</view>

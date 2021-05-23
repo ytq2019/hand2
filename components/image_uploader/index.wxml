@@ -1,0 +1,29 @@
+<view class="image-uploader">
+    <view class="image-uploader__wrapper">
+        <view bindtap="onClickPreview" class="image-uploader__preview" data-index="{{index}}" wx:if="{{previewImage}}" wx:for="{{lists}}" wx:key="index">
+            <image alt="{{item.name||'图片'+index}}" bind:tap="onPreviewImage" class="image-uploader__preview-image" data-index="{{index}}" mode="{{imageFit}}" src="{{item.thumb||item.url}}" style="width: {{previewSize}}rpx; height: {{previewSize}}rpx;" wx:if="{{item.isImage}}"></image>
+            <video autoplay="{{item.autoplay}}" bind:tap="onPreviewVideo" class="image-uploader__preview-image" data-index="{{index}}" poster="{{item.thumb}}" src="{{item.url}}" style="width: {{previewSize}}rpx; height: {{previewSize}}rpx;" title="{{item.name||'视频'+index}}" wx:elif="{{item.isVideo}}"></video>
+            <view class="image-uploader__file" style="width: {{previewSize}}rpx; height: {{previewSize}}rpx;" wx:else>
+                <text class="cuIcon-text image-uploader__file-icon"></text>
+                <view class="image-uploader__file-name ellipsis">{{item.name||item.url}}</view>
+            </view>
+            <view class="image-uploader__mask" wx:if="{{item.status==='uploading'||item.status==='failed'}}">
+                <view class="cuIcon-roundclose image-uploader__mask-icon" wx:if="{{item.status==='failed'}}"></view>
+                <view class="cu-load load-icon loading image-uploader__loading" wx:else></view>
+                <text class="image-uploader__mask-message" wx:if="{{item.message}}">{{item.message}}</text>
+            </view>
+            <view catch:tap="deleteItem" class="image-uploader__preview-delete" data-index="{{index}}" wx:if="{{deletable&&item.deletable}}">
+                <text class="cuIcon-close image-uploader__preview-delete-icon"></text>
+            </view>
+        </view>
+        <block wx:if="{{isInCount}}">
+            <view bindtap="startUpload" class="image-uploader__slot">
+                <slot></slot>
+            </view>
+            <view bindtap="startUpload" class="image-uploader__upload {{disabled?'image-uploader__upload--disabled':''}}" style="width: {{previewSize}}rpx; height: {{previewSize}}rpx;" wx:if="{{showUpload}}">
+                <view class="image-uploader__upload-icon cuIcon-cameraadd lg text-gray"></view>
+                <text class="image-uploader__upload-text" wx:if="{{uploadText}}">{{uploadText}}</text>
+            </view>
+        </block>
+    </view>
+</view>

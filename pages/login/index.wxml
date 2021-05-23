@@ -1,0 +1,24 @@
+<include src="../templates/page-meta.wxml"></include>
+<cu-custom bgColor="bg-gradual-{{ThemeStyle.gradual}}" isBack="{{true}}">
+    <view slot="backText"></view>
+    <view slot="content">微信登录</view>
+</cu-custom>
+<view class="container">
+    <view class="login_wrap padding-xl">
+        <view class="cu-avatar bg-gray shadow">
+            <image src="{{LogoUrl}}"></image>
+        </view>
+        <view class="solids-top padding-xl margin-top-xl">
+            <view class="text-left">
+                <text class="text-xl">申请获取以下权限</text>
+            </view>
+            <view class="text-left margin-tb-sm">
+                <text class="text-gray">获取你的公开信息（昵称、头像等）</text>
+            </view>
+        </view>
+        <view class="padding-xl">
+            <button bindtap="getUserProfile" class="cu-btn block round bg-green lg" wx:if="{{canIUseGetUserProfile}}">授权登录</button>
+            <button bindgetuserinfo="getUserInfo" class="cu-btn block round bg-green lg" lang="zh_CN" openType="getUserInfo" wx:else>授权登录</button>
+        </view>
+    </view>
+</view>

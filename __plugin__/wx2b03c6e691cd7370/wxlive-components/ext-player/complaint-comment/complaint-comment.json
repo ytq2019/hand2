@@ -1,0 +1,12 @@
+{
+    "usingComponents": {
+        "mp-msg": "../../../miniprogram_dist/msg/msg",
+        "mp-checkbox-group": "../../../miniprogram_dist/checkbox-group/checkbox-group",
+        "mp-checkbox": "../../../miniprogram_dist/checkbox/checkbox",
+        "mp-cells": "../../../miniprogram_dist/cells/cells",
+        "mp-navigation-bar": "../../../miniprogram_dist/navigation-bar/navigation-bar"
+    },
+    "navigationStyle": "custom",
+    "disableScroll": true,
+    "style": "v2"
+}

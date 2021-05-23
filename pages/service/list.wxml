@@ -1,0 +1,122 @@
+<include src="../templates/page-meta.wxml"></include>
+<view class="container" style="padding-bottom: calc({{isFromFootnav?120:20}}rpx + env(safe-area-inset-bottom) / 2)" wx:if="{{!Loading}}">
+    <cu-custom bgColor="bg-gradual-{{ThemeStyle.gradual}}" bind:clickContent="changeLocation" contentCenter="{{false}}" contentLeft="{{isFromFootnav?20:70}}" contentPointerEvents="auto" isBack="{{!isFromFootnav}}">
+        <view class="custom_content cf" slot="content">
+            <view class="fl cuIcon-locationfill"></view>
+            <view class="fl page_title text-cut">{{pageTitle}}</view>
+            <view class="fl cuIcon-right"></view>
+        </view>
+    </cu-custom>
+    <view bindtap="hidePoisModal" class="cu-modal top-modal {{showPoisModal?'show':''}}" wx:if="{{poisList.length}}">
+        <view class="cu-dialog">
+            <view class="cu-list menu text-left">
+                <view class="flex flex-wrap padding-sm">
+                    <view class="basis-xl text-gray text-sm">点击可切换附近的位置</view>
+                    <view catchtap="refreshLocation" class="basis-xs text-grey text-sm text-right">
+                        <text class="cuIcon-focus"></text> 重新定位
+                    </view>
+                </view>
+                <view catchtap="switchLocation" class="cu-item" data-index="{{index}}" wx:for="{{poisList}}" wx:key="index">
+                    <label class="flex justify-between align-center flex-sub">
+                        <view class="flex-sub text-cut text-{{item.title==pageTitle?ThemeStyle.color:'black'}}">{{item.title}}</view>
+                    </label>
+                </view>
+            </view>
+        </view>
+    </view>
+    <form bindsubmit="submitSearch">
+        <view class="cu-bar bg-white search">
+            <view class="search-form round">
+                <text class="cuIcon-search"></text>
+                <input bindinput="inputKeyword" confirmType="search" name="keyword" placeholder="{{settingData.search_placeholder}}" type="text"></input>
+            </view>
+            <view class="action">
+                <text bindtap="submitSearch" class="text-{{ThemeStyle.color}}">搜索</text>
+            </view>
+        </view>
+    </form>
+    <view class="categroy_wrap bg-white">
+        <scroll-view scrollWithAnimation scrollX class="category_nav bg-white nav solid-bottom {{categoryFixed?'fixed':''}}" scrollLeft="{{scrollLeft}}" style="{{categoryFixed?'top:'+CustomBar+'px':''}}" wx:if="{{categoryData.length}}">
+            <view bindtap="selectCategory" class="cu-item {{index==categoryCur?'text-'+ThemeStyle.color+' cur':''}}" data-index="{{index}}" wx:for="{{categoryData}}" wx:key="index">
+                {{item.title}}
+            </view>
+        </scroll-view>
+        <view catchtap="showDisplayorderList" class="displayorder_wrap text-dark-gray" style="{{categoryFixed?'top:34px':'top:0'}}">
+            <text class="text-sm">排序</text>
+            <text class="cuIcon-triangledownfill lg"></text>
+        </view>
+        <view class="displayorder_list shadow bg-white text-dark-gray" wx:if="{{showDisplayorderList}}">
+            <view bindtap="switchDisplayorder" class="padding-lr {{DisplayorderCur=='new'?'text-'+ThemeStyle.color:''}}" data-value="new">最新入驻在前</view>
+            <view bindtap="switchDisplayorder" class="padding-lr solid-top {{DisplayorderCur=='appraise'?'text-'+ThemeStyle.color:''}}" data-value="appraise">好评数从高到低</view>
+            <view bindtap="switchDisplayorder" class="padding-lr solid-top {{DisplayorderCur=='service'?'text-'+ThemeStyle.color:''}}" data-value="service">服务数从高到低</view>
+        </view>
+    </view>
+    <view class="item_list cu-card dynamic no-card" style="/*margin-top: 90rpx*/" wx:if="{{itemList.length}}">
+        <view catchtap="showDesc" class="item_wrap padding bg-white {{index?'solid-top':''}}" data-index="{{index}}" wx:for="{{itemList}}" wx:key="index">
+            <view class="flex">
+                <view class="left_wrap text-center">
+                    <view class="avatar_img">
+                        <image lazyLoad="{{true}}" mode="aspectFill" src="{{item.avatar}}"></image>
+                    </view>
+                    <view>
+                        <text class="cuIcon-favor{{item.avg_score>0&&idx<item.avg_score?'fill':''}} text-{{ThemeStyle.color}}" wx:for="{{5}}" wx:for-index="idx" wx:for-item="num" wx:key="index"></text>
+                    </view>
+                    <view class="text-bold text-{{ThemeStyle.color}}">{{item.avg_score}}.0</view>
+                </view>
+                <view class="right_wrap padding-left margin-top-xs">
+                    <view class="cf">
+                        <view class="name_wrap text-cut fl text-lg text-black">{{item.name}}</view>
+                        <image class="fl margin-left-xs verified_icon" lazyLoad="{{true}}" mode="aspectFill" src="{{settingData.verified_icon}}" wx:if="{{item.is_cert==1}}"></image>
+                    </view>
+                    <view class="text-sm text-deep-gray margin-top-xs">
+                        <text>服务过 <text class="text-{{ThemeStyle.color}}"> {{item.service_total?item.service_total:'-'}}</text> 人</text>
+                        <text class="margin-left-sm">好评 <text class="text-{{ThemeStyle.color}}">{{item.appraise_total?item.appraise_total:'-'}}</text> 次</text>
+                    </view>
+                    <view class="category_wrap margin-top">
+                        <view class="cu-tag margin-top-xs radius sm bg-{{ThemeStyle.color}}" wx:for="{{item.category_list}}" wx:for-index="idx" wx:for-item="category" wx:key="index">{{category.title}}</view>
+                    </view>
+                </view>
+            </view>
+            <view class="margin-top-sm text-sm text-gray" wx:if="{{item.show_desc}}">
+                <rich-text nodes="{{item.desc}}"></rich-text>
+            </view>
+            <button catchtap="showDisclaimerDialog" class="btn_contact cu-btn round line-{{ThemeStyle.color}}" data-is-timeout="{{item.is_timeout}}" data-service-id="{{item.id}}">
+                {{settingData.contact_title}}
+            </button>
+            <text class="icon_arrow {{item.show_desc?'cuIcon-fold':'cuIcon-unfold'}}"></text>
+        </view>
+        <view class="padding-tb-sm text-center text-gray text-sm margin-bottom-sm" wx:if="{{Paging||Gone}}">
+            <text wx:if="{{Gone}}">没有了</text>
+            <text wx:else>加载中</text>
+        </view>
+    </view>
+    <empty msg="{{emptyMsg}}" wx:else></empty>
+    <view bindtap="join" class="join_wrap" style="background: rgba({{ThemeStyle.rgb[0]}}, {{ThemeStyle.rgb[1]}}, {{ThemeStyle.rgb[2]}},.8);" wx:if="{{settingData.show_join==1&&settingData.join_title}}">
+        {{settingData.join_title}}
+    </view>
+    <view bindtap="goTop" class="back-home" wx:if="{{showGoTop}}">
+        <text class="cuIcon-fold"></text>
+    </view>
+    <footnav themeStyle="{{ThemeStyle}}" wx:if="{{isFromFootnav}}"></footnav>
+</view>
+<dialog useSlot show="{{showDisclaimerDialog}}" showCancelButton="{{false}}" showConfirmButton="{{false}}" title="免责声明">
+    <view class="disclaimer_wrap">
+        <view class="message text-left padding-top-xl padding-lr-lg padding-bottom">
+            <rich-text nodes="{{settingData.disclaimer}}"></rich-text>
+        </view>
+    </view>
+    <view class="cu-bar bg-white">
+        <view bindtap="hideDisclaimerDialog" class="action margin-0 flex-sub solid-left">取消</view>
+        <view bindtap="acceptDisclaimer" class="action margin-0 flex-sub text-{{ThemeStyle.color}} solid-left">接受</view>
+    </view>
+</dialog>
+<dialog useSlot show="{{showCreditTipsDialog}}" showCancelButton="{{false}}" showConfirmButton="{{false}}" title="{{settingData.credit_info.title}}不足">
+    <view class="disclaimer_wrap">
+        <view class="message text-left padding-top-xl padding-lr-lg padding-bottom">
+            <rich-text nodes="{{settingData.credit_tips}}"></rich-text>
+        </view>
+    </view>
+    <view class="cu-bar bg-white">
+        <view bindtap="hideCreditTipsDialog" class="action margin-0 flex-sub text-{{ThemeStyle.color}}">知道了</view>
+    </view>
+</dialog>

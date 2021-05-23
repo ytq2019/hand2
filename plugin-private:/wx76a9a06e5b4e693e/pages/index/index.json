@@ -1,0 +1,8 @@
+{
+    "disableScroll": true,
+    "usingComponents": {
+        "header": "../../components/header/header",
+        "poi-list": "../../components/poi-list/poi-list"
+    },
+    "navigationStyle": "custom"
+}

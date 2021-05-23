@@ -1,0 +1,17 @@
+.buying-form .cu-form-group .title {
+    min-width: calc(4em + 30rpx);
+}
+
+.buying-form .desc_wrap {
+    position: relative;
+}
+
+.buying-form .desc_wrap .action {
+    position: absolute;
+    right: 20rpx;
+    bottom: 10rpx;
+}
+
+.buying-form .textarea {
+    min-height: 400rpx;
+}

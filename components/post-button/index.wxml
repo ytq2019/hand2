@@ -1,0 +1,3 @@
+<view bindtap="click" class="post-button" data-need-avatar="{{needAvatar}}" data-url="{{url}}" style="background: rgba({{themeStyle.rgb[0]}}, {{themeStyle.rgb[1]}}, {{themeStyle.rgb[2]}},.8);bottom:{{bottom}}%;">
+    {{title}}
+</view>

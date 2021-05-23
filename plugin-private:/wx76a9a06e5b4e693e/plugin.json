@@ -1,0 +1,7 @@
+{
+    "main": "index.js",
+    "pages": {
+        "index": "pages/index/index",
+        "search": "pages/search/search"
+    }
+}

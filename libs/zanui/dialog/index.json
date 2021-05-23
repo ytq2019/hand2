@@ -1,0 +1,10 @@
+{
+    "component": true,
+    "usingComponents": {
+        "pop-manager": "../common/pop-manager/index",
+        "zan-button": "../btn/index",
+        "cu-custom": "/libs/colorui/components/cu-custom",
+        "dialog": "/components/dialog/index",
+        "empty": "/components/empty/index"
+    }
+}

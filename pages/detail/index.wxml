@@ -1,0 +1,272 @@
+<include src="../templates/page-meta.wxml"></include>
+<view class="container" wx:if="{{!Loading}}">
+    <view class="top_wrap text-white" wx:if="{{detail.type==1}}">
+        <view slot="backText"></view>
+        <cu-custom isCustom="{{true}}"></cu-custom>
+    </view>
+    <view class="top_wrap text-white" wx:elif="{{detail.type==2}}">
+        <view slot="backText"></view>
+        <cu-custom bgColor="bg-white" isCustom="{{true}}">
+            <view slot="backText"></view>
+            <view slot="content">求购信息</view>
+        </cu-custom>
+    </view>
+    <view class="zan-panel no-padding" style="{{detail.type==2?'margin-top:'+CustomBar+'px;':''}}">
+        <swiper autoplay="{{detail.video.length>0?false:true}}" bindchange="bindSwiperChange" circular="{{true}}" class="screen-swiper square-dot" duration="500" indicatorDots="{{true}}" interval="5000" style="height:{{imgheights[current]}}px;" wx:if="{{detail.album.length>0||detail.video.length>0}}">
+            <block wx:if="{{detail.video.length>0}}">
+                <swiper-item class="flex align-center" wx:for="{{detail.video}}" wx:key="index">
+                    <video autoplay="{{true}}" controls="{{true}}" loop="{{false}}" muted="{{false}}" objectFit="contain" showPlayBtn="{{true}}" src="{{item}}"></video>
+                </swiper-item>
+            </block>
+            <block wx:if="{{detail.album.length>0}}">
+                <swiper-item class="flex align-center" wx:for="{{detail.album}}" wx:key="index">
+                    <image bindload="imageLoad" bindtap="previewImg" data-index="{{detail.video.length>0?detail.video.length+index:index}}" mode="widthFix" src="{{item}}"></image>
+                </swiper-item>
+            </block>
+        </swiper>
+        <view class="detail-box">
+            <view class="detail-title margin-bottom-xs">
+                <text class="text-{{ThemeStyle.color}}" wx:if="{{detail.type==2}}">[求购]</text> {{detail.title}}
+                <text class="cu-tag sm round line-deep-gray" wx:if="{{detail.trade_type1==1}}">快递</text>
+                <text class="cu-tag sm round line-deep-gray" wx:if="{{detail.trade_type2==1}}">自提</text>
+                <text class="cu-tag sm round line-deep-gray" wx:if="{{detail.trade_type3==1}}">到付</text>
+                <text class="cu-tag sm round line-deep-gray" wx:if="{{detail.free_ship==1}}">包邮</text>
+            </view>
+            <view class="margin-bottom-xs" wx:if="{{detail.type==1}}">
+                <text class="text-red text-xxl">{{detail.is_credit==1&&detail.stock==0?'已抢光':detail._price}}</text>
+                <text class="text-delete-line text-gray text-df margin-left-sm" wx:if="{{detail.origin_price>0}}">{{currencyInfo.symbol}}{{detail.origin_price}}</text>
+            </view>
+            <view class="margin-bottom-xs" wx:if="{{detail.is_shop==1}}">
+                <text class="text-red text-df" wx:if="{{detail.sell_type2==1}}">{{detail.wholesale_number}}件以上：{{detail.wholesale_single_price}}{{currencyInfo.title}}/件</text>
+                <text class="text-red text-df margin-left-sm" wx:if="{{detail.sell_type1==1}}">打包价：{{detail.wholesale_empty_price}}{{currencyInfo.title}}/件</text>
+            </view>
+            <view class="margin-bottom-xs" wx:if="{{detail.tags.length}}">
+                <block wx:for="{{detail.tags}}" wx:key="index">
+                    <view class="cu-tag radius line-olive" wx:if="{{index%5==0}}">{{item}}</view>
+                    <view class="cu-tag radius line-red" wx:if="{{index%5==1}}">{{item}}</view>
+                    <view class="cu-tag radius line-yellow" wx:if="{{index%5==2}}">{{item}}</view>
+                    <view class="cu-tag radius line-green" wx:if="{{index%5==3}}">{{item}}</view>
+                    <view class="cu-tag radius line-orange" wx:if="{{index%5==4}}">{{item}}</view>
+                </block>
+            </view>
+            <view class="detail-sub margin-bottom-xs">
+                <text class="cu-tag radius bg-orange" wx:if="{{post_time==0}}">{{detail.time_diff}}{{detail.time_diff=='刚刚'?'':'前'}}发布</text>
+                <text class="cu-tag radius bg-green" wx:if="{{post_time==2&&detail.is_online==1}}">卖家在线</text>
+                <text class="cu-tag radius bg-blue" wx:if="{{detail.stock>0}}">库存 {{detail.stock}}</text>
+                <text class="cu-tag radius bg-grey" wx:if="{{detail.sale>0}}">已售 {{detail.sale}}</text>
+                <view class="page_view text-xs text-gray" wx:if="{{hide_view==0&&detail.page_view>0}}">
+                    {{detail.page_view}}次浏览
+                </view>
+            </view>
+            <view catchtap="copyValue" class="detail-text" data-value="{{detail.orig_description?detail.orig_description:detail.summary}}" wx:if="{{detail.description||detail.summary}}">
+                <rich-text nodes="{{detail.description?detail.description:detail.summary}}"></rich-text>
+            </view>
+            <block wx:if="{{detail.add_fields.length}}" wx:for="{{detail.add_fields}}" wx:key="index">
+                <view catchtap="copyValue" class="field-item" data-value="{{item.value}}" wx:if="{{!item.ismobile}}">
+                    <block wx:if="{{item.type=='single_select'?item.extra.option[item.value]:item.value}}">
+                        <view class="inline">{{item.title}}：</view>
+                        <view class="inline">{{item.type=='single_select'?item.extra.option[item.value]:item.value}}</view>
+                        <view class="zan-arrow"></view>
+                    </block>
+                </view>
+                <view bindtap="makePhone" class="field-item" data-phone="{{item.value}}" wx:else>
+                    <view class="inline">{{item.title}}：</view>
+                    <view class="inline">{{item.type=='single_select'?item.extra.option[item.value]:item.value}}</view>
+                    <view class="zan-arrow"></view>
+                </view>
+            </block>
+            <view class="item-status" wx:if="{{detail.status==2&&detail.is_credit==0}}">
+                <image mode="widthFix" src="{{soldImg}}"></image>
+            </view>
+            <view class="item-status" wx:if="{{detail.status==-2}}">
+                <image mode="widthFix" src="{{AssetsUrl}}/sc.png"></image>
+            </view>
+        </view>
+        <view class="item-footer text-gray text-sm">
+            <view class="flex flex-wrap">
+                <view style="flex-basis: 65%;">
+                    <view bindtap="toMap" data-lat="{{detail.lat}}" data-lng="{{detail.lng}}" wx:if="{{detail.address}}">
+                        <text class="cuIcon-location"></text> {{detail.address}}
+                    </view>
+                </view>
+                <view class="text-right" style="flex-basis: 35%;">
+                    <form bindsubmit="submitAppreciateAndFavor" data-type="1">
+                        <button class="ft-btn" formType="submit">
+                            <text class="cuIcon-appreciate{{detail.is_favour==0?'':'fill'}}"></text>
+                            <text>点赞</text>
+                        </button>
+                    </form>
+                    <form bindsubmit="submitAppreciateAndFavor" data-type="2">
+                        <button class="ft-btn" formType="submit">
+                            <text class="cuIcon-favor{{detail.is_collect==0?'':'fill'}}"></text>
+                            <text>收藏</text>
+                        </button>
+                    </form>
+                </view>
+            </view>
+        </view>
+    </view>
+    <block wx:if="{{detail.is_credit==0}}">
+        <view class="seller-panel">
+            <zan-card bindtap="toPage" data-url="/pages/my_list/index?uid={{detail.seller_uid}}" cardClass="test-card" thumb="{{detail.avatar}}" useDetailSlot="{{true}}">
+                <view class="zan-card__detail" slot="detail-slot">
+                    <zan-row>
+                        <zan-col col="15">
+                            <view class="zan-font-14">
+                                <view class="nickname_wrap cf">
+                                    <view class="fl text-cut">{{detail.nickname}}</view>
+                                    <view class="integrity_logo fl margin-left-xs" wx:if="{{detail.item_type==-1&&platform_flag!=''}}">
+                                        <view class="cu-tag line-{{ThemeStyle.gradual}} radius sm">{{platform_flag}}</view>
+                                    </view>
+                                    <view class="integrity_logo fl margin-left-xs" wx:elif="{{integrity_logo}}">
+                                        <image mode="heightFix" src="{{integrity_logo}}"></image>
+                                    </view>
+                                </view>
+                            </view>
+                        </zan-col>
+                        <zan-col col="9" wx:if="{{detail.seller_uid}}">
+                            <view  class="shop line-{{ThemeStyle.gradual}} text-{{ThemeStyle.gradual}}" >查看ta的店铺</view>
+                        </zan-col>
+                    </zan-row>
+                    <view class="zan-font-12 zan-c-gray-darker">
+                        <text>共卖出{{detail.sell_count}}件宝贝</text>
+                    </view>
+                </view>
+            </zan-card>
+        </view>
+        <view class="margin-bottom-sm bg-white">
+            <view class="message-title">留言墙</view>
+            <view class="message-list" wx:if="{{message.length>0}}">
+                <view wx:for="{{message}}" wx:key="key">
+                    <view class="padding">
+                        <view class="inline">
+                            <image class="msg-img" src="{{item.avatar}}"></image>
+                        </view>
+                        <view class="inline zan-font-14 zan-c-gray-darker">{{item.nickname}}</view>
+                        <view class="time-right">
+                            {{item.time_diff}}{{item.time_diff=='刚刚'?'':'前'}}
+                        </view>
+                    </view>
+                    <view class="message-content">
+                        <view class="zan-font-15 zan-c-gray-darker word-break">{{item.message}}</view>
+                        <view class="reply word-break" wx:if="{{item.reply}}">卖家回复：{{item.reply}}</view>
+                    </view>
+                    <view class="message-footer text-right" wx:if="{{is_author&&!item.reply}}">
+                        <form bindsubmit="showCommentReply" data-id="{{item.id}}">
+                            <button class="zan-btn" formType="submit" type="default">
+                                <zan-icon type="edit"></zan-icon> 回复
+                            </button>
+                        </form>
+                    </view>
+                </view>
+            </view>
+            <view bindtap="showComment" class="zan-font-12 text-grey padding-sm bg-white text-center solid-top" wx:if="{{!isSinglePage}}">{{commentTips}}</view>
+        </view>
+    </block>
+    <view class="wxad_wrap margin-lr margin-top" wx:if="{{WxadInfo.id&&showWxad}}">
+        <view style="width: 100%">
+            <ad binderror="WxadError" unitId="{{WxadInfo.id}}" wx:if="{{WxadInfo.type=='banner'}}"></ad>
+            <ad adTheme="white" adType="video" binderror="WxadError" unitId="{{WxadInfo.id}}" wx:if="{{WxadInfo.type=='feeds'}}"></ad>
+            <ad adTheme="white" adType="grid" binderror="WxadError" gridCount="5" gridOpacity="0.8" unitId="{{WxadInfo.id}}" wx:if="{{WxadInfo.type=='grid'}}"></ad>
+        </view>
+    </view>
+    <view class="bottom-bar">
+        <zan-row>
+            <zan-col col="8">
+                <view catchtap="toPage" class="text_wrap text-{{ThemeStyle.gradual}} text-lg" data-need-avatar="{{true}}" data-url="/pages/help_sell/index?id={{detail.id}}" wx:if="{{helpSell.switch&&detail.type==1}}">
+                    <text class="cuIcon-share lg"></text> 帮卖得佣金
+                </view>
+                <view catchtap="toPage" class="text-{{ThemeStyle.gradual}} text-lg" data-need-avatar="{{true}}" data-url="/pages/help_sell/index?id={{detail.id}}" wx:elif="{{posterInfo.switch&&detail.type==1}}">
+                    <text class="cuIcon-share lg margin-right-xs"></text>分享
+                </view>
+                <view wx:else>
+                    <button class="cu-btn text-{{ThemeStyle.gradual}} text-lg" openType="share" style="background: transparent">
+                        <text class="cuIcon-share lg margin-right-xs"></text>分享
+                    </button>
+                </view>
+            </zan-col>
+            <zan-col class="text-right" col="16">
+                <block wx:if="{{!detail.seller_uid&&detail.item_type==-1}}">
+                    <form bindsubmit="makePhone" data-phone="{{detail.phone}}" wx:if="{{detail.phone}}">
+                        <button class="zan-btn bg-cyan" disabled="{{detail.status==2?true:false}}" formType="submit">卖家电话</button>
+                    </form>
+                    <form bindsubmit="copyWechat" data-wechat="{{detail.wechat}}" wx:if="{{detail.wechat}}">
+                        <button class="zan-btn bg-green" disabled="{{detail.status==2?true:false}}" formType="submit">卖家微信</button>
+                    </form>
+                </block>
+                <block wx:else>
+                    <form bindsubmit="showActionSheet" wx:if="{{is_author}}">
+                        <button class="zan-btn bg-olive" disabled="{{disabledActionSheet}}" formType="submit">操作</button>
+                    </form>
+                    <form bindsubmit="toChat" wx:if="{{!is_author&&detail.chat&&detail.is_credit!=1}}">
+                        <button bindtap="getUserProfile" class="zan-btn bg-orange" wx:if="{{!userInfo.memberInfo.avatar&&userInfo.wxInfo===undefined}}">{{detail.chat_text}}</button>
+                        <button class="zan-btn bg-orange" formType="submit" wx:else>{{detail.chat_text}}</button>
+                    </form>
+                    <form bindsubmit="buy" data-id="{{detail.id}}" data-type="credit" wx:if="{{!is_author&&detail.status==1&&detail.buy_type==1}}">
+                        <button bindtap="getUserProfile" class="zan-btn bg-red" wx:if="{{!userInfo.memberInfo.avatar&&userInfo.wxInfo===undefined}}">我要兑换</button>
+                        <button class="zan-btn bg-red" formType="submit" wx:else>我要兑换</button>
+                    </form>
+                    <form bindsubmit="buy" data-id="{{detail.id}}" data-type="wechat" wx:if="{{!is_author&&detail.status==1&&detail.buy_type==0&&detail.wechatpay==1&&!detail.hide_buy&&detail._price!='面议'}}">
+                        <button bindtap="getUserProfile" class="zan-btn bg-red" wx:if="{{!userInfo.memberInfo.avatar&&userInfo.wxInfo===undefined}}">我要买</button>
+                        <button class="zan-btn bg-red" formType="submit" wx:else>我要买</button>
+                    </form>
+                </block>
+            </zan-col>
+        </zan-row>
+        <view class="actionsheet-container">
+            <zan-actionsheet actions="{{actions}}" bind:actionclick="clickActionSheet" bind:cancel="hideActionSheet" bottom="0" cancelText="取消" cancelWithMask="{{true}}" show="{{showActionSheet}}"></zan-actionsheet>
+        </view>
+    </view>
+    <block wx:if="{{helpSell.switch&&showHelpSellGuide&&detail.commission>0}}">
+        <view catchtap="hideHelpSellGuide" class="guide_wrap mask" wx:if="{{helpSell.share_credit>0}}">
+            <view class="tips text-white padding" style="background:{{ThemeStyle.value}};bottom: 140rpx;">
+                <view class="triangle_down" style="border-color: {{ThemeStyle.value}} transparent transparent ;"></view>
+                <text>转发好友，访问可得{{creditInfo.title}}，购买更有佣金奖励</text>
+            </view>
+            <view class="windows bg-white text-{{ThemeStyle.gradual}} text-lg padding-left-sm" style="bottom: {{iphoneX?'32rpx':0}}">
+                <text class="cuIcon-share lg"></text> 帮卖得佣金
+            </view>
+        </view>
+        <view catchtap="hideHelpSellGuide" class="guide_wrap mask" wx:else>
+            <view class="tips text-white padding" style="background:{{ThemeStyle.value}};bottom: 140rpx;">
+                <view class="triangle_down" style="border-color: {{ThemeStyle.value}} transparent transparent ;"></view>
+                <text>转发好友，下单分享佣金奖励</text>
+            </view>
+            <view class="windows bg-white text-{{ThemeStyle.gradual}} text-lg padding-left-sm" style="bottom: {{iphoneX?'32rpx':0}}">
+                <text class="cuIcon-share lg"></text> 帮卖得佣金
+            </view>
+        </view>
+    </block>
+    <view bindtap="showVideoAd" class="ad_wrap" wx:if="{{showVideoAd}}">
+        <image mode="aspectFill" src="{{AssetsUrl}}/reward_video.png"></image>
+    </view>
+    <view bindtap="showReport" class="report_wrap" wx:if="{{detail.is_credit!=1&&reportOpen}}">举报</view>
+    <button class="contact-btn" openType="contact" wx:if="{{contactOpen}}">
+        <image src="{{serviceImg}}"></image>
+    </button>
+</view>
+<view class="container-loading" wx:else>
+    <image mode="aspectFill" src="{{LoadingImg}}"></image>
+</view>
+<view class="cu-modal {{showReportAndComment?'show':''}}">
+    <view class="cu-dialog">
+        <view class="cu-bar bg-white justify-end">
+            <view class="content">{{modalTitle}}</view>
+            <view bindtap="hideReportAndComment" class="action">
+                <text class="cuIcon-close text-red"></text>
+            </view>
+        </view>
+        <form bindsubmit="submitReportAndComment">
+            <view class="padding-xl text-left">
+                <textarea autoFocus="{{true}}" autoHeight="{{true}}" name="content" placeholder="在此输入内容..." value="{{contentReportComment}}" wx:if="{{showReportAndComment}}"></textarea>
+            </view>
+            <view class="cu-bar bg-white justify-center">
+                <view class="action">
+                    <button bindtap="hideReportAndComment" class="cu-btn bg-grey">取消</button>
+                    <button class="cu-btn bg-{{ThemeStyle.gradual}} margin-left" formType="submit">确定</button>
+                </view>
+            </view>
+        </form>
+    </view>
+</view>
+<dialog id="dialog"></dialog>

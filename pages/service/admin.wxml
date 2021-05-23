@@ -1,0 +1,87 @@
+<include src="../templates/page-meta.wxml"></include>
+<view class="container" wx:if="{{!Loading}}">
+    <cu-custom bgColor="bg-gradual-{{ThemeStyle.gradual}}" isBack="{{true}}">
+        <view slot="backText"></view>
+        <view slot="content">管理后台</view>
+    </cu-custom>
+    <view bindtap="showAuditReason" class="bg-white padding-sm text-cut text-red margin-bottom-sm" wx:if="{{profile.status==-1}}">
+        <text class="cuIcon-infofill text-lg margin-right-xs"></text>
+        <text class="text-sm">审核提示：{{profile.audit_reason?profile.audit_reason:'无'}}</text>
+    </view>
+    <view class="head_wrap padding-tb padding-lr-sm bg-white">
+        <view class="flex">
+            <view class="left_wrap">
+                <view class="cu-avatar round" style="background-image:url({{profile.avatar}});"></view>
+            </view>
+            <view class="right_wrap padding-left-sm">
+                <view class="text-cut text-df text-black">{{profile.name}}</view>
+                <view class="text-sm text-gray margin-top-xs">
+                    <text>服务过 <text class="text-{{ThemeStyle.color}}"> {{profile.service_total?profile.service_total:'-'}}</text> 人</text>
+                    <text class="margin-left-sm">好评 <text class="text-{{ThemeStyle.color}}">{{profile.appraise_total?profile.appraise_total:'-'}}</text> 次</text>
+                </view>
+                <view class="text-sm text-gray margin-top-xs" wx:if="{{profile.status==1}}">
+                    <text wx:if="{{profile.expire_date!='永久'}}">{{profile.expire_date}} 到期</text>
+                    <text bindtap="showRenewModal" class="margin-left text-{{ThemeStyle.color}}" wx:if="{{profile.show_renew}}">续费<text class="cuIcon-right"></text>
+                    </text>
+                </view>
+                <view class="margin-top-xs">
+                    <text class="cuIcon-favor{{profile.avg_score>0&&index<profile.avg_score?'fill':''}} text-{{ThemeStyle.color}}" wx:for="{{5}}" wx:key="index"></text>
+                    <text class="margin-left-xs text-orange text-bold text-lg">{{profile.avg_score}}.0</text>
+                </view>
+            </view>
+        </view>
+        <view class="btn_wrap text-right">
+            <view class="cu-tag round line-red sm" wx:if="{{profile.status==0}}">审核中</view>
+            <view bindtap="showAuditReason" class="cu-tag round line-red sm" wx:elif="{{profile.status==-1}}">审核未通过</view>
+            <view wx:elif="{{profile.status==1}}">
+                <button bindtap="toEdit" class="cu-btn round bg-green sm" disabled="{{false}}">修改资料</button>
+                <view class="text-xs text-gray margin-top-xs" wx:if="{{profile.update_limit>0}}">
+                    资料每年可修改{{profile.update_limit}}次(<text class="text-red">剩{{profile.update_remain_total}}次</text>)
+                </view>
+            </view>
+        </view>
+    </view>
+    <view class="mpcode_wrap text-center margin-top-sm bg-white">
+        <image mode="aspectFill" src="{{profile.score_mpcode}}"></image>
+        <view class="margin-top-sm text-gray">{{settingData.mpcode_tips}}</view>
+    </view>
+    <view class="text-center margin" wx:if="{{settingData.show_close==1}}">
+        <text bindtap="closeService" class="text-red">关闭服务</text>
+    </view>
+</view>
+<view class="cu-modal {{showRenewModal?'show':''}}">
+    <view class="cu-dialog">
+        <view class="cu-bar bg-white justify-end">
+            <view class="content">续费</view>
+            <view bindtap="hideRenewModal" class="action">
+                <text class="cuIcon-close text-red"></text>
+            </view>
+        </view>
+        <view class="bg-white padding-tb-xl padding-lr">
+            <view class="cu-form-group">
+                <view class="title">服务期限</view>
+                <picker bindchange="changeRenewCycle" range="{{settingData.renew_list}}" rangeKey="cycle" value="{{index}}">
+                    <view class="picker">
+                        {{settingData.renew_list[currentRenew].cycle}}个月
+                    </view>
+                </picker>
+            </view>
+            <view class="cu-form-group">
+                <view class="title">支付金额</view>
+                <text>{{settingData.renew_list[currentRenew].fee}}{{settingData.currency_info.title}}</text>
+            </view>
+            <view class="cu-form-group">
+                <view class="title">赠送</view>
+                <text>{{settingData.renew_list[currentRenew].extra_days}}天</text>
+            </view>
+            <view class="text-left text-xl padding-left solid-top padding-top">到期：{{renewExpireDate}}</view>
+        </view>
+        <view class="cu-bar bg-white">
+            <view bindtap="hideRenewModal" class="action margin-0 flex-sub">取消</view>
+            <view bindtap="toRenew" class="action margin-0 flex-sub text-green solid-left">
+                <text class="cuIcon-moneybag margin-right-xs"></text>微信支付
+            </view>
+        </view>
+    </view>
+</view>
+<dialog id="dialog"></dialog>

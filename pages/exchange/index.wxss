@@ -1,0 +1,74 @@
+.container {
+    background-color: #f2f2f2;
+    padding-bottom: calc(120rpx + env(safe-area-inset-bottom) / 2);
+}
+
+.credit_info_wrap {
+    margin-top: 120rpx;
+}
+
+.list_double {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0px 10rpx 0px;
+    justify-content: space-between;
+}
+
+.list_double navigator.item {
+    border-radius: 10rpx;
+    width: 47%;
+    margin: 0 1.5% 20rpx;
+    overflow: hidden;
+}
+
+.list_double .item_img {
+    height: 300rpx;
+    overflow: hidden;
+    position: relative;
+}
+
+.list_double .item_img.sold image.thumb {
+    opacity: 0.5;
+}
+
+.list_double .item_img image.thumb {
+    width: 100%;
+    height: 300rpx;
+}
+
+.list_double .item_sold {
+    position: absolute;
+    bottom: 20rpx;
+    right: 20rpx;
+    z-index: 1;
+    width: 240rpx;
+    height: 188rpx;
+}
+
+.list_double .item_title {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    height: 78rpx;
+}
+
+.list_double .item_price {
+    color: #E02020;
+}
+
+.list_double .item_address {
+    color: var(--deepGray);
+}
+
+.ad_wrap {
+    position: fixed;
+    top: 40%;
+    right: 20rpx;
+}
+
+.ad_wrap image {
+    width: 145rpx;
+    height: 133rpx;
+}

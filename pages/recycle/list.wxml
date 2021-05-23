@@ -1,0 +1,21 @@
+<include src="../templates/page-meta.wxml"></include>
+<cu-custom bgColor="bg-gradual-{{ThemeStyle.gradual}}" isBack="{{true}}">
+    <view slot="backText"></view>
+    <view slot="content">预约记录</view>
+</cu-custom>
+<view class="container">
+    <view class="list-bd" wx:if="{{list.length}}">
+        <zan-cell-group>
+            <zan-cell isLink="{{true}}" label="{{item.province}}{{item.city}}{{item.district}}{{item.address}}" title="{{item.mobile}}" url="detail?id={{item.id}}" value="{{item.status==0?'预约中':'已完成'}}" wx:for="{{list}}" wx:key="{{ item.id }}"></zan-cell>
+        </zan-cell-group>
+        <view class="to-end" wx:if="{{nodata}}">
+            没有了
+        </view>
+    </view>
+    <view wx:else>
+        <view class="no-data">空空如也</view>
+        <navigator class="margin-top text-blue text-center" hoverClass="none" url="/pages/recycle/index">
+            我有物品需要回收，点击提交
+        </navigator>
+    </view>
+</view>

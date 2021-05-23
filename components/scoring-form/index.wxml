@@ -1,0 +1,16 @@
+<form bindsubmit="submitForm" class="scoring-form">
+    <view class="service_wrap bg-white text-center padding-top-xl">
+        <view class="cu-avatar round" style="background-image:url({{serviceData.avatar}});"></view>
+        <view class="text-bold text-black text-xxl margin-top-sm">{{serviceData.name}}</view>
+        <view class="tips_wrap text-red text-lg margin-top">请确认服务已完成，评价后不可撤销！</view>
+    </view>
+    <view class="score_wrap bg-white text-center">
+        <text bindtap="setScore" class="cuIcon-favor{{score>0&&score>index?'fill':''}} text-{{themeStyle.color}} margin-right-sm" data-index="{{index}}" wx:for="{{5}}" wx:key="index"></text>
+    </view>
+    <view class="foot_wrap flex flex-direction padding margin-top-sm">
+        <button class="cu-btn bg-{{themeStyle.color}} lg" formType="submit">提交评价</button>
+    </view>
+    <view class="text-gray text-center" wx:if="{{settingData.reward_credit}}">
+        提示：评价完成后系统将赠送您{{settingData.reward_credit}}{{settingData.credit_info.title}}。
+    </view>
+</form>

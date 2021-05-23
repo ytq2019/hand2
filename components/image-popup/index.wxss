@@ -1,0 +1,19 @@
+.image-popup .cu-dialog {
+    background-color: transparent;
+    overflow: visible;
+    border-radius: 0;
+}
+
+.image-popup image {
+    width: 100%;
+}
+
+.image-popup .action {
+    position: absolute;
+    top: -100rpx;
+    right: 0;
+    margin-left: -40rpx;
+    z-index: 2000;
+    font-size: 80rpx;
+    color: #fff;
+}

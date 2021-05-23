@@ -1,0 +1,113 @@
+<include src="../templates/page-meta.wxml"></include>
+<view class="top_wrap text-white">
+    <view slot="backText"></view>
+    <cu-custom isCustom="{{true}}" wx:if="{{showHomeEntry}}"></cu-custom>
+    <cu-custom isBack="{{true}}" wx:else></cu-custom>
+</view>
+<view class="container" wx:if="{{!Loading}}">
+    <view class="my-panel bg-gradual-{{ThemeStyle.gradual}}">
+        <view class="my-avatar">
+            <image bindtap="previewImage" class="shadow" src="{{Member.avatar}}"></image>
+        </view>
+        <view class="my-info">
+            <view class="text-white margin-top-sm">{{Member.nickname}}</view>
+        </view>
+    </view>
+    <scroll-view scrollX class="bg-white nav">
+        <view class="flex text-center">
+            <view catchtap="tabItemType" class="cu-item flex-sub" data-type="1">
+                <text class="{{itemTypeCur==1?'text-orange cur':''}}">转让</text>
+            </view>
+            <view catchtap="tabItemType" class="cu-item flex-sub" data-type="2" wx:if="{{Setting.show_buying}}">
+                <text class="{{itemTypeCur==2?'text-orange cur':''}}">求购</text>
+            </view>
+        </view>
+    </scroll-view>
+    <view class="item-list margin-top-sm" wx:if="{{ItemList.length}}">
+        <view class="zan-panel" wx:for="{{ItemList}}" wx:key="id">
+            <navigator hoverClass="none" url="../detail/index?id={{item.id}}">
+                <zan-card cardClass="test-card" desc="{{!post_time?item.time_diff+'前发布':''}}" price="{{item.type==1?item._price:''}}" thumb="{{item.avatar}}" title="{{item.nickname}}"></zan-card>
+                <view class="item-status" wx:if="{{item.status==2}}">
+                    <image mode="widthFix" src="{{SoldImg}}"></image>
+                </view>
+                <view class="item-panel">
+                    <zan-row>
+                        <block wx:if="{{item.thumb.length}}">
+                            <zan-col col="8" colClass="album-zan-col" wx:for="{{item.thumb}}" wx:for-item="img" wx:key="index">
+                                <image class="item-thumb" lazyLoad="{{true}}" mode="aspectFill" src="{{img}}"></image>
+                            </zan-col>
+                        </block>
+                        <block wx:else>
+                            <zan-col col="8" colClass="album-zan-col" wx:if="{{item.album.length}}" wx:for="{{item.album}}" wx:for-item="img" wx:key="index">
+                                <image class="item-thumb" lazyLoad="{{true}}" mode="aspectFill" src="{{img}}"></image>
+                            </zan-col>
+                        </block>
+                        <zan-col col="8" colClass="album-zan-col" wx:if="{{item.video.length}}">
+                            <image class="item-thumb" lazyLoad="{{true}}" mode="aspectFill" src="{{item.video_thumb}}" wx:if="{{item.video_thumb}}"></image>
+                            <image class="item-thumb" lazyLoad="{{true}}" mode="aspectFill" src="{{AssetsUrl}}/poster.jpg" wx:else></image>
+                            <view class="play-mask">
+                                <text class="cuIcon-videofill"></text>
+                            </view>
+                        </zan-col>
+                    </zan-row>
+                    <view class="flex flex-wrap" style="margin-left: -10rpx;" wx:if="{{item.tags.length>0}}">
+                        <view class="padding-xs" wx:for="{{item.tags}}" wx:for-index="idx" wx:for-item="tag" wx:key="*this">
+                            <view class="cu-tag radius line-olive" wx:if="{{idx%5==0}}">{{tag}}</view>
+                            <view class="cu-tag radius line-red" wx:if="{{idx%5==1}}">{{tag}}</view>
+                            <view class="cu-tag radius line-yellow" wx:if="{{idx%5==2}}">{{tag}}</view>
+                            <view class="cu-tag radius line-green" wx:if="{{idx%5==3}}">{{tag}}</view>
+                            <view class="cu-tag radius line-orange" wx:if="{{idx%5==4}}">{{tag}}</view>
+                        </view>
+                    </view>
+                    <view class="zan-font-14 margin-middle word-break">
+                        {{item.title}}
+                    </view>
+                    <view class="message-box" wx:if="{{item.comment}}">
+                        <view class="zan-font-12 word-break">{{item.comment.buyer_name}}：{{item.comment.message}}</view>
+                        <view class="zan-font-12 margin-small word-break" wx:if="{{item.comment.reply}}">卖家回复：{{item.comment.reply}}</view>
+                    </view>
+                </view>
+                <view class="item-footer">
+                    <zan-row>
+                        <zan-col class="address zan-font-12 zan-c-gray-dark" col="16">
+                            <view class="zan-ellipsis">
+                                <block wx:if="{{item.address}}">
+                                    <text class="cuIcon-location"></text> {{item.address}}
+                                </block>
+                                <block wx:else>　</block>
+                            </view>
+                        </zan-col>
+                        <zan-col class="action zan-font-12 zan-c-gray-dark text-right" col="8">
+                            <view class="inline" wx:if="{{item.zan>0}}">
+                                <text class="cuIcon-appreciate"></text> {{item.zan}}
+                            </view>
+                            <view class="inline" wx:if="{{item.message>0}}">
+                                <text class="cuIcon-message"></text> {{item.message}}
+                            </view>
+                            <view class="inline" wx:if="{{item.page_view>0&&Setting.show_page_view}}">
+                                <text class="cuIcon-attention"></text> {{item.page_view}}
+                            </view>
+                        </zan-col>
+                    </zan-row>
+                </view>
+            </navigator>
+        </view>
+        <view class="padding-bottom text-center text-gray text-sm" wx:if="{{Paging||Gone}}">
+            <text wx:if="{{Gone}}">没有了</text>
+            <text wx:else>加载中</text>
+        </view>
+    </view>
+    <empty wx:else></empty>
+    <view bindtap="goTop" class="back-home" wx:if="{{showGoTop}}">
+        <text class="cuIcon-fold"></text>
+    </view>
+</view>
+<view class="container-loading" wx:else>
+    <image mode="aspectFill" src="{{LoadingImg}}"></image>
+</view>
+<view class="flex bg-white text-xxl padding justify-center flex-direction vd">
+    <view class="flex">
+        <view class="flex-sub cu-btn bg-gradual-{{ThemeStyle.gradual}} padding margin-xs round text-bold" bindtap="dialogue" bindtap="callPhone" data-phone="{{Member.phone}}">打电话</view>
+        <view class="flex-sub cu-btn bg-gradual-{{ThemeStyle.gradual}} padding margin-xs round text-bold" bindtap="copyshipnum" bindtap="copyWechatNo" data-wechat="{{Member.wechat}}">加微信</view>
+    </view>
+</view>

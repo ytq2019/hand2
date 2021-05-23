@@ -1,0 +1,10 @@
+{
+    "component": true,
+    "usingComponents": {
+        "zan-icon": "../icon/index",
+        "zan-cell": "../cell/index",
+        "cu-custom": "/libs/colorui/components/cu-custom",
+        "dialog": "/components/dialog/index",
+        "empty": "/components/empty/index"
+    }
+}

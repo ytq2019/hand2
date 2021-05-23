@@ -1,0 +1,90 @@
+.tips_wrap {
+    height: 72rpx;
+    line-height: 72rpx;
+    background-color: #FEFCEC;
+    position: fixed;
+    left: 0;
+    width: 100%;
+    padding: 0 20rpx;
+    z-index: 1;
+}
+
+.tips_wrap .cu-btn {
+    background-color: #FBD15F;
+    font-size: 24rpx;
+}
+
+.msg_wrap {
+    margin-top: 72rpx;
+    padding-top: 24rpx;
+    height: 214rpx;
+}
+
+.msg_wrap image {
+    width: 110rpx;
+    height: 110rpx;
+}
+
+.msg_wrap .basis-df {
+    position: relative;
+}
+
+.msg_wrap .cu-tag {
+    right: 25%;
+}
+
+.cu-list.menu-avatar>.cu-item {
+    height: 164rpx;
+}
+
+.cu-list.menu-avatar>.cu-item .content>view:first-child {
+    font-size: 14px;
+}
+
+.cu-list.menu-avatar>.cu-item .content {
+    left: 170rpx;
+    width: calc(100% - 120rpx - 60rpx - 120rpx - 20rpx);
+}
+
+.cu-avatar {
+    border-radius: 50%;
+}
+
+.cu-avatar.lg {
+    width: 120rpx;
+    height: 120rpx;
+}
+
+.action .cu-avatar {
+    border-radius: 20rpx;
+}
+
+.cu-list.menu-avatar>.cu-item .action {
+    width: 140rpx;
+}
+
+.msg_content {
+    width: 80%;
+}
+
+.msg_content,.msg_time {
+    color: var(--deepGray);
+}
+
+.cu-list .cu-tag.badge {
+    position: relative;
+    top: 0;
+    right: 0;
+}
+
+.cu-modal .cu-bar .action {
+    height: 100rpx;
+    margin: 0;
+}
+
+.cu-modal .cu-bar .action .cu-btn {
+    width: 100%;
+    height: 100rpx;
+    background: #fff;
+    border-radius: 0;
+}

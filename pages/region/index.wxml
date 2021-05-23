@@ -1,0 +1,45 @@
+<include src="../templates/page-meta.wxml"></include>
+<view class="container" wx:if="{{!Loading}}">
+    <cu-custom bgColor="bg-gradual-{{ThemeStyle.gradual}}" isBack="{{true}}">
+        <view slot="backText"></view>
+        <view slot="content">地区选择</view>
+    </cu-custom>
+    <view class="cu-bar bg-white search fixed" style="top:{{CustomBar}}px;">
+        <view class="search-form round">
+            <text class="cuIcon-search"></text>
+            <input bindinput="searchCity" confirmType="search" placeholder="输入城市拼音快速搜索" type="text"></input>
+        </view>
+    </view>
+    <view class="search_list_wrap bg-mask" style="top:{{CustomBar+50}}px;" wx:if="{{searchResult.length}}">
+        <view class="cu-list menu shadow">
+            <view catchtap="selectCity" class="cu-item padding-sm" data-city-id="{{item.id}}" wx:for="{{searchResult}}" wx:key="index">
+                <view>{{item.fullname}}</view>
+            </view>
+        </view>
+    </view>
+    <scroll-view scrollY class="indexes" enableBackToTop="true" scrollIntoView="indexes-{{listCurID}}" scrollWithAnimation="true" style="height:calc(100vh - {{CustomBar}}px - 50px)">
+        <block wx:if="{{list.history.length}}">
+            <view class="padding text-gray" data-index="history" id="indexes-history">★ 最近访问</view>
+            <view class="col-4 grid grid-square padding-lr">
+                <view catchtap="selectCity" class="bg-white history_city_item" data-city-id="{{item.city.id}}" wx:for="{{list.history}}" wx:key="index">
+                    <view class="padding-sm text-center text-cut">{{item.city.fullname}}</view>
+                </view>
+            </view>
+        </block>
+        <block wx:if="{{index!='history'}}" wx:for="{{list}}" wx:key="index">
+            <view class="padding indexItem-{{index}}" data-index="{{index}}" id="indexes-{{index}}">{{index}}</view>
+            <view class="cu-list menu no-padding">
+                <view catchtap="selectCity" class="cu-item" data-city-id="{{city.id}}" wx:for="{{item}}" wx:for-item="city" wx:key="subKey">
+                    <view>{{city.fullname}}</view>
+                </view>
+            </view>
+        </block>
+    </scroll-view>
+    <view class="indexBar" style="height:calc(100vh - {{CustomBar}}px - 50px)">
+        <view bindtouchend="tEnd" bindtouchstart="tStart" catchtouchmove="tMove" class="indexBar-box">
+            <view bindtouchend="setCur" bindtouchstart="getCur" class="indexBar-item" id="history" wx:if="{{list.history.length}}">★</view>
+            <view bindtouchend="setCur" bindtouchstart="getCur" class="indexBar-item" id="{{index}}" wx:if="{{index!='history'}}" wx:for="{{list}}" wx:key="index">{{index}}</view>
+        </view>
+    </view>
+    <view class="indexToast" hidden="{{hidden}}">{{listCur=='history'?'★':listCur}}</view>
+</view>

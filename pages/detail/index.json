@@ -1,0 +1,16 @@
+{
+    "usingComponents": {
+        "zan-panel": "../../libs/zanui/panel/index",
+        "zan-cell": "../../libs/zanui/cell/index",
+        "zan-cell-group": "../../libs/zanui/cell-group/index",
+        "zan-row": "../../libs/zanui/row/index",
+        "zan-col": "../../libs/zanui/col/index",
+        "zan-icon": "../../libs/zanui/icon/index",
+        "zan-card": "../../libs/zanui/card/index",
+        "zan-actionsheet": "../../libs/zanui/actionsheet/index",
+        "zan-popup": "../../libs/zanui/popup/index",
+        "cu-custom": "/libs/colorui/components/cu-custom",
+        "dialog": "/components/dialog/index",
+        "empty": "/components/empty/index"
+    }
+}

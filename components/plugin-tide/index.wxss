@@ -1,0 +1,30 @@
+.plugin-tide {
+}
+
+.area_wrap {
+    max-width: 140rpx;
+}
+
+.cu-tag {
+    vertical-align: bottom;
+    margin-right: 4rpx;
+}
+
+.cu-list.menu>.cu-item.arrow {
+    padding-right: 70rpx;
+}
+
+.cu-list.menu>.cu-item.arrow:before {
+    right: 20rpx;
+}
+
+.weather_icon {
+    width: 100%;
+    height: 100rpx;
+    vertical-align: middle;
+}
+
+.height_wrap {
+    display: inline-block;
+    width: 170rpx;
+}

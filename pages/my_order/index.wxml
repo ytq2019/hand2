@@ -1,0 +1,231 @@
+<include src="../templates/page-meta.wxml"></include>
+<view class="container" wx:if="{{completed}}">
+    <cu-custom bgColor="bg-gradual-{{ThemeStyle.gradual}}" isBack="{{true}}">
+        <view slot="backText"></view>
+        <view slot="content">{{title}}</view>
+    </cu-custom>
+    <scroll-view scrollWithAnimation scrollX class="bg-white nav margin-bottom-sm" scrollLeft="{{OrderStatusScrollLeft}}">
+        <view class="flex text-center">
+            <view bindtap="swtichOrderStatus" class="cu-item flex-sub {{index==OrderStatusIndex?'text-orange cur':''}}" data-index="{{index}}" wx:for="{{OrderStatus}}" wx:key="index">
+                    {{item.title}}
+                </view>
+        </view>
+    </scroll-view>
+    <view wx:if="{{list.length}}">
+        <view class="list-item" wx:for="{{list}}" wx:key="index">
+            <navigator hoverClass="none" url="/pages/my_order/detail?orderid={{item.id}}&type={{type}}">
+                <view class="inline w20">
+                    <image class="item-img" mode="aspectFill" src="{{item.thumb[0]?item.thumb[0]:AssetsUrl+'/holder.png'}}"></image>
+                </view>
+                <view class="inline w80 padding-left-sm">
+                    <view class="item-title zan-ellipsis">{{item.title}}</view>
+                    <view class="text-red">
+                            {{item.paytype==1?item.credit+item.credit_title:item.price+currencyInfo.title}}
+                        </view>
+                    <view class="zan-font-14 zan-c-gray-dark zan-ellipsis" wx:if="{{item.reply}}">备注：{{item.reply}}</view>
+                    <view class="zan-font-12 zan-c-gray-dark zan-ellipsis margin-top-xs">{{item._createtime}}</view>
+                </view>
+            </navigator>
+            <zan-cell wx:if="{{type=='buy'}}">
+                <view class="inline" slot="footer">
+                    <button class="cu-btn margin-left-xs" wx:if="{{item.status==-5&&item.trade_type!=2}}">等待确认</button>
+                    <button bindtap="toPage" class="cu-btn margin-left-xs" data-path="/pages/my_order/detail?orderid={{item.id}}&type={{type}}" wx:if="{{item.status==-4}}">
+                            售后处理中
+                            <view class="cu-tag badge" wx:if="{{item.dispute&&!item.dispute.buyer_isread}}"></view>
+                    </button>
+                    <button class="cu-btn bg-red margin-left-xs" wx:if="{{item.status==-3}}">已退款</button>
+                    <button bindtap="showCancelRefund" class="cu-btn bg-red margin-left-xs" data-id="{{item.id}}" wx:if="{{item.status==-1}}">取消退款</button>
+                    <button bindtap="toPay" class="cu-btn bg-{{ThemeStyle.color}} margin-left-xs" data-id="{{item.id}}" wx:if="{{item.status==0}}">立即支付</button>
+                    <button bindtap="showRefundModal" class="cu-btn bg-red margin-right" data-id="{{item.id}}" wx:if="{{item.status==1}}">申请退款</button>
+                    <button bindtap="showAddress" class="cu-btn bg-{{ThemeStyle.color}} margin-left-xs" data-address="{{item.fetch_address}}" wx:if="{{item.status==1&&item.trade_type==2&&item.fetch_address}}">查看自提地址</button>
+                    <button bindtap="showServiceModal" class="cu-btn bg-red margin-right" data-id="{{item.id}}" wx:if="{{item.status==2&&!item.dispute}}">申请售后</button>
+                    <button bindtap="checkExpress" class="cu-btn bg-{{ThemeStyle.color}} margin-left-xs" data-id="{{item.id}}" wx:if="{{item.status==2&&item.trade_type==1}}">查看物流</button>
+                    <button bindtap="confirmReceive" class="cu-btn bg-{{ThemeStyle.color}} margin-left-xs" data-id="{{item.id}}" wx:if="{{item.status==2}}">确认收货</button>
+                    <button class="cu-btn bg-green margin-left-xs" wx:if="{{item.status==4}}">已完成</button>
+                </view>
+            </zan-cell>
+            <zan-cell wx:if="{{type=='sell'}}">
+                <view class="inline" slot="footer">
+                    <button bindtap="openConfirmPrice" class="cu-btn bg-{{ThemeStyle.color}} margin-left-xs" data-id="{{item.id}}" data-price="{{item.price}}" wx:if="{{item.status==-5&&item.trade_type!=2}}">设置运费</button>
+                    <button bindtap="toPage" class="cu-btn line-{{ThemeStyle.color}} margin-left-xs" data-path="/pages/my_order/detail?orderid={{item.id}}&type={{type}}" wx:if="{{item.status==-4||item.status==-1}}">
+                            售后处理中
+                            <view class="cu-tag badge" wx:if="{{item.dispute&&!item.dispute.seller_isread}}"></view>
+                    </button>
+                    <button class="cu-btn bg-red margin-left-xs" wx:if="{{item.status==-3}}">已退款</button>
+                    <button class="cu-btn margin-left-xs" wx:if="{{item.status==0}}">等待付款</button>
+                    <button bindtap="showReceiveInfo" class="cu-btn line-{{ThemeStyle.color}} margin-left-xs" data-address="{{item.address}}" data-mobile="{{item.mobile}}" data-name="{{item.name}}" wx:if="{{item.status==1&&item.trade_type!=2}}">收货信息</button>
+                    <button bindtap="showShipModal" class="cu-btn bg-{{ThemeStyle.color}} margin-left-xs" data-id="{{item.id}}" wx:if="{{item.status==1&&item.trade_type!=2}}">点击发货</button>
+                    <button class="cu-btn margin-left-xs" wx:if="{{item.status==2}}">已发货</button>
+                    <button class="cu-btn bg-green margin-left-xs" wx:if="{{item.status==4}}">已完成</button>
+                </view>
+            </zan-cell>
+        </view>
+    </view>
+    <view class="padding-tb-sm text-center text-gray text-sm" wx:if="{{Paging||Gone}}">
+        <text wx:if="{{Gone}}">没有了</text>
+        <text wx:else>加载中</text>
+    </view>
+</view>
+<view class="container-loading" wx:else>
+    <image mode="aspectFill" src="{{LoadingImg}}"></image>
+</view>
+<zan-toptips content="{{content}}" id="zan-toptips"></zan-toptips>
+<view class="refund_modal cu-modal {{showRefundModal?'show':''}}">
+    <view class="cu-dialog">
+        <form bindsubmit="applyRefund">
+            <view class="cu-bar bg-white justify-end">
+                <view class="content">申请退款</view>
+                <view bindtap="hideRefundModal" class="action">
+                    <text class="cuIcon-close text-gray"></text>
+                </view>
+            </view>
+            <view>
+                <view class="cu-form-group">
+                    <textarea autoFocus="{{true}}" class="text-left" maxlength="500" name="content" placeholder="退款原因" wx:if="{{showRefundModal}}"></textarea>
+                </view>
+            </view>
+            <view class="cu-bar bg-white justify-center padding-tb">
+                <view class="action">
+                    <button bindtap="hideRefundModal" class="cu-btn lg margin-right">取消</button>
+                    <button class="cu-btn lg margin-left bg-{{ThemeStyle.color}}" formType="submit">提交</button>
+                </view>
+            </view>
+        </form>
+    </view>
+</view>
+<view class="confirm_price_modal cu-modal {{showConfirmPrice?'show':''}}">
+    <form bindsubmit="setOrderExpressFee">
+        <view class="cu-dialog">
+            <view class="cu-bar bg-white justify-end">
+                <view class="content">设置运费</view>
+                <view bindtap="closeConfirmPrice" class="action">
+                    <text class="cuIcon-close text-red"></text>
+                </view>
+            </view>
+            <view>
+                <view class="cu-form-group" wx:if="{{showConfirmPrice}}">
+                    <view class="title">物品价格</view>
+                    <input disabled class="text-red" value="{{confirmItemPrice}}"></input>
+                </view>
+                <view class="cu-form-group" wx:if="{{showConfirmPrice}}">
+                    <view class="title">运费</view>
+                    <input disabled placeholder="0.00" wx:if="{{buyerPayExpressFee}}"></input>
+                    <input bindinput="inputExpressFee" placeholder="请输入" wx:else></input>
+                    <checkbox-group bindchange="changeExpressFee">
+                        <checkbox value="buyer"></checkbox>
+                        <text class="margin-left-xs">到付</text>
+                    </checkbox-group>
+                </view>
+                <view class="cu-form-group" wx:if="{{showConfirmPrice}}">
+                    <view class="title">总价</view>
+                    <input disabled class="text-right text-red" value="{{OrderPrice}}"></input>
+                </view>
+            </view>
+            <view class="cu-bar bg-white justify-center padding-tb">
+                <view class="action">
+                    <button bindtap="closeConfirmPrice" class="cu-btn margin-right">取消</button>
+                    <button class="cu-btn bg-{{ThemeStyle.color}}" formType="submit">确定</button>
+                </view>
+            </view>
+        </view>
+    </form>
+</view>
+<view class="ship_modal cu-modal {{showShipModal?'show':''}}">
+    <view class="cu-dialog">
+        <form bindsubmit="sendOrder">
+            <view class="cu-bar bg-white justify-end">
+                <view class="content">订单发货</view>
+                <view bindtap="hideShipModal" class="action">
+                    <text class="cuIcon-close text-red"></text>
+                </view>
+            </view>
+            <view class="cu-form-group">
+                <view class="title">快递公司</view>
+                <picker bindchange="PickerChange" range="{{expressList}}" rangeKey="name" value="{{epIndex}}">
+                    <view class="picker">
+                        {{epIndex!=undefined?expressList[epIndex].name:'请选择'}}
+                    </view>
+                </picker>
+            </view>
+            <view class="cu-form-group" wx:if="{{showShipModal}}">
+                <view class="title">快递单号</view>
+                <input name="express_no" placeholder="请输入"></input>
+            </view>
+            <view class="cu-bar bg-white justify-center padding-tb">
+                <view class="action">
+                    <button bindtap="hideShipModal" class="cu-btn margin-right">取消</button>
+                    <button class="cu-btn bg-{{ThemeStyle.color}}" formType="submit">确定</button>
+                </view>
+            </view>
+        </form>
+    </view>
+</view>
+<view class="service_modal cu-modal {{showServiceModal?'show':''}}">
+    <view class="cu-dialog">
+        <form bindsubmit="buyerApplyService">
+            <view class="cu-bar bg-white justify-end">
+                <view class="content">申请售后</view>
+                <view bindtap="hideServiceModal" class="action">
+                    <text class="cuIcon-close text-gray"></text>
+                </view>
+            </view>
+            <view>
+                <view class="cu-bar bg-white">
+                    <view class="action">
+                    图片
+                </view>
+                </view>
+                <view class="cu-form-group">
+                    <view class="grid col-4 grid-square flex-sub">
+                        <view bindtap="ViewImage" class="bg-img" data-url="{{ServiceImgList[index]}}" wx:for="{{ServiceImgList}}" wx:key="index">
+                            <image mode="aspectFill" src="{{ServiceImgList[index]}}"></image>
+                            <view catchtap="DelImg" class="cu-tag bg-red" data-index="{{index}}">
+                                <text class="cuIcon-close"></text>
+                            </view>
+                        </view>
+                        <view bindtap="ChooseImg" class="solids" wx:if="{{ServiceImgList.length<UploadImgTotal}}">
+                            <text class="cuIcon-cameraadd"></text>
+                        </view>
+                    </view>
+                </view>
+                <view class="cu-form-group">
+                    <textarea autoFocus="{{true}}" class="text-left" maxlength="500" name="content" placeholder="售后原因" wx:if="{{showServiceModal}}"></textarea>
+                </view>
+            </view>
+            <view class="cu-bar bg-white justify-center padding-tb">
+                <view class="action">
+                    <button bindtap="hideServiceModal" class="cu-btn lg margin-right">取消</button>
+                    <button class="cu-btn lg margin-left bg-{{ThemeStyle.color}}" formType="submit">提交</button>
+                </view>
+            </view>
+        </form>
+    </view>
+</view>
+<view class="reveive_modal cu-modal {{showReceiveModal?'show':''}}">
+    <view class="cu-dialog">
+        <view class="cu-bar bg-white justify-end">
+            <view class="content">收货信息</view>
+            <view bindtap="hideReceiveInfo" class="action">
+                <text class="cuIcon-close text-red"></text>
+            </view>
+        </view>
+        <view class="flex flex-wrap bg-white padding-sm text-left">
+            <view class="basis-xs">联系人</view>
+            <view class="basis-xl">{{ReceiveInfo.name}}</view>
+        </view>
+        <view class="flex flex-wrap bg-white padding-sm text-left">
+            <view class="basis-xs">电话</view>
+            <view class="basis-xl">{{ReceiveInfo.mobile}}</view>
+        </view>
+        <view class="flex flex-wrap bg-white padding-sm text-left">
+            <view class="basis-xs">收货地址</view>
+            <view class="basis-xl">{{ReceiveInfo.address}}</view>
+        </view>
+        <view class="cu-bar bg-white justify-center padding-tb">
+            <view class="action">
+                <button bindtap="hideReceiveInfo" class="cu-btn margin-right">关闭</button>
+                <button bindtap="copy" class="cu-btn bg-{{ThemeStyle.color}}" data-content="{{ReceiveInfo.name}} {{ReceiveInfo.mobile}} {{ReceiveInfo.address}}">复制</button>
+            </view>
+        </view>
+    </view>
+</view>

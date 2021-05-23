@@ -1,0 +1,23 @@
+.container {
+    padding-bottom: calc(10px + env(safe-area-inset-bottom) / 2);
+}
+
+.msg_empty {
+    width: 260rpx;
+    line-height: 54rpx;
+    margin: 20rpx auto;
+    border-radius: 20rpx;
+    background-color: #d8d8d8;
+}
+
+.msg_item {
+    border-radius: 20rpx;
+}
+
+.msg_item:first-child {
+    margin-top: 0;
+}
+
+.msg_content {
+    color: var(--deepGray);
+}

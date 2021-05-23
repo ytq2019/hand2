@@ -1,0 +1,10 @@
+{
+    "navigationBarTitleText": "上架通知",
+    "usingComponents": {
+        "zan-toast": "../../libs/zanui/toast/index",
+        "zan-toptips": "../../libs/zanui/toptips/index",
+        "cu-custom": "/libs/colorui/components/cu-custom",
+        "dialog": "/components/dialog/index",
+        "empty": "/components/empty/index"
+    }
+}

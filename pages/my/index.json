@@ -1,0 +1,17 @@
+{
+    "navigationBarTitleText": "个人中心",
+    "navigationStyle": "custom",
+    "enablePullDownRefresh": true,
+    "usingComponents": {
+        "zan-popup": "../../libs/zanui/popup/index",
+        "zan-badge": "../../libs/zanui/badge/index",
+        "zan-cell": "../../libs/zanui/cell/index",
+        "zan-cell-group": "../../libs/zanui/cell-group/index",
+        "zan-toast": "../../libs/zanui/toast/index",
+        "zan-icon": "../../libs/zanui/icon/index",
+        "footnav": "../../components/footnav/index",
+        "cu-custom": "/libs/colorui/components/cu-custom",
+        "dialog": "/components/dialog/index",
+        "empty": "/components/empty/index"
+    }
+}

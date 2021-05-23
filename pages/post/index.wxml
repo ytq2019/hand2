@@ -1,0 +1,228 @@
+<include src="../templates/page-meta.wxml"></include>
+<view class="container" wx:if="{{completed}}">
+    <cu-custom bgColor="bg-gradual-{{ThemeStyle.gradual}}" isBack="{{true}}">
+        <view slot="backText"></view>
+        <view slot="content">{{item_id?'编辑':'发布'}}转让</view>
+    </cu-custom>
+    <form bindsubmit="formSubmit">
+        <view class="cu-form-group">
+            <input name="title" placeholder="{{postTitlePlaceholder}}" value="{{detail.title}}"></input>
+        </view>
+        <view class="desc_wrap cu-form-group">
+            <textarea autoHeight="{{true}}" bindinput="inputDesc" class="textarea" maxlength="{{descMaxLength}}" name="description" placeholder="{{postDescPlaceholder}}" value="{{detail.description}}"></textarea>
+            <view class="action text-gray">{{descCurLength}}/{{descMaxLength}}</view>
+        </view>
+        <view class="media_wrap solid-top">
+            <view class="cu-bar bg-white">
+                <view class="action">
+                    图片<block wx:if="{{video_switch==1}}">/视频</block>
+                </view>
+            </view>
+            <view class="media_wrap cu-form-group">
+                <view class="grid col-4 grid-square flex-sub">
+                    <view class="bg-img" wx:for="{{album}}" wx:key="index">
+                        <image mode="aspectFill" src="{{item}}"></image>
+                        <view catchtap="deleteImg" class="cu-tag bg-red" data-index="{{index}}">
+                            <text class="cuIcon-close"></text>
+                        </view>
+                    </view>
+                    <view class="bg-img" wx:for="{{video}}" wx:key="index">
+                        <video objectFit="fill" showCenterPlayBtn="{{false}}" src="{{item}}"></video>
+                        <image mode="aspectFill" src="{{item}}"></image>
+                        <view catchtap="deleteVideo" class="cu-tag bg-red" data-index="{{index}}">
+                            <text class="cuIcon-close"></text>
+                        </view>
+                    </view>
+                    <view bindtap="chooseImage" class="solids" wx:if="{{album.length+video.length<9}}">
+                        <text class="cuIcon-cameraadd"></text>
+                    </view>
+                    <view bindtap="chooseMedia" class="solids" wx:if="{{video_switch==1&&!video.length&&album.length+video.length<9}}">
+                        <text class="cuIcon-video"></text>
+                    </view>
+                </view>
+                <view class="media_number action text-gray">
+                    {{album.length+video.length}}/9
+                </view>
+            </view>
+        </view>
+        <view class="category_wrap solid-top">
+            <view class="cu-bar bg-white">
+                <view class="action">分类</view>
+            </view>
+            <view class="padding-lr-sm padding-bottom-sm flex flex-wrap bg-white">
+                <view class="padding-xs" wx:for="{{category}}" wx:key="index">
+                    <view catchtap="selectCategory" class="cu-tag round bg-{{cateIndex!==null&&cateIndex==index?ThemeStyle.color:'gray'}}" data-index="{{index}}">
+                        {{item.title}}
+                    </view>
+                </view>
+            </view>
+        </view>
+        <view class="flex solid-top">
+            <view class="cu-form-group" style="border-top: 0;">
+                <view class="title">售价</view>
+                <input name="price" placeholder="0.00" type="digit" value="{{price}}"></input>
+            </view>
+            <view class="cu-form-group" style="border-top: 0;">
+                <view class="title">原价</view>
+                <input name="origin_price" placeholder="0.00" type="digit" value="{{detail.origin_price}}"></input>
+            </view>
+        </view>
+        <view class="flex solid-top">
+            <block wx:if="{{shop.field==1}}">
+                <view class="cu-form-group" style="border-top: 0;">
+                    <view class="title">库存</view>
+                    <input name="stock" placeholder="1" type="number" value="{{detail.stock}}"></input>
+                </view>
+                <view class="cu-form-group" style="border-top: 0;">
+                    <view class="title">起批数</view>
+                    <input name="wholesale_number" placeholder="0" type="digit" value="{{detail.wholesale_number}}"></input>
+                </view>
+            </block>
+            <view class="cu-form-group" style="border-top: 0;width: 100%;" wx:else>
+                <view class="title">库存</view>
+                <input name="stock" placeholder="1" type="number" value="{{detail.stock}}"></input>
+            </view>
+        </view>
+        <view class="flex solid-top" wx:if="{{shop.field==1}}">
+            <view class="cu-form-group" style="border-top: 0;">
+                <view class="title">批发价</view>
+                <input name="wholesale_single_price" placeholder="0.00" type="digit" value="{{detail.wholesale_single_price}}"></input>
+            </view>
+            <view class="cu-form-group" style="border-top: 0;">
+                <view class="title">全清价</view>
+                <input name="wholesale_empty_price" placeholder="0.00" type="digit" value="{{detail.wholesale_empty_price}}"></input>
+            </view>
+        </view>
+        <view class="cu-form-group solid-top" wx:if="{{helpSell.switch}}">
+            <view class="title">帮卖佣金</view>
+            <input name="commission" placeholder="0.00" type="digit" value="{{detail.commission}}"></input>
+            <text catchtap="showHelpMsg" class="cuIcon-question text-gray" data-msg="小提示：好友转发帮卖成交后，好友可以获得奖励佣金，可有效加快物品转让速度。"></text>
+        </view>
+        <view class="solid-top">
+            <view class="cu-bar bg-white">
+                <view class="action">发货方式</view>
+            </view>
+            <checkbox-group bindchange="changeTradeType">
+                <view class="flex bg-white">
+                    <view class="basis-df">
+                        <view class="cu-form-group">
+                            <view class="title">自提</view>
+                            <checkbox value="2" wx:if="{{!TradeType2}}"></checkbox>
+                            <checkbox checked value="2" wx:else></checkbox>
+                        </view>
+                    </view>
+                    <view class="basis-df">
+                        <view class="cu-form-group">
+                            <view class="title">快递</view>
+                            <checkbox value="1" wx:if="{{!TradeType1}}"></checkbox>
+                            <checkbox checked value="1" wx:else></checkbox>
+                        </view>
+                    </view>
+                </view>
+                <view class="flex bg-white">
+                    <view class="basis-df">
+                        <view class="cu-form-group">
+                            <view class="title">到付</view>
+                            <checkbox value="3" wx:if="{{!TradeType3}}"></checkbox>
+                            <checkbox checked value="3" wx:else></checkbox>
+                        </view>
+                    </view>
+                    <view class="basis-df" wx:if="{{showFreeShip}}">
+                        <view class="cu-form-group">
+                            <view class="title">包邮</view>
+                            <checkbox value="free_ship" wx:if="{{!FreeShip}}"></checkbox>
+                            <checkbox checked value="free_ship" wx:else></checkbox>
+                        </view>
+                    </view>
+                </view>
+            </checkbox-group>
+        </view>
+        <view class="cu-form-group" wx:if="{{ShowLocation}}">
+            <view class="title">销售区域</view>
+            <view class="cu-capsule">
+                <view bindtap="changeSellRegion" class="cu-tag {{SellRegion=='city'?'bg':'line'}}-grey" data-region="city">
+                    同城
+                </view>
+                <view bindtap="changeSellRegion" class="cu-tag {{SellRegion=='all'?'bg':'line'}}-grey" data-region="all">
+                    全国
+                </view>
+            </view>
+        </view>
+        <view class="field_wrap margin-top" wx:if="{{form_field.length}}">
+            <block wx:for="{{form_field}}" wx:key="title">
+                <view class="cu-form-group" wx:if="{{item.type=='text'}}">
+                    <view class="title">{{item.title}}</view>
+                    <input bindblur="setInput" data-index="{{index}}" name="{{item.title}}" placeholder="{{item.extra.placeholder}}" value="{{item.value}}"></input>
+                </view>
+                <view class="cu-form-group align-start" wx:elif="{{item.type=='textarea'}}">
+                    <view class="title">{{item.title}}</view>
+                    <textarea autoHeight="{{true}}" bindblur="setInput" class="textarea" data-index="{{index}}" maxlength="1000" name="{{item.title}}" placeholder="{{item.extra.placeholder}}" value="{{item.value}}" wx:if="{{!showBottomPopup}}"></textarea>
+                </view>
+                <view class="solid-top" wx:elif="{{item.type=='radio'}}">
+                    <view class="cu-bar bg-white">
+                        <view class="action">{{item.title}}</view>
+                    </view>
+                    <radio-group bindchange="radioChange" class="block" data-index="{{index}}" name="{{item.title}}">
+                        <view class="cu-form-group" wx:for="{{item.extra.option}}" wx:for-item="option">
+                            <view class="title text-cut">{{option.value}}</view>
+                            <radio checked="{{option.checked}}" class="radio" value="{{option.value}}"></radio>
+                        </view>
+                    </radio-group>
+                </view>
+                <view class="solid-top" wx:elif="{{item.type=='checkbox'}}">
+                    <view class="cu-bar bg-white">
+                        <view class="action">{{item.title}}</view>
+                    </view>
+                    <checkbox-group bindchange="checkboxChange" class="block" data-index="{{index}}" name="{{item.title}}">
+                        <view class="cu-form-group" wx:for="{{item.extra.option}}" wx:for-item="option">
+                            <view class="title text-cut">{{option.value}}</view>
+                            <checkbox checked="{{option.checked}}" value="{{option.value}}"></checkbox>
+                        </view>
+                    </checkbox-group>
+                </view>
+                <view class="solid-top" wx:elif="{{item.type=='single_select'}}">
+                    <view class="cu-form-group">
+                        <view class="title">{{item.title}}</view>
+                        <picker bindchange="bindPickChange" data-index="{{index}}" name="{{item.title}}" range="{{item.extra.option}}" value="{{item.value}}">
+                            <view class="picker">
+                                {{item.value!==undefined?item.extra.option[item.value]:'请选择'}}
+                            </view>
+                        </picker>
+                    </view>
+                </view>
+            </block>
+        </view>
+        <view class="margin-sm">
+            <view catchtap="selectAddress" class="cu-tag bg-white round">
+                <text class="cuIcon-locationfill margin-right-xs"></text>发货地：{{chooseLocation.address}}
+            </view>
+        </view>
+        <view class="flex flex-direction margin-top-xl padding-lr padding-bottom-sm">
+            <button class="cu-btn bg-{{ThemeStyle.color}} lg" disabled="{{submitLoading}}" formType="submit" loading="{{submitLoading}}">
+                {{submitLoading?'提交中...':'确认发布'}}
+            </button>
+        </view>
+        <checkbox-group bindchange="bindAgreeChange">
+            <label class="weui-agree" for="weuiAgree">
+                <view class="weui-agree__text text-center">
+                    <checkbox checked="{{isAgree}}" class="weui-agree__checkbox" id="weuiAgree" value="agree"></checkbox>
+                    <view class="weui-agree__checkbox-icon">
+                        <icon class="weui-agree__checkbox-icon-check" size="9" type="success_no_circle" wx:if="{{isAgree}}"></icon>
+                    </view>
+                    阅读并同意<view catchtap="showPopup" class="inline weui-agree__link">《{{rule_title}}》</view>
+                </view>
+            </label>
+        </checkbox-group>
+    </form>
+</view>
+<zan-popup bindclose="toggleBottomPopup" show="{{showBottomPopup}}" type="top">
+    <view class="item-pop" style="margin-top:{{CustomBar}}px">
+        <view catchtap="toggleBottomPopup" class="pop-close">
+            <text class="cuIcon-close"></text>
+        </view>
+        <view class="text-center zan-font-16 zan-ellipsis margin-big">物品发布公约</view>
+        <view class="zan-font-14 zan-c-gray-dark" wx:if="{{rule}}">
+            <rich-text nodes="{{rule}}"></rich-text>
+        </view>
+    </view>
+</zan-popup>

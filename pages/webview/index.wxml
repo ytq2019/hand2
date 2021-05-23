@@ -1,0 +1,2 @@
+<include src="../templates/page-meta.wxml"></include>
+<web-view src="{{Url}}"></web-view>

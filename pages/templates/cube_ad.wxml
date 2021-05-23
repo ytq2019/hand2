@@ -1,0 +1,75 @@
+<view class="cube_ad bg-white">
+    <view class="adtype_1" wx:if="{{CubeInfo.type==1}}">
+        <view class="flex flex-wrap">
+            <view class="basis-sm">
+                <image bindtap="clickCubeAd" data-appid="{{CubeInfo.list[0]['appid']}}" data-id="{{CubeInfo.list[0]['id']}}" data-url="{{CubeInfo.list[0]['url']}}" mode="aspectFill" src="{{CubeInfo.list[0]['thumb']}}"></image>
+            </view>
+            <view class="basis-lg">
+                <view class="padding-right-xs">
+                    <image bindtap="clickCubeAd" data-appid="{{CubeInfo.list[1]['appid']}}" data-id="{{CubeInfo.list[1]['id']}}" data-url="{{CubeInfo.list[1]['url']}}" mode="aspectFill" src="{{CubeInfo.list[1]['thumb']}}"></image>
+                </view>
+                <view class="padding-right-xs">
+                    <view class="flex flex-wrap">
+                        <view class="basis-df padding-right-xs">
+                            <image bindtap="clickCubeAd" data-appid="{{CubeInfo.list[3]['appid']}}" data-id="{{CubeInfo.list[3]['id']}}" data-url="{{CubeInfo.list[3]['url']}}" mode="aspectFill" src="{{CubeInfo.list[3]['thumb']}}"></image>
+                        </view>
+                        <view class="basis-df">
+                            <image bindtap="clickCubeAd" data-appid="{{CubeInfo.list[2]['appid']}}" data-id="{{CubeInfo.list[2]['id']}}" data-url="{{CubeInfo.list[2]['url']}}" mode="aspectFill" src="{{CubeInfo.list[2]['thumb']}}"></image>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view class="adtype_2" wx:elif="{{CubeInfo.type==2}}">
+        <view class="flex flex-wrap">
+            <view class="basis-sm">
+                <image bindtap="clickCubeAd" data-appid="{{CubeInfo.list[0]['appid']}}" data-id="{{CubeInfo.list[0]['id']}}" data-url="{{CubeInfo.list[0]['url']}}" mode="aspectFill" src="{{CubeInfo.list[0]['thumb']}}"></image>
+            </view>
+            <view class="basis-lg">
+                <view class="padding-right-xs">
+                    <image bindtap="clickCubeAd" data-appid="{{CubeInfo.list[1]['appid']}}" data-id="{{CubeInfo.list[1]['id']}}" data-url="{{CubeInfo.list[1]['url']}}" mode="aspectFill" src="{{CubeInfo.list[1]['thumb']}}"></image>
+                </view>
+                <view class="padding-right-xs">
+                    <image bindtap="clickCubeAd" data-appid="{{CubeInfo.list[2]['appid']}}" data-id="{{CubeInfo.list[2]['id']}}" data-url="{{CubeInfo.list[2]['url']}}" mode="aspectFill" src="{{CubeInfo.list[2]['thumb']}}"></image>
+                </view>
+            </view>
+        </view>
+        <view class="padding-top-xs padding-right-xs">
+            <image bindtap="clickCubeAd" data-appid="{{CubeInfo.list[3]['appid']}}" data-id="{{CubeInfo.list[3]['id']}}" data-url="{{CubeInfo.list[3]['url']}}" mode="aspectFill" src="{{CubeInfo.list[3]['thumb']}}"></image>
+        </view>
+    </view>
+<!--    <view class="adtype_3" wx:elif="{{CubeInfo.type==3||!CubeInfo.type}}">-->
+<!--        <view class="flex flex-wrap">-->
+<!--            <view class="basis-sm">-->
+<!--                <image bindtap="clickCubeAd" data-appid="{{CubeInfo.list[0]['appid']}}" data-id="{{CubeInfo.list[0]['id']}}" data-url="{{CubeInfo.list[0]['url']}}" mode="aspectFill" src="{{CubeInfo.list[0]['thumb']}}"></image>-->
+<!--            </view>-->
+<!--            <view class="basis-lg">-->
+<!--                <view class="padding-right-xs">-->
+<!--                    <image bindtap="clickCubeAd" data-appid="{{CubeInfo.list[1]['appid']}}" data-id="{{CubeInfo.list[1]['id']}}" data-url="{{CubeInfo.list[1]['url']}}" mode="aspectFill" src="{{CubeInfo.list[1]['thumb']}}"></image>-->
+<!--                </view>-->
+<!--                <view class="padding-right-xs">-->
+<!--                    <image bindtap="clickCubeAd" data-appid="{{CubeInfo.list[2]['appid']}}" data-id="{{CubeInfo.list[2]['id']}}" data-url="{{CubeInfo.list[2]['url']}}" mode="aspectFill" src="{{CubeInfo.list[2]['thumb']}}"></image>-->
+<!--                </view>-->
+<!--            </view>-->
+<!--        </view>-->
+<!--    </view>-->
+    <view class="adtype_4" wx:elif="{{CubeInfo.type==4}}">
+        <view class="flex flex-wrap">
+            <view class="basis-df padding-right-xs padding-bottom-xs">
+                <image bindtap="clickCubeAd" data-appid="{{CubeInfo.list[0]['appid']}}" data-id="{{CubeInfo.list[0]['id']}}" data-url="{{CubeInfo.list[0]['url']}}" mode="aspectFill" src="{{CubeInfo.list[0]['thumb']}}"></image>
+            </view>
+            <view class="basis-df padding-right-xs padding-bottom-xs">
+                <image bindtap="clickCubeAd" data-appid="{{CubeInfo.list[1]['appid']}}" data-id="{{CubeInfo.list[1]['id']}}" data-url="{{CubeInfo.list[1]['url']}}" mode="aspectFill" src="{{CubeInfo.list[1]['thumb']}}"></image>
+            </view>
+        </view>
+        <view class="flex flex-wrap padding-top-xs">
+            <view class="basis-df padding-right-xs padding-bottom-xs">
+                <image bindtap="clickCubeAd" data-appid="{{CubeInfo.list[3]['appid']}}" data-id="{{CubeInfo.list[3]['id']}}" data-url="{{CubeInfo.list[3]['url']}}" mode="aspectFill" src="{{CubeInfo.list[3]['thumb']}}"></image>
+            </view>
+            <view class="basis-df padding-right-xs padding-bottom-xs">
+                <image bindtap="clickCubeAd" data-appid="{{CubeInfo.list[2]['appid']}}" data-id="{{CubeInfo.list[2]['id']}}" data-url="{{CubeInfo.list[2]['url']}}" mode="aspectFill" src="{{CubeInfo.list[2]['thumb']}}"></image>
+            </view>
+        </view>
+    </view>
+</view>

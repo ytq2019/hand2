@@ -1,0 +1,19 @@
+<view class="cu-custom" style="height:{{CustomBar}}px">
+    <view class="cu-bar fixed {{bgImage!=''?'none-bg text-white bg-img':''}} {{bgColor}}" style="height:{{CustomBar}}px;padding-top:{{StatusBar}}px;{{bgImage?'background-image:url('+bgImage+')':''}}">
+        <view bindtap="BackPage" class="action" wx:if="{{isBack}}">
+            <text class="cuIcon-back"></text>
+            <slot name="backText"></slot>
+        </view>
+        <view class="action border-custom" style="width:{{Custom.width}}px;height:{{Custom.height}}px;margin-left:calc(750rpx - {{Custom.right}}px)" wx:if="{{isCustom}}">
+            <text bindtap="BackPage" class="cuIcon-back"></text>
+            <text bindtap="toHome" class="cuIcon-homefill"></text>
+        </view>
+        <view bindtap="clickContent" class="content" style="top:{{StatusBar}}px;pointer-events:{{contentPointerEvents}};" wx:if="{{contentCenter}}">
+            <slot name="content"></slot>
+        </view>
+        <view bindtap="clickContent" class="content" style="top:{{StatusBar}}px;pointer-events:{{contentPointerEvents}};right:auto;left:{{contentLeft}}rpx;text-align:left;width:calc(100% - 220rpx);" wx:else>
+            <slot name="content"></slot>
+        </view>
+        <slot name="right"></slot>
+    </view>
+</view>

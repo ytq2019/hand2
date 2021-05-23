@@ -1,0 +1,34 @@
+<view bindtap="toPage" class="plugin-tide bg-white padding-tb-sm" data-url="/plugin/tide/pages/index/index?city_id={{defaultCity.id}}&poi_id={{defaultCity.poi_id}}">
+    <view class="cu-list menu">
+        <view class="cu-item arrow">
+            <view class="area_wrap content">
+                <text class="{{defaultCity.textSize}} text-bold">{{defaultCity.name}}</text>
+            </view>
+            <view class="content">
+                <view class="flex flex-wrap">
+                    <view class="basis-df padding-right-xs">
+                        <image class="weather_icon" mode="aspectFill" src="{{weatherData.iconDay}}"></image>
+                    </view>
+                    <view class="basis-df text-sm">
+                        <view>{{weatherData.tempMin}}~{{weatherData.tempMax}}℃</view>
+                        <view>{{weatherData.textDay}}</view>
+                    </view>
+                </view>
+            </view>
+            <view class="action">
+                <view>
+                    <view class="cu-tag round sm bg-green">{{tideData[0].type=='H'?'满潮':'干潮'}}</view>
+                    <view class="height_wrap margin-left-xs text-sm">
+                        {{tideData[0].fxTime}} {{tideData[0].height}}m
+                    </view>
+                </view>
+                <view class="margin-top-xs">
+                    <view class="cu-tag round sm bg-red">{{tideData[1].type=='H'?'满潮':'干潮'}}</view>
+                    <view class="height_wrap margin-left-xs text-sm">
+                        {{tideData[1].fxTime}} {{tideData[1].height}}m
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>

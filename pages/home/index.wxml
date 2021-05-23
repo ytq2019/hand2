@@ -1,0 +1,293 @@
+<include src="../templates/page-meta.wxml"></include>
+<view class="container" style="padding-bottom:{{containerPaddingBottom}}px" wx:if="{{!Loading}}">
+    <cu-custom bgColor="bg-white" wx:if="{{!ThemeStyle.home_top_style}}">
+        <view class="text-black" slot="content">{{Title}}</view>
+    </cu-custom>
+    <cu-custom bgColor="bg-gradual-{{ThemeStyle.gradual}}" wx:else>
+        <view slot="content">{{Title}}</view>
+    </cu-custom>
+    <view class="bg-white" wx:if="{{noticeList.length}}">
+        <notice bind:click="clickNotice" noticeList="{{noticeList}}"></notice>
+    </view>
+    <view class="cu-bar search bg-white solid-bottom">
+        <block wx:if="{{ShowLocation}}">
+            <view catchtap="selectRegion" class="action">
+                <text class="text-df margin-right-xs text-cut">{{City}}</text>
+                <text class="cuIcon-triangledownfill"></text>
+            </view>
+            <view class="region_wrap shadow bg-white text-left" wx:if="{{showRegionList}}">
+                <view class="padding-lr flex" wx:if="{{locationInfo&&locationInfo.address_component.city}}">
+                    <view bindtap="selectLocationRegion" class="basis-lg padding-right-xs text-cut">{{locationInfo.address_component.city}}</view>
+                    <view bindtap="changeRegion" class="basis-sm text-{{ThemeStyle.color}}">[更换]</view>
+                </view>
+                <view bindtap="selectNation" class="padding-lr solid-top">全国</view>
+            </view>
+        </block>
+        <view class="search-form round">
+            <text class="cuIcon-search"></text>
+            <input bindconfirm="doSearch" confirmType="search" placeholder="{{searchPlaceholder}}" type="text" value="{{Keyword}}"></input>
+        </view>
+        <view bindtap="cancelSearch" class="action text-gray" wx:if="{{Keyword!=''}}">取消</view>
+        <view bindtap="toPage" class="message_wrap action" data-need-avatar="{{true}}" data-url="/pages/message/index" wx:else>
+            <text class="cuIcon-comment"></text>
+            <block wx:if="{{NewMessage>0}}">
+                <view class="cu-tag badge" wx:if="{{NewMessage<=99}}">{{NewMessage}}</view>
+                <view class="cu-tag badge" wx:else>99+</view>
+            </block>
+            <view class="message_tips" wx:if="{{showNewMessageTips}}">
+                <view class="arrow"></view>
+                <view class="body">
+                    <view class="tips">您有新的消息</view>
+                </view>
+            </view>
+        </view>
+    </view>
+    <plugin-tide wx:if="{{Plugin.tide.enable&&Plugin.tide.config.switch==1}}"></plugin-tide>
+    <include src="../templates/cube_ad.wxml" wx:if="{{CubeInfo.open&&CubeInfo.list.length&&Keyword==''}}"></include>
+    <view class="filter_wrap {{showFilterFixed?'fixed':''}}" style="top: {{showFilterFixed?CustomBar:0}}px">
+        <scroll-view scrollWithAnimation scrollX class="bg-white nav" scrollLeft="{{CategoryScrollLeft}}" style="border-bottom: 1rpx solid {{ThemeStyle.value}};" wx:if="{{ShowCategory}}">
+            <view bindtap="tabSelectCategory" class="cu-item" data-id="{{item.system?'':item.id}}" data-index="{{index}}" style="{{showFilterFixed?'height:85rpx;':'height:170rpx;'}}" wx:for="{{CategoryList}}" wx:key="index">
+                <view wx:if="{{!showFilterFixed}}">
+                    <image class="icon" src="{{item.icon}}"></image>
+                </view>
+                <view class="{{item.system&&CategoryIdCur==0||item.id==CategoryIdCur?'text-black':''}}">
+                    {{item.title}}
+                </view>
+                <text class="cur" style="background-color: {{ThemeStyle.value}};" wx:if="{{item.system?CategoryIdCur==0:item.id==CategoryIdCur}}"></text>
+            </view>
+        </scroll-view>
+        <view class="sort_wrap padding-tb-sm padding-lr bg-white {{showFilterFixed?'fixed shadow':''}}">
+            <view class="flex flex-wrap">
+                <view class="basis-df">
+                    <view class="flex text-center">
+                        <view bindtap="switchSort" class="flex-sub" data-value="new">
+                            <button class="cu-btn bg-{{ThemeStyle.color}} round" wx:if="{{sortCur=='new'}}">最新</button>
+                            <text wx:else>最新</text>
+                        </view>
+                        <view bindtap="switchSort" class="flex-sub" data-value="popular">
+                            <button class="cu-btn bg-{{ThemeStyle.color}} round" wx:if="{{sortCur=='popular'}}">人气</button>
+                            <text wx:else>人气</text>
+                        </view>
+                        <view bindtap="switchSort" class="flex-sub" data-value="location">
+                            <button class="cu-btn bg-{{ThemeStyle.color}} round" wx:if="{{sortCur=='location'}}">附近</button>
+                            <text wx:else>附近</text>
+                        </view>
+                    </view>
+                </view>
+                <view class="basis-df text-right">
+                    <image bindtap="switchListStyle" class="icon" src="{{AssetsUrl}}/icon/apps-{{listStyleCur}}.png"></image>
+                    <text class="margin-lr-xs">|</text>
+                    <image bindtap="showFilterModal" class="icon" src="{{AssetsUrl}}/icon/filter.png"></image>
+                </view>
+            </view>
+        </view>
+    </view>
+    <swiper autoplay="true" bindchange="cardSwiper" circular="true" class="banner_swiper card-swiper round-dot" duration="500" indicatorActiveColor="{{ThemeStyle.value}}" indicatorColor="#b3b3b3" indicatorDots="true" interval="5000" wx:if="{{SwiperList.length&&Keyword==''}}">
+        <swiper-item class="{{SwiperCur==index?'cur':''}}" wx:for="{{SwiperList}}" wx:key="index">
+            <view class="swiper-item">
+                <image bindtap="toPage" data-appid="{{item.appid}}" data-url="{{item.url}}" mode="aspectFill" src="{{item.img}}" wx:if="{{item.type=='image'}}"></image>
+            </view>
+        </swiper-item>
+    </swiper>
+    <view catchtap="clickBanner" class="banner_wrap padding-lr-sm margin-top-sm" data-appid="{{IndexBanner.appid}}" data-url="{{IndexBanner.path}}" wx:if="{{IndexBanner.image&&Keyword==''}}">
+        <image mode="aspectFill" src="{{IndexBanner.image}}"></image>
+    </view>
+    <view class="list_single cu-card dynamic no-card" wx:if="{{listStyleCur=='single'&&ItemList[0].length}}">
+        <block wx:for="{{ItemList}}" wx:for-item="Items" wx:key="*">
+            <block wx:for="{{Items}}" wx:key="index">
+                <view bindtap="toDetail" class="cu-item bg-white {{Page}}" data-id="{{item.id}}">
+                    <image class="item_sold" src="{{SoldImg}}" wx:if="{{item.status==2}}"></image>
+                    <view class="cu-list menu-avatar">
+                        <view class="cu-item">
+                            <view class="cu-avatar round lg" style="background-image:url({{item.avatar}});"></view>
+                            <view class="content flex-sub">
+                                <view class="item_nickname text-cut">{{item.nickname}}</view>
+                                <view class="text-gray text-sm flex justify-between" wx:if="{{PostTime==0}}">
+                                {{item.time_diff}}{{item.time_diff=='刚刚'?'':'前'}}发布
+                            </view>
+                                <view class="text-gray text-sm flex justify-between" wx:if="{{PostTime==2&&item.is_online}}">
+                                    <view class="cu-tag round sm">在线</view>
+                                </view>
+                            </view>
+                            <view class="item_price text-right text-red text-xl" wx:if="{{showSinglePrice}}">
+                            {{item._price}}
+                        </view>
+                            <view class="item_location text-right text-{{ThemeStyle.color}} text-sm" wx:if="{{sortCur=='location'}}">
+                                <text decode="{{true}}" wx:if="{{item.distance==0}}">距我&lt;100m</text>
+                                <text wx:else>距我{{item.distance}}km</text>
+                            </view>
+                        </view>
+                    </view>
+                    <view class="text-content">
+                        <view class="cu-tag round line-{{ThemeStyle.color}} margin-right-xs" wx:if="{{item.type==2}}">求购</view>{{item.title}}
+                    <view wx:if="{{item.type==1&&showSingleDesc}}">{{item.description}}</view>
+                    </view>
+                    <view class="text-content" wx:if="{{item.type==2&&item.title!=item.description}}">
+                    {{item.description}}
+                </view>
+                    <view class="grid flex-sub padding-lr-sm col-3 grid-square" wx:if="{{item.thumb.length}}">
+                        <view class="bg-img" style="background-image:url({{thumb}});" wx:for="{{item.thumb}}" wx:for-item="thumb" wx:key="thumb_index"></view>
+                    </view>
+                    <view class="grid flex-sub padding-lr-sm col-3 grid-square" wx:if="{{!item.thumb.length&&item.video_thumb}}">
+                        <view class="bg-img" style="background-image:url({{item.video_thumb}});">
+                            <text class="cuIcon-videofill lg"></text>
+                        </view>
+                    </view>
+                    <view class="text-content margin-top-sm" wx:if="{{item.tags.length}}">
+                        <view class="cu-tag radius line-olive" wx:if="{{tag_index%5==0}}">{{tag}}</view>
+                        <view class="cu-tag radius line-red" wx:if="{{tag_index%5==1}}">{{tag}}</view>
+                        <view class="cu-tag radius line-yellow" wx:if="{{tag_index%5==2}}">{{tag}}</view>
+                        <view class="cu-tag radius line-green" wx:if="{{tag_index%5==3}}">{{tag}}</view>
+                        <view class="cu-tag radius line-{{ThemeStyle.color}}" wx:if="{{tag_index%5==4}}">{{tag}}</view>
+                    </view>
+                    <view class="item_foot flex flex-wrap padding-sm margin-top-sm text-gray text-sm solid-top">
+                        <view class="basis-lg text-cut">
+                            <text class="cuIcon-location margin-right-xs" wx:if="{{item.address}}"></text>{{item.address}}
+                    </view>
+                        <view class="basis-sm">
+                            <view class="text-right">
+                                <text class="cuIcon-appreciate margin-lr-xs"></text>{{item.zan>0?item.zan:''}}
+                            <text class="cuIcon-message margin-lr-xs"></text>{{item.message>0?item.message:''}}
+                            <text class="cuIcon-attention margin-lr-xs"></text>{{ShowPageView&&item.page_view>0?item.page_view:''}}
+                        </view>
+                        </view>
+                    </view>
+                </view>
+                <view class="wxad_wrap margin-lr-sm margin-top-sm" wx:if="{{( index==3||Page>1&&(index==9||index==19||index==29) )&&WxadInfo.id&&showWxad}}">
+                    <view style="width: 100%">
+                        <ad binderror="WxadError" unitId="{{WxadInfo.id}}" wx:if="{{WxadInfo.type=='banner'}}"></ad>
+                        <ad adTheme="white" adType="video" binderror="WxadError" unitId="{{WxadInfo.id}}" wx:if="{{WxadInfo.type=='feeds'}}"></ad>
+                        <ad adTheme="white" adType="grid" binderror="WxadError" gridCount="5" gridOpacity="0.8" unitId="{{WxadInfo.id}}" wx:if="{{WxadInfo.type=='grid'}}"></ad>
+                    </view>
+                </view>
+            </block>
+        </block>
+    </view>
+    <view class="list_double margin-top-sm" wx:elif="{{listStyleCur=='double'&&ItemList.length}}">
+        <block wx:for="{{ItemList}}" wx:for-item="Items" wx:key="*">
+            <block wx:for="{{Items}}" wx:key="index">
+                <navigator class="item bg-white" hoverClass="none" openType="navigate" url="/pages/detail/index?id={{item.id}}">
+                    <view class="grid flex-sub col-1 grid-square item_img {{item.status==2?'sold':''}} margin-bottom-xs">
+                        <view class="bg-img thumb" style="background-image:url({{item.thumb.length?item.thumb[0]:item.video_thumb?item.video_thumb:AssetsUrl+'/holder.png'}});"></view>
+                        <image class="item_sold" lazyLoad="{{true}}" src="{{SoldImg}}" wx:if="{{item.status==2}}"></image>
+                        <text class="cuIcon-videofill lg" wx:if="{{!item.thumb.length&&item.video_thumb}}"></text>
+                    </view>
+                    <view class="item_title margin-lr-xs text-black">
+                        <view class="cu-tag round line-{{ThemeStyle.color}} margin-right-xs" wx:if="{{item.type==2}}">求购</view>
+                        <text>{{item.title}}</text>
+                    </view>
+                    <view class="margin-xs">
+                        <view class="flex flex-wrap">
+                            <view class="item_price flex-sub" wx:if="{{item.buy_type==0&&item.price>0}}">
+                            {{currencyInfo.symbol}}{{item._price_integer}}<sub>.{{item._price_decimal}}</sub>
+                            </view>
+                            <view class="item_price flex-sub" wx:else>
+                            {{item._price}}
+                        </view>
+                            <view class="item_address flex-sub text-sm text-right text-cut" wx:if="{{doubleStyleRight.type==0&&item.province&&item.city}}">
+                            {{item.province}}-{{item.city}}
+                        </view>
+                            <view class="item_address flex-sub text-sm text-right text-cut" wx:if="{{doubleStyleRight.type==1}}">
+                            {{item.page_view}}{{doubleStyleRight.title}}
+                        </view>
+                        </view>
+                    </view>
+                    <view class="padding-xs solid-top text-cut">
+                        <view class="cu-avatar sm round" style="background-image:url({{item.avatar}});"></view>
+                        <text class="text-sm margin-left-xs">{{item.nickname}}</text>
+                    </view>
+                </navigator>
+                <view class="wxad_wrap margin-lr-xs margin-bottom-sm" style="width: 100%" wx:if="{{( index==3||Page>1&&(index==9||index==19||index==29) )&&WxadInfo.id&&showWxad}}">
+                    <view style="width: 100%">
+                        <ad binderror="WxadError" unitId="{{WxadInfo.id}}" wx:if="{{WxadInfo.type=='banner'}}"></ad>
+                        <ad adTheme="white" adType="video" binderror="WxadError" unitId="{{WxadInfo.id}}" wx:if="{{WxadInfo.type=='feeds'}}"></ad>
+                        <ad adTheme="white" adType="grid" binderror="WxadError" gridCount="5" gridOpacity="0.8" unitId="{{WxadInfo.id}}" wx:if="{{WxadInfo.type=='grid'}}"></ad>
+                    </view>
+                </view>
+            </block>
+        </block>
+    </view>
+    <view class="empty_data" wx:if="{{!ItemList[0].length}}">
+        <image mode="aspectFill" src="{{AssetsUrl}}/empty.png"></image>
+    </view>
+    <view class="padding-tb-sm text-center text-gray text-sm" wx:if="{{Paging||Gone}}">
+        <block wx:if="{{Gone}}">
+            <view wx:if="{{ShowLocation&&City!='全国'}}">看不过瘾，<text bindtap="changeRegion" class="text-blue">点击</text>切换定位查看更多</view>
+            <text wx:else>没有了</text>
+        </block>
+        <text wx:else>加载中</text>
+    </view>
+    <view bindtap="hideFilterModal" class="filter_modal cu-modal drawer-modal justify-end {{showFilterModal?'show':''}}" data-from="self">
+        <view class="cu-dialog basis-xl text-left" style="top:{{CustomBar}}px;height:calc(100vh - {{CustomBar}}px)">
+            <form catchsubmit="submitFilterModal">
+                <view class="form_wrap margin-lr">
+                    <view class="margin-top">筛选</view>
+                    <view class="margin-top text-bold">价格区间</view>
+                    <view class="flex flex-wrap margin-top text-center">
+                        <view class="flex-treble">
+                            <input name="price_start" placeholder="最低价" placeholderStyle="color:var(--lightGray)" type="number"></input>
+                        </view>
+                        <view class="price_split flex-sub">-</view>
+                        <view class="flex-treble">
+                            <input name="price_end" placeholder="最高价" placeholderStyle="color:var(--lightGray)" type="number"></input>
+                        </view>
+                    </view>
+                    <view class="margin-top text-bold">区域</view>
+                    <view class="flex flex-wrap margin-top text-center">
+                        <view bindtap="switchFilterArea" class="item bg-{{FilterAreaCur==index?ThemeStyle.color:'ghostWhite2'}}" data-index="{{index}}" data-value="{{item.value}}" wx:for="{{FilterAreaList}}" wx:key="index">
+                        {{item.title}}
+                    </view>
+                    </view>
+                    <view class="margin-top text-bold">发布时间</view>
+                    <view class="flex flex-wrap margin-top text-center">
+                        <view bindtap="switchFilterTime" class="item bg-{{FilterTimeCur==index?ThemeStyle.color:'ghostWhite2'}}" data-index="{{index}}" data-value="{{item.value}}" wx:for="{{FilterTimeList}}" wx:key="index">
+                        {{item.title}}
+                    </view>
+                    </view>
+                    <view class="margin-top text-bold">取件方式（可多选）</view>
+                    <view class="flex flex-wrap margin-top text-center">
+                        <view bindtap="switchFilterFetch" class="item bg-{{FilterTradeTypeSelected[index]?ThemeStyle.color:'ghostWhite2'}}" data-index="{{index}}" data-value="{{item.value}}" wx:for="{{FilterTradeTypeList}}" wx:key="index">
+                        {{item.title}}
+                    </view>
+                    </view>
+                </view>
+                <view class="foot_btn flex flex-wrap text-center solid-top">
+                    <view bindtap="resetFilterModal" class="basis-sm">
+                        <button class="text-df" formType="reset">重置</button>
+                    </view>
+                    <view class="basis-lg">
+                        <button class="text-df bg-{{ThemeStyle.color}}" formType="submit">确定</button>
+                    </view>
+                </view>
+            </form>
+        </view>
+    </view>
+    <button class="contact-btn" openType="contact" wx:if="{{ServiceInfo.open}}">
+        <image src="{{ServiceInfo.img}}"></image>
+    </button>
+    <button bindtap="toPage" class="float_btn" data-appid="{{FloatBtn.appid}}" data-url="{{FloatBtn.url}}" style="background: url({{FloatBtn.img}}) no-repeat; background-size: cover;box-shadow: 1px 1px 8px #aaa;" wx:if="{{FloatBtn.open}}"></button>
+    <view bindtap="goTop" class="back-home" wx:if="{{showGoTop}}">
+        <text class="cuIcon-fold"></text>
+    </view>
+    <footnav themeStyle="{{ThemeStyle}}"></footnav>
+    <add-tips custom="{{true}}" delay="2" duration="10" logo="{{AssetsUrl}}/add_tips.png" name="{{Title}}"></add-tips>
+    <image-popup file="{{imagePopup.img_url}}" key="{{imagePopup.key}}" path="{{imagePopup.path}}" wx:if="{{imagePopup.img_url}}"></image-popup>
+</view>
+<view class="container-loading" wx:else>
+    <image mode="aspectFill" src="{{LoadingImg}}"></image>
+</view>
+<dialog id="dialog"></dialog>
+<view class="cu-modal show" wx:if="{{showIndexBannerSubscribeModal}}">
+    <view class="cu-dialog">
+        <view class="bg-img" style="background-image: url('{{IndexBanner.subscribe}}');height:{{SystemInfo.windowHeight-240}}px;">
+            <view class="cu-bar justify-end text-white">
+                <view bindtap="hideIndexBannerSubscribeModal" class="action">
+                    <text class="cuIcon-close "></text>
+                </view>
+            </view>
+        </view>
+        <view class="cu-bar bg-white">
+            <view bindtap="hideIndexBannerSubscribeModal" class="action margin-0 flex-sub">好的，打开微信扫一扫关注我们</view>
+        </view>
+    </view>
+</view>

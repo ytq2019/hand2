@@ -1,0 +1,69 @@
+.container {
+    padding-bottom: calc(120rpx + env(safe-area-inset-bottom) / 2);
+}
+
+.UCenter-bg {
+    height: 220px;
+    display: flex;
+    justify-content: center;
+    padding-top: 40rpx;
+    overflow: hidden;
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+    color: #fff;
+    font-weight: 300;
+    text-shadow: 0 0 3px rgba(0,0,0,0.3);
+}
+
+.UCenter-bg text {
+    opacity: 0.8;
+}
+
+.UCenter-bg image {
+    width: 110rpx;
+    height: 110rpx;
+}
+
+.UCenter-bg .gif-wave {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    z-index: 99;
+    mix-blend-mode: screen;
+    height: 100rpx;
+}
+
+.cu-avatar {
+    border-radius: 110rpx;
+}
+
+.cu-list.menu>.cu-item .content {
+    line-height: 2em;
+}
+
+.cu-list.menu>.cu-item .content>image {
+    width: 1.2em;
+    height: 1.2em;
+}
+
+.sign_wrap {
+    position: absolute;
+    right: 140rpx;
+    top: 190rpx;
+    background: rgba(0,0,0,0.1);
+    border-radius: 30rpx;
+    padding: 4rpx 20rpx;
+}
+
+.sign_wrap image {
+    width: 32rpx;
+    height: 32rpx;
+    vertical-align: text-bottom;
+    margin-right: 6rpx;
+}
+
+.sign_wrap text {
+    opacity: 1;
+}

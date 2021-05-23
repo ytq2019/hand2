@@ -1,0 +1,4 @@
+.cu-dialog .message {
+    max-height: 600rpx;
+    overflow-y: auto;
+}

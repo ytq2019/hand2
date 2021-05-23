@@ -1,0 +1,12 @@
+.scoring-form .service_wrap .cu-avatar {
+    width: 300rpx;
+    height: 300rpx;
+}
+
+.scoring-form .score_wrap {
+    padding: 100rpx 0;
+}
+
+.scoring-form .score_wrap [class*="cuIcon-"] {
+    font-size: 100rpx;
+}

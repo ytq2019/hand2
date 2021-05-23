@@ -1,0 +1,10 @@
+<view class="notice-list" wx:if="{{noticeList.length}}">
+    <view class="title padding-lr-sm" style="line-height: {{height}}rpx">
+        <text class="cuIcon-notification lg" style="{{textColor?'color:'+textColor:''}}"></text>
+    </view>
+    <swiper autoplay="true" circular="true" class="swiper" interval="3000" style="line-height: {{height}}rpx;height: {{height}}rpx;" vertical="true">
+        <swiper-item wx:for="{{noticeList}}" wx:key="index">
+            <view bindtap="toClick" class="swiper-item text-cut" data-title="{{item.title}}" data-url="{{item.content!=''?'/pages/notice/detail?id='+item.id:''}}" style="{{textColor?'color:'+textColor:''}}">{{item.title}}</view>
+        </swiper-item>
+    </swiper>
+</view>

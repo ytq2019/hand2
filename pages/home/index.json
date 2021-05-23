@@ -1,0 +1,13 @@
+{
+    "enablePullDownRefresh": true,
+    "usingComponents": {
+        "notice": "../../components/notice/index",
+        "add-tips": "../../components/add-tips/index",
+        "image-popup": "../../components/image-popup/index",
+        "footnav": "../../components/footnav/index",
+        "plugin-tide": "../../components/plugin-tide/index",
+        "cu-custom": "/libs/colorui/components/cu-custom",
+        "dialog": "/components/dialog/index",
+        "empty": "/components/empty/index"
+    }
+}

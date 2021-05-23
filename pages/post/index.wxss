@@ -1,0 +1,51 @@
+.container {
+    padding-bottom: calc(20rpx + env(safe-area-inset-bottom) / 2);
+}
+
+.cu-form-group .title {
+    min-width: calc(4em + 30rpx);
+}
+
+.desc_wrap {
+    position: relative;
+}
+
+.desc_wrap .action {
+    position: absolute;
+    right: 20rpx;
+    bottom: 10rpx;
+}
+
+.textarea {
+    min-height: 100rpx;
+}
+
+.media_wrap {
+    position: relative;
+}
+
+.media_wrap [class*="cuIcon-"] {
+    color: var(--gray)!important;
+}
+
+.media_number {
+    position: absolute;
+    right: 20rpx;
+    bottom: 10rpx;
+}
+
+.cu-capsule .cu-tag:first-child {
+    border-top-left-radius: 200rpx;
+    border-bottom-left-radius: 200rpx;
+}
+
+.cu-capsule .cu-tag:last-child {
+    border-top-right-radius: 200rpx;
+    border-bottom-right-radius: 200rpx;
+}
+
+.pop-close {
+    position: fixed;
+    top: 10rpx;
+    right: 10rpx;
+}

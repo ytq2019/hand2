@@ -1,0 +1,25 @@
+<include src="../templates/page-meta.wxml"></include>
+<cu-custom bgColor="bg-gradual-{{ThemeStyle.gradual}}" isBack="{{true}}">
+    <view slot="backText"></view>
+    <view slot="content">我的钱包</view>
+</cu-custom>
+<view class="container" wx:if="{{completed}}">
+    <view class="show-box">
+        <view class="money">{{currencyInfo.symbol}}{{balance}}</view>
+        <view class="show-bottom">
+            <view class="show-inline">
+                <navigator url="../money_log/index?type=money_log">收支明细</navigator>
+            </view>
+            <view class="show-inline">
+                <navigator url="../money_log/index?type=getcash_log">提现记录</navigator>
+            </view>
+        </view>
+    </view>
+    <view class="flex flex-direction padding-xl">
+        <button bindtap="toGetcash" class="cu-btn bg-{{ThemeStyle.color}} lg" wx:if="{{balance>0}}">申请提现</button>
+        <button disabled class="cu-btn bg-{{ThemeStyle.color}} lg" type="" wx:else>申请提现</button>
+    </view>
+</view>
+<view class="container-loading" wx:else>
+    <image mode="aspectFill" src="{{LoadingImg}}"></image>
+</view>

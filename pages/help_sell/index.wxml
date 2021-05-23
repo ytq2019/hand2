@@ -1,0 +1,48 @@
+<include src="../templates/page-meta.wxml"></include>
+<view class="container" wx:if="{{!Loading}}">
+    <cu-custom bgColor="bg-gradual-{{ThemeStyle.gradual}}" isBack="{{true}}">
+        <view slot="backText"></view>
+        <view slot="content">{{itemData.help_sell.switch?'帮卖得佣金':'分享'}}</view>
+    </cu-custom>
+    <block wx:if="{{itemData.help_sell.switch}}">
+        <view class="bg-white padding text-xl text-{{ThemeStyle.gradual}}" wx:if="{{itemData.help_sell.share_credit>0&&itemData.commission>0}}">转发感兴趣的好友，访问即可得{{itemData.credit_info.title}}成交更有{{itemData.commission}}{{itemData.currency_info.title}}佣金</view>
+        <view class="bg-white padding text-xl text-{{ThemeStyle.gradual}}" wx:elif="{{itemData.help_sell.share_credit>0}}">转发感兴趣的好友，访问即可得{{itemData.credit_info.title}}</view>
+        <view class="bg-white padding text-xl text-{{ThemeStyle.gradual}}" wx:elif="{{itemData.commission>0}}">转发感兴趣的好友，有机会获得{{itemData.commission}}{{itemData.currency_info.title}}佣金</view>
+    </block>
+    <view class="text-center padding bg-white">
+        <image class="poster" mode="aspectFill" src="{{posterPath}}" wx:if="{{showPoster}}"></image>
+        <image mode="aspectFill" src="{{LoadingImg}}" wx:else></image>
+    </view>
+    <view class="cu-bar bg-white margin-top-sm">
+        <view class="action">
+            <text class="cuIcon-titles text-{{ThemeStyle.gradual}}"></text>
+            <text class="text-df text-bold">已分享</text>
+        </view>
+    </view>
+    <view class="cu-list menu-avatar">
+        <block wx:if="{{List.length}}">
+            <view class="cu-item" wx:for="{{List}}" wx:key="index">
+                <view class="cu-avatar round sm" style="background-image:url({{item.avatar}});"></view>
+                <view class="content">
+                    <view class="text-black text-sm">{{item.nickname}}</view>
+                </view>
+            </view>
+            <view class="padding-tb-sm text-center text-gray text-sm" wx:if="{{Paging||Gone}}">
+                <text wx:if="{{Gone}}">没有了</text>
+                <text wx:else>加载中</text>
+            </view>
+        </block>
+        <view class="padding text-center text-gray margin-top" wx:else>
+            快快分享好友吧~
+        </view>
+    </view>
+    <view class="foot_wrap flex padding">
+        <view class="flex-sub padding-right-xs">
+            <button bindtap="savePoster" class="cu-btn round lg bg-{{ThemeStyle.gradual}}">保存分享图</button>
+        </view>
+        <view class="flex-sub padding-left-xs">
+            <button class="cu-btn round lg bg-{{ThemeStyle.gradual}}" openType="share">发送给好友</button>
+        </view>
+    </view>
+    <poster bind:fail="onPosterFail" bind:success="onPosterSuccess" config="{{posterConfig}}" hideLoading="{{true}}" id="poster"></poster>
+</view>

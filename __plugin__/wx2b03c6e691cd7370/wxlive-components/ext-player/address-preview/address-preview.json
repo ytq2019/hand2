@@ -1,0 +1,9 @@
+{
+    "usingComponents": {
+        "mp-msg": "../../../miniprogram_dist/msg/msg",
+        "mp-navigation-bar": "../../../miniprogram_dist/navigation-bar/navigation-bar"
+    },
+    "navigationStyle": "custom",
+    "disableScroll": true,
+    "style": "v2"
+}

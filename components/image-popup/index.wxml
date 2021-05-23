@@ -1,0 +1,8 @@
+<view class="image-popup cu-modal {{isShow?'show':''}}">
+    <view catchtap="click" class="cu-dialog" data-url="{{path}}">
+        <image mode="{{mode}}" src="{{file}}"></image>
+        <view catchtap="hide" class="action">
+            <text class="cuIcon-roundclose"></text>
+        </view>
+    </view>
+</view>

@@ -1,0 +1,14 @@
+<form bindsubmit="submitForm" class="buying-form">
+    <view class="cu-form-group">
+        <view class="title">物品名称</view>
+        <input name="title" placeholder="请输入求购物品名称" value="{{title}}"></input>
+    </view>
+    <view class="desc_wrap cu-form-group align-start">
+        <view class="title">物品描述</view>
+        <textarea autoHeight="{{true}}" bindinput="inputDesc" class="textarea" maxlength="{{descMaxLength}}" name="desc" placeholder="请输入关于物品的要求和描述" value="{{description}}"></textarea>
+        <view class="action text-gray">{{descCurLength}}/{{descMaxLength}}</view>
+    </view>
+    <view class="margin-top-xl flex flex-direction padding">
+        <button class="cu-btn bg-{{themeStyle.color}} lg" formType="submit">提交</button>
+    </view>
+</form>

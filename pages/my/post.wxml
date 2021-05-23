@@ -1,0 +1,102 @@
+<include src="../templates/page-meta.wxml"></include>
+<view class="container" wx:if="{{!Loading}}">
+    <cu-custom bgColor="bg-gradual-{{ThemeStyle.gradual}}" isBack="{{true}}">
+        <view slot="backText"></view>
+        <view slot="content">{{pageTitle}}</view>
+    </cu-custom>
+    <scroll-view scrollWithAnimation scrollX class="bg-white nav fixed" scrollLeft="{{ItemStatusScrollLeft}}" style="top:{{CustomBar}}px">
+        <view class="flex text-center">
+            <view bindtap="swtichItemStatus" class="cu-item flex-sub {{index==ItemStatusIndex?'text-'+ThemeStyle.gradual+' cur':''}}" data-index="{{index}}" wx:for="{{ItemStatus}}" wx:key="index">
+                {{item.title}}
+            </view>
+        </view>
+    </scroll-view>
+    <view class="list_wrap" wx:if="{{ItemList.length}}">
+        <view catchtap="toPage" class="item_wrap flex flex-wrap padding-sm margin-tb-sm bg-white" data-url="/pages/detail/index?id={{item.id}}" wx:for="{{ItemList}}" wx:key="index">
+            <view class="item_left" wx:if="{{itemType==1}}">
+                <view class="bg-img" style="background-image:url({{item.video_thumb}});" wx:if="{{!item.thumb.length&&item.video_thumb}}">
+                    <text class="cuIcon-videofill lg"></text>
+                </view>
+                <image mode="aspectFill" src="{{item.thumb.length?item.thumb[0]:AssetsUrl+'/holder.png'}}" wx:else></image>
+            </view>
+            <view class="{{itemType==1?'item_right padding-left-sm':''}}" style="{{itemType==1?'':'width:100%'}}">
+                <view class="item_title text-bold text-black">
+                    {{item.title}}
+                </view>
+                <view class="text-red" wx:if="{{item.type==1}}">
+                    <block wx:if="{{item.buy_type==0&&item.price>0}}">
+                        <text>{{currencyInfo.symbol}}</text>
+                        <text class="text-xxl">{{item._price_integer}}</text>
+                        <sub>.{{item._price_decimal}}</sub>
+                    </block>
+                    <text wx:else>{{item._price}}</text>
+                    <text class="text-gray text-delete-line margin-left-xs" wx:if="{{item.origin_price>0}}">{{item.origin_price}}</text>
+                </view>
+                <view class="btn_wrap text-right">
+                    <button catchtap="toEdit" class="cu-btn sm bg-red margin-right-sm" data-url="/pages/post/index?id={{item.id}}" wx:if="{{item.type==1}}">编辑</button>
+                    <button catchtap="toEdit" class="cu-btn sm bg-red margin-right-sm" data-url="/pages/buying/edit?id={{item.id}}" wx:elif="{{item.type==2}}">编辑</button>
+                    <block wx:if="{{Refresh.times>0&&item.remain_refresh_count<=0}}">
+                        <button disabled class="cu-btn sm bg-{{ThemeStyle.color}}" data-count="{{item.today_refresh_count}}" data-id="{{item.id}}" wx:if="{{Refresh.open&&ItemStatusIndex==0}}">已刷新</button>
+                    </block>
+                    <block wx:else>
+                        <button catchtap="showRefreshModal" class="cu-btn sm bg-{{ThemeStyle.color}}" data-count="{{item.today_refresh_count}}" data-id="{{item.id}}" wx:if="{{Refresh.open&&ItemStatusIndex==0}}">刷新</button>
+                    </block>
+                    <button catchtap="showDeleteModal" class="cu-btn sm bg-grey" data-id="{{item.id}}" wx:if="{{ItemStatusIndex==1||ItemStatusIndex==2||ItemStatusIndex==3}}">删除</button>
+                </view>
+            </view>
+        </view>
+        <view class="padding-tb-sm text-center text-gray text-sm" wx:if="{{Paging||Gone}}">
+            <text wx:if="{{Gone}}">没有了</text>
+            <text wx:else>加载中</text>
+        </view>
+        <view class="refresh_all" wx:if="{{Refresh.open&&Refresh.all&&ItemList.length&&ItemStatusIndex==0}}">
+            <button bindtap="refreshAll" class="cu-btn bg-orange round lg shadow">一键刷新</button>
+        </view>
+    </view>
+    <empty wx:else></empty>
+    <post-button needLogin="{{true}}" themeStyle="{{ThemeStyle}}" url="{{itemType==1?'/pages/post/index':'/pages/buying/add'}}"></post-button>
+</view>
+<view class="cu-modal {{showRefreshModal?'show':''}}">
+    <view class="cu-dialog">
+        <view class="cu-bar bg-white justify-end">
+            <view class="content">物品刷新</view>
+            <view bindtap="hideRefreshModal" class="action">
+                <text class="cuIcon-close text-red"></text>
+            </view>
+        </view>
+        <view class="padding text-lg text-black">
+            <view class="margin-sm">刷新物品排序</view>
+            <view class="margin-sm">
+                金额：<text class="text-red">{{payPrice}}</text>{{currencyInfo.title}}
+            </view>
+        </view>
+        <view class="cu-bar bg-white">
+            <view bindtap="hideRefreshModal" class="action margin-0 flex-sub solid-right">取消</view>
+            <view bindtap="toPay" class="action margin-0 flex-sub text-red" data-act="refresh_item" wx:if="{{!RefreshId}}">
+                去支付
+            </view>
+            <view bindtap="toPayAll" class="action margin-0 flex-sub text-red" wx:else>
+                去支付
+            </view>
+        </view>
+    </view>
+</view>
+<view class="cu-modal {{showDeleteModal?'show':''}}">
+    <view class="cu-dialog">
+        <view class="cu-bar bg-white justify-end">
+            <view class="content">删除物品</view>
+            <view bindtap="hideDeleteModal" class="action">
+                <text class="cuIcon-close text-red"></text>
+            </view>
+        </view>
+        <view class="padding text-lg text-black">
+            <view class="margin-sm">您确认删除此物品吗？</view>
+        </view>
+        <view class="cu-bar bg-white">
+            <view bindtap="hideDeleteModal" class="action margin-0 flex-sub solid-right">取消</view>
+            <view bindtap="deleteItem" class="action margin-0 flex-sub text-red">
+                确认
+            </view>
+        </view>
+    </view>
+</view>

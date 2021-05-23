@@ -1,0 +1,65 @@
+<include src="../templates/page-meta.wxml"></include>
+<view class="container" wx:if="{{!Loading}}">
+    <cu-custom bgColor="bg-gradual-{{ThemeStyle.gradual}}">
+        <view slot="backText"></view>
+        <view slot="content">{{CreditInfo.title}}专区</view>
+    </cu-custom>
+    <view class="categroy_wrap bg-white">
+        <scroll-view scrollWithAnimation scrollX class="bg-white nav fixed" scrollLeft="{{scrollLeft}}" style="top: {{CustomBar}}px;">
+            <view bindtap="selectCategory" class="cu-item {{index==categoryCur||categoryCur===null&&index==0?'text-'+ThemeStyle.color+' cur':''}}" data-index="{{index}}" wx:for="{{categoryList}}" wx:key="index">
+                {{item.title}}
+            </view>
+        </scroll-view>
+    </view>
+    <view class="credit_info_wrap text-sm text-grey text-right margin-sm">
+        <text bindtap="toPage" data-url="/pages/credit_log/index" wx:if="{{userInfo}}">我的{{CreditInfo.title}}：{{CreditInfo.balance}}</text>
+        <text bindtap="toPage" data-need-avatar="{{true}}" data-url="/pages/exchange/index" wx:else>查看我的{{CreditInfo.title}}</text>
+    </view>
+    <view class="list_double" wx:if="{{ItemList.length}}">
+        <block wx:for="{{ItemList}}" wx:key="index">
+            <navigator class="item bg-white" hoverClass="none" openType="navigate" url="/pages/detail/index?id={{item.id}}">
+                <view class="item_img {{item.status==2?'sold':''}} margin-bottom-xs">
+                    <image class="thumb" mode="aspectFill" src="{{item.thumb[0]}}"></image>
+                    <image class="item_sold" src="{{SoldImg}}" wx:if="{{item.status==2}}"></image>
+                </view>
+                <view class="item_title margin-lr-xs text-black">
+                    <text>{{item.title}}</text>
+                </view>
+                <view class="margin-xs">
+                    <view class="flex flex-wrap">
+                        <view class="item_price flex-sub" wx:if="{{item.is_credit&&item.status==2}}">已抢光</view>
+                        <block wx:else>
+                            <view class="item_price flex-sub" wx:if="{{item.buy_type==0&&item.price>0}}">
+                                {{currencyInfo.symbol}}{{item._price_integer}}<sub>.{{item._price_decimal}}</sub>
+                            </view>
+                            <view class="item_price flex-sub" wx:else>
+                                {{item._price}}</view>
+                        </block>
+                        <view class="item_address flex-sub text-sm text-right text-cut" wx:if="{{item.province&&item.city}}">
+                            {{item.province}}-{{item.city}}
+                        </view>
+                    </view>
+                </view>
+            </navigator>
+            <view class="wxad_wrap margin-lr-xs margin-bottom-sm" wx:if="{{(Page==1&&index==ItemList.length-1||Page>1&&index==9)&&WxadInfo.id&&showWxad}}">
+                <view style="width: 100%">
+                    <ad binderror="WxadError" unitId="{{WxadInfo.id}}" wx:if="{{WxadInfo.type=='banner'}}"></ad>
+                    <ad adTheme="white" adType="video" binderror="WxadError" unitId="{{WxadInfo.id}}" wx:if="{{WxadInfo.type=='feeds'}}"></ad>
+                    <ad adTheme="white" adType="grid" binderror="WxadError" gridCount="5" gridOpacity="0.8" unitId="{{WxadInfo.id}}" wx:if="{{WxadInfo.type=='grid'}}"></ad>
+                </view>
+            </view>
+        </block>
+    </view>
+    <view class="padding-tb-sm text-center text-gray text-sm" wx:if="{{Paging||Gone}}">
+        <text wx:if="{{Gone}}">没有了</text>
+        <text wx:else>加载中</text>
+    </view>
+    <empty wx:if="{{!ItemList.length}}"></empty>
+    <view bindtap="showVideoAd" class="ad_wrap" wx:if="{{WxadInfo.id}}">
+        <image mode="aspectFill" src="{{AssetsUrl}}/reward_video.png"></image>
+    </view>
+    <view bindtap="goTop" class="back-home" wx:if="{{showGoTop}}">
+        <text class="cuIcon-fold"></text>
+    </view>
+    <footnav themeStyle="{{ThemeStyle}}"></footnav>
+</view>

@@ -1,0 +1,14 @@
+.footnav .cu-modal.bottom-modal .cu-dialog {
+    border-top-left-radius: 20rpx;
+    border-top-right-radius: 20rpx;
+}
+
+.footnav .cu-modal .icon {
+    width: 80rpx;
+    height: 80rpx;
+}
+
+.footnav .cu-modal .close_icon {
+    width: 130rpx;
+    height: 130rpx;
+}

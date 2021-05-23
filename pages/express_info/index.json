@@ -1,0 +1,8 @@
+{
+    "navigationBarTitleText": "物流信息",
+    "usingComponents": {
+        "cu-custom": "/libs/colorui/components/cu-custom",
+        "dialog": "/components/dialog/index",
+        "empty": "/components/empty/index"
+    }
+}

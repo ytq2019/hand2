@@ -1,0 +1,117 @@
+.container {
+    padding-bottom: calc(144rpx + env(safe-area-inset-bottom) / 2);
+}
+
+.nav .cu-item {
+    position: relative;
+}
+
+.nav .cu-item .badge {
+    top: 10rpx;
+    right: 0;
+}
+
+.list_wrap {
+    margin-top: 90rpx;
+}
+
+.list_wrap .cu-list.menu-avatar>.cu-item .content {
+    width: calc(100% - 96rpx - 60rpx - 220rpx - 20rpx);
+}
+
+.list_wrap .cu-list.menu-avatar>.cu-item .action {
+    width: 200rpx;
+    text-align: right!important;
+    padding-right: 10rpx;
+}
+
+.list_wrap .cu-list.menu-avatar>.cu-item .content {
+    left: 110rpx;
+}
+
+.list_wrap .cu-card>.cu-item {
+    margin-bottom: 0;
+    width: 100%;
+}
+
+.list_wrap .cu-card {
+    display: flex!important;
+}
+
+.list_left {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.category_wrap {
+    position: absolute;
+    right: 20rpx;
+    top: 106rpx;
+}
+
+.sidebar_wrap .left {
+    flex-basis: 30%;
+    display: flex;
+}
+
+.sidebar_wrap .right {
+    flex-basis: 70%;
+    display: flex;
+}
+
+.operate_wrap {
+    width: 100%;
+}
+
+.operate_wrap button {
+    margin-left: 20rpx;
+}
+
+.dialog_body .cu-form-group {
+    background: #f8f8f8;
+}
+
+.reply_wrap {
+    color: #aaa;
+    font-size: 26rpx;
+}
+
+.show_batch {
+    width: 80rpx;
+    height: 80rpx;
+    background: rgba(0,0,0,.3);
+    border-radius: 50%;
+    line-height: 80rpx;
+    text-align: center;
+    color: #fff;
+    position: fixed;
+    right: 15rpx;
+    bottom: 25%;
+    font-size: 24rpx;
+}
+
+.checkall {
+    bottom: 31%;
+}
+
+.uncheckall {
+    bottom: 37%;
+}
+
+.back-home {
+    bottom: 19%;
+}
+
+.foot_wrap {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    padding-bottom: calc(50rpx + env(safe-area-inset-bottom) / 2);
+    z-index: 100;
+}
+
+.foot_wrap .cu-btn {
+    width: 100%;
+    padding: 0;
+}

@@ -1,0 +1,10 @@
+{
+    "enablePullDownRefresh": true,
+    "usingComponents": {
+        "footnav": "../../components/footnav/index",
+        "post-button": "../../components/post-button/index",
+        "cu-custom": "/libs/colorui/components/cu-custom",
+        "dialog": "/components/dialog/index",
+        "empty": "/components/empty/index"
+    }
+}

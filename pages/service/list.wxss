@@ -1,0 +1,148 @@
+.custom_content .cuIcon-locationfill {
+    margin-right: 8rpx;
+}
+
+.custom_content .page_title {
+    max-width: calc(100% - 80rpx);
+}
+
+.custom_content .cuIcon-right {
+    margin-left: 8rpx;
+    font-size: 22rpx;
+    line-height: 68rpx;
+}
+
+.cu-modal.top-modal::before {
+    vertical-align: top;
+}
+
+.cu-modal.top-modal .cu-dialog {
+    width: 100%;
+    border-radius: 0;
+}
+
+.cu-modal.top-modal {
+    margin-top: -1000rpx;
+}
+
+.cu-modal.top-modal.show {
+    margin-top: 84px;
+}
+
+.categroy_wrap {
+    position: relative;
+    padding-right: 100rpx;
+}
+
+.displayorder_wrap {
+    position: absolute;
+    right: 0;
+    bottom: 2rpx;
+    height: 90rpx;
+    line-height: 90rpx;
+    text-align: center;
+    background: #fff;
+    box-shadow: -4rpx 4rpx 6px #eee;
+    width: 100rpx;
+    z-index: 1025;
+    padding-left: 10rpx;
+}
+
+.displayorder_wrap image {
+    width: 22rpx;
+    height: 22rpx;
+    vertical-align: middle;
+    margin-right: 8rpx;
+}
+
+.displayorder_list {
+    position: absolute;
+    right: 0;
+    top: 90rpx;
+    z-index: 2;
+    width: 260rpx;
+    height: 240rpx;
+    border-top-left-radius: 10rpx;
+    border-bottom-left-radius: 10rpx;
+}
+
+.displayorder_list view {
+    height: 80rpx;
+    line-height: 80rpx;
+    text-align: center;
+    font-size: 28rpx;
+}
+
+.item_wrap {
+    position: relative;
+}
+
+.item_wrap .icon_arrow {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    margin-left: -14rpx;
+    color: #ddd;
+}
+
+.left_wrap {
+    width: 120rpx;
+}
+
+.right_wrap {
+    width: 100%;
+}
+
+.left_wrap [class*="cuIcon-"] {
+    font-size: 20rpx!important;
+}
+
+.avatar_img {
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.avatar_img image {
+    width: 120rpx;
+    height: 120rpx;
+}
+
+.name_wrap {
+    max-width: 83%;
+}
+
+.verified_icon {
+    max-width: 80rpx;
+    max-height: 40rpx;
+    margin-top: 4rpx;
+}
+
+.category_wrap {
+    width: 65%;
+}
+
+.btn_contact {
+    position: absolute;
+    right: 40rpx;
+    top: 100rpx;
+    z-index: 1;
+}
+
+.disclaimer_wrap .message {
+    max-height: 720rpx;
+    overflow-y: auto;
+}
+
+.join_wrap {
+    padding: 16rpx 16rpx 16rpx 20rpx;
+    border-top-left-radius: 16rpx;
+    border-bottom-left-radius: 16rpx;
+    text-align: center;
+    color: #fff;
+    position: fixed;
+    right: 0;
+    font-size: 28rpx;
+    top: 45%;
+    word-break: break-all;
+    width: 62rpx;
+}

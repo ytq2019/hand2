@@ -1,0 +1,8 @@
+{
+    "usingComponents": {
+        "buying-form": "/components/buying-form/index",
+        "cu-custom": "/libs/colorui/components/cu-custom",
+        "dialog": "/components/dialog/index",
+        "empty": "/components/empty/index"
+    }
+}

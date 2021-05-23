@@ -1,0 +1,21 @@
+<include src="../templates/page-meta.wxml"></include>
+<view class="container" wx:if="{{!Loading}}">
+    <cu-custom bgColor="bg-gradual-{{ThemeStyle.gradual}}" isBack="{{true}}">
+        <view slot="backText"></view>
+        <view slot="content">{{Title}}</view>
+    </cu-custom>
+    <view class="msg_list padding" wx:if="{{Messages.length}}">
+        <view catchtap="toPage" class="msg_item bg-white padding margin-top-sm" data-url="{{item.url}}" wx:for="{{Messages}}" wx:key="index">
+            <view class="cf">
+                <view class="fl text-bold">{{item.event}}</view>
+                <view class="fr">{{item._createtime}}</view>
+            </view>
+            <view class="msg_content padding-tb-sm">{{item.message}}</view>
+        </view>
+        <view class="padding-tb-sm text-center text-gray text-sm" wx:if="{{Paging}}">
+            <text wx:if="{{Gone}}">没有了</text>
+            <text wx:else>加载中</text>
+        </view>
+    </view>
+    <view class="msg_empty text-center text-white padding-lr" wx:else>没有新的消息</view>
+</view>

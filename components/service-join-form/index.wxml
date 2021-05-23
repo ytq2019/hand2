@@ -1,0 +1,67 @@
+<form bindsubmit="submitForm" class="service-join-form">
+    <view class="cu-form-group">
+        <view class="title">名称</view>
+        <input name="name" value="{{name}}"></input>
+        <text catchtap="showHelpMsg" class="cuIcon-question text-gray" data-msg="个人入驻请输入姓名，机构入驻请输入公司名称"></text>
+    </view>
+    <view class="cu-form-group">
+        <view class="title">电话</view>
+        <input disabled="true" name="phone" value="{{phone}}"></input>
+        <button bindgetphonenumber="getPhoneNumber" class="cu-btn round sm line-{{themeStyle.color}}" openType="getPhoneNumber">获取手机号</button>
+    </view>
+    <view class="cu-bar bg-white solid-top">
+        <view class="action">选择服务项目（最多选2项）</view>
+    </view>
+    <view class="category_wrap bg-white padding-lr padding-bottom">
+        <button catchtap="selectCategory" class="cu-btn round bg-{{item.selected?themeStyle.color:'gray'}}" data-index="{{index}}" wx:if="{{item.system==0}}" wx:for="{{categoryData}}" wx:key="index">{{item.title}}</button>
+    </view>
+    <view class="desc_wrap cu-form-group">
+        <textarea autoHeight="{{true}}" bindinput="inputDesc" class="textarea" maxlength="{{descMaxLength}}" name="desc" placeholder="请简述服务覆盖范围" value="{{desc}}"></textarea>
+        <view class="action text-gray">{{descCurLength}}/{{descMaxLength}}</view>
+    </view>
+    <view class="solid-top padding-sm bg-white text-gray text-sm">
+        <text class="cuIcon-locationfill text-gray"></text>
+        <text class="margin-left-xs" wx:if="{{locationInfo.address}}">{{locationInfo.address}}</text>
+        <text catchtap="getLocation" wx:else>点击获取位置</text>
+    </view>
+    <view class="cu-bar bg-white margin-top">
+        <view class="action">身份证正、反面照片</view>
+    </view>
+    <view class="cu-form-group">
+        <image-uploader accept="image" bind:after-read="afterRead" bind:delete="deleteMedia" data-type="id_img" fileList="{{id_img}}" maxCount="{{2}}"></image-uploader>
+    </view>
+    <view class="cu-bar bg-white">
+        <view class="action">本人正面照片（作为头像展示）</view>
+    </view>
+    <view class="cu-form-group">
+        <image-uploader accept="image" bind:after-read="afterRead" bind:delete="deleteMedia" data-type="face_img" fileList="{{face_img}}" maxCount="{{1}}"></image-uploader>
+    </view>
+    <view class="cu-form-group" wx:if="{{!service_id}}">
+        <view class="title">入驻费用</view>
+        <view class="action">
+            <text class="text-gray margin-right-sm">{{settingData.valid_days>0?'服务时间'+settingData.valid_days+'天':''}}</text>
+            <text class="text-red text-xl">{{settingData.fee}}{{settingData.currency_info.title}}</text>
+        </view>
+    </view>
+    <view class="foot_wrap flex flex-direction padding margin-top">
+        <button class="cu-btn bg-{{themeStyle.color}} lg" formType="submit">确认提交</button>
+    </view>
+    <checkbox-group bindchange="changeAgree" wx:if="{{settingData.join_rule!=''&&!service_id}}">
+        <label class="weui-agree" for="weuiAgree">
+            <view class="weui-agree__text text-center">
+                <checkbox checked="{{isAgree}}" class="weui-agree__checkbox" id="weuiAgree" value="agree"></checkbox>
+                <view class="weui-agree__checkbox-icon">
+                    <icon class="weui-agree__checkbox-icon-check" size="9" type="success_no_circle" wx:if="{{isAgree}}"></icon>
+                </view>
+                阅读并同意<view catchtap="showJoinRuleDialog" class="inline weui-agree__link">《入驻公约》</view>
+            </view>
+        </label>
+    </checkbox-group>
+</form>
+<dialog useSlot show="{{showJoinRuleDialog}}" showCancelButton="{{false}}" showConfirmButton="{{false}}" title="入驻公约">
+    <view class="join_rule_wrap">
+        <view class="message text-left padding-top-xl padding-lr-lg padding-bottom">
+            <rich-text nodes="{{settingData.join_rule}}"></rich-text>
+        </view>
+    </view>
+</dialog>

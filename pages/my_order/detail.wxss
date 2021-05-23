@@ -1,0 +1,81 @@
+.cu-form-group.text-left {
+    justify-content: initial;
+}
+
+.cu-card.article>.cu-item .content image {
+    width: 180rpx;
+}
+
+.cu-card.article>.cu-item .content .text-content {
+    height: auto;
+}
+
+.seller_nickname {
+    width: 280rpx;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.cu-avatar {
+    background-color: #fff;
+    width: 100rpx;
+    height: 50rpx;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.cu-form-group input {
+    text-align: left;
+}
+
+.confirm_price_modal .text-right {
+    text-align: right!important;
+}
+
+.confirm_price_modal .text-red {
+    color: var(--red)!important;
+}
+
+.cu-form-group picker .picker {
+    text-align: left;
+}
+
+.seller_receive_info .title {
+    width: 165rpx!important;
+}
+
+.seller_receive_info .text-blue {
+    width: 65rpx!important;
+}
+
+.service_title {
+    flex: 1;
+}
+
+.service_message {
+    flex: 4;
+}
+
+.buyer_info .cu-form-group .title {
+    min-width: calc(4em + 30rpx);
+}
+
+.help_sell {
+    position: relative;
+}
+
+.help_sell .cu-avatar {
+    background-size: cover;
+}
+
+.share_member {
+    position: absolute;
+    right: 30rpx;
+    top: 25rpx;
+}
+
+.share_member text {
+    display: inline-block;
+    max-width: 300rpx;
+    vertical-align: middle;
+}

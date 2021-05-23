@@ -1,0 +1,4 @@
+<view class="empty text-center padding-lg" style="padding-top: {{paddingTop}}rpx;">
+    <image class="img" mode="aspectFill" src="{{AssetsUrl}}/default_empty.png"></image>
+    <view class="text-center text-gray margin-top" wx:if="{{msg}}">{{msg}}</view>
+</view>

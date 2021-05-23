@@ -1,0 +1,574 @@
+<include src="../templates/page-meta.wxml"></include>
+<view class="container" wx:if="{{!Loading}}">
+    <cu-custom bgColor="bg-gradual-{{ThemeStyle.gradual}}" isBack="{{true}}">
+        <view slot="backText"></view>
+        <view slot="content">交易详情</view>
+    </cu-custom>
+    <view class="bg-white padding-sm">
+        <view class="cu-steps">
+            <view class="cu-item {{Order.status==0||Order.status==-5?'text-orange':''}}">
+                <text class="cuIcon-radiobox{{Order.status>=0?'fill text-orange':''}}"></text> 待支付
+            </view>
+            <view class="cu-item {{Order.status==1?'text-orange':''}}">
+                <text class="cuIcon-radiobox{{Order.status>=1?'fill text-orange':''}}"></text> 待发货
+            </view>
+            <view class="cu-item {{Order.status==2?'text-orange':''}}">
+                <text class="cuIcon-radiobox{{Order.status>=2?'fill text-orange':''}}"></text> 已发货
+            </view>
+            <view class="cu-item">
+                <text class="cuIcon-radiobox{{Order.status==4||Order.status==-3?'fill text-orange':''}}"></text> 交易完成
+            </view>
+        </view>
+    </view>
+    <view class="cu-card article no-card margin-tb-sm">
+        <view class="cu-item shadow padding-top">
+            <view bindtap="toPage" class="content" data-path="/pages/detail/index?id={{Order.itemid}}">
+                <image mode="aspectFill" src="{{Order.item.thumb[0]?Order.item.thumb[0]:AssetsUrl+'/holder.png'}}"></image>
+                <view class="desc">
+                    <view class="text-content">
+                        <view class="text-black text-df">{{Order.title}}</view>
+                        <view class="text-sm" wx:if="{{Order.item.is_credit==1&&Order.trade_type==2}}">
+                            <rich-text nodes="{{Order._address}}"></rich-text>
+                            <text catchtap="copy" class="text-blue" data-content="{{Order.title}}{{Order.address}}">复制</text>
+                        </view>
+                    </view>
+                    <view class="flex">
+                        <view class="flex-sub text-right text-gray">X{{Order.total}}</view>
+                    </view>
+                </view>
+            </view>
+            <view class="padding-top-lg text-center">
+                <view class="text-red text-xxl">{{Order.paytype==1?Order.credit+Order.credit_title:Order.price+currencyInfo.title}}</view>
+                <view class="text-sm text-gray margin-top-xs">实际支付</view>
+            </view>
+        </view>
+    </view>
+    <view class="buyer_info">
+        <view class="cu-form-group help_sell" wx:if="{{Order.share_uid>0&&Order.is_seller}}">
+            <view class="title">
+                帮卖交易<text class="buyer_nickname text-cut margin-left">金额{{Order.commission}}{{currencyInfo.title}}</text>
+            </view>
+            <view class="share_member">
+                <view class="cu-avatar sm round" style="background-image:url({{Order.share_member.avatar}});"></view>
+                <text class="margin-left-xs text-cut">{{Order.share_member.nickname}}</text>
+            </view>
+        </view>
+        <view class="cu-form-group" wx:if="{{Order.name&&Order.mobile&&Order.address}}">
+            <view class="title">
+                收货信息
+            </view>
+            <text bindtap="showReceiveInfo" class="text-blue">查看</text>
+        </view>
+        <view class="cu-form-group" wx:if="{{Order.express_company&&Order.express_no}}">
+            <view class="title">
+                物流信息<text class="margin-left">{{Order.express_name}} {{Order.express_no}}</text>
+            </view>
+            <text bindtap="copy" class="text-blue" data-content="{{Order.express_name}} {{Order.express_no}}">复制</text>
+        </view>
+        <view class="cu-form-group" wx:if="{{Order.express_fee>0}}">
+            <view class="title">
+                运费<text class="margin-left text-red">{{Order.express_fee}}</text>
+            </view>
+        </view>
+        <view class="cu-form-group" wx:if="{{Order.buyer_pay_express_fee==1}}">
+            <view class="title">
+                运费<text class="margin-left text-red">到付</text>
+            </view>
+        </view>
+        <view class="cu-form-group" wx:if="{{Order.is_buyer}}">
+            <view class="title">
+                卖家信息<text class="seller_nickname text-cut margin-left">{{Order.seller.nickname}}</text>
+                <view class="cu-avatar margin-left-xs" style="background-image:url({{Order.seller.integrity_logo}});" wx:if="{{Order.seller.integrity_logo}}"></view>
+            </view>
+            <text bindtap="toPage" class="text-blue" data-path="/pages/message/chat?fromuid={{Order.seller_uid}}&itemid={{Order.itemid}}">联系卖家</text>
+        </view>
+        <view class="cu-form-group" wx:if="{{Order.is_seller}}">
+            <view class="title">
+                买家信息<text class="buyer_nickname text-cut margin-left">{{Order.buyer.nickname}}</text>
+            </view>
+            <text bindtap="toPage" class="text-blue" data-path="/pages/message/chat?fromuid={{Order.buyer_uid}}&itemid={{Order.itemid}}">联系买家</text>
+        </view>
+        <view class="cu-form-group text-left">
+            <view class="title">交易时间</view>
+            <text>{{Order.createtime}}</text>
+        </view>
+        <view class="cu-form-group text-left">
+            <view class="title">订单编号</view>
+            <text>{{Order.ordersn}}</text>
+        </view>
+        <view class="cu-form-group text-left" wx:if="{{Order.sendtime}}">
+            <view class="title">发货时间</view>
+            <text>{{Order.sendtime}}</text>
+        </view>
+        <view class="margin-top-sm" wx:if="{{Order.dispute.updatetime}}">
+            <view class="cu-bar">
+                <view class="action">售后处理</view>
+            </view>
+            <view class="cu-form-group text-left">
+                <view class="title">处理结果</view>
+                <text wx:if="{{Order.dispute.refund==1}}">卖家退款</text>
+                <text wx:else>驳回退款</text>
+            </view>
+            <view class="cu-form-group text-left">
+                <view class="title">处理理由</view>
+                <text>{{Order.dispute.remark}}</text>
+            </view>
+            <view wx:if="{{Order.dispute.refund==1}}">
+                <view class="cu-form-group text-left" wx:if="{{!Order.express_no}}">
+                    <view class="title">退货信息</view>
+                    <text>协商退还</text>
+                </view>
+                <view class="seller_receive_info cu-form-group text-left" wx:if="{{Order.express_no&&Order.dispute.express_no}}">
+                    <view class="service_title title">退货信息</view>
+                    <view class="service_message padding-tb-sm">
+                        <view>{{Order.dispute.express_name}} {{Order.dispute.express_no}}</view>
+                        <view bindtap="copy" class="text-blue" data-content="{{Order.dispute.express_name}} {{Order.dispute.express_no}}">复制</view>
+                    </view>
+                </view>
+            </view>
+            <view class="seller_receive_info cu-form-group text-left" wx:if="{{Order.dispute.receiver}}">
+                <view class="service_title title">收货信息</view>
+                <view class="service_message padding-tb-sm">
+                    <view>{{Order.dispute.receiver}} {{Order.dispute.mobile}} {{Order.dispute.address}}</view>
+                    <view bindtap="copy" class="text-blue" data-content="{{Order.dispute.receiver}} {{Order.dispute.mobile}} {{Order.dispute.address}}" wx:if="{{Order.dispute.receiver}}">复制</view>
+                </view>
+            </view>
+        </view>
+        <view class="margin-top-sm" wx:if="{{!Order.dispute.updatetime&&Order.dispute.refund==1}}">
+            <view class="cu-bar">
+                <view class="action">售后处理</view>
+            </view>
+            <view>
+                <view class="cu-form-group text-left">
+                    <view class="title">处理结果</view>
+                    <text>卖家退款</text>
+                </view>
+            </view>
+            <view wx:if="{{Order.dispute.refund==1}}">
+                <view class="cu-form-group text-left" wx:if="{{!Order.express_no}}">
+                    <view class="title">退货信息</view>
+                    <text>协商退还</text>
+                </view>
+                <view class="seller_receive_info cu-form-group text-left" wx:if="{{Order.express_no&&Order.dispute.express_no}}">
+                    <view class="service_title title">退货信息</view>
+                    <view class="service_message padding-tb-sm">
+                        <view>{{Order.dispute.express_name}} {{Order.dispute.express_no}}</view>
+                        <view bindtap="copy" class="text-blue" data-content="{{Order.dispute.express_name}} {{Order.dispute.express_no}}">复制</view>
+                    </view>
+                </view>
+            </view>
+            <view class="seller_receive_info cu-form-group text-left" wx:if="{{Order.dispute.receiver}}">
+                <view class="service_title title">收货信息</view>
+                <view class="service_message padding-tb-sm">
+                    <view>{{Order.dispute.receiver}} {{Order.dispute.mobile}} {{Order.dispute.address}}</view>
+                    <view bindtap="copy" class="text-blue" data-content="{{Order.dispute.receiver}} {{Order.dispute.mobile}} {{Order.dispute.address}}" wx:if="{{Order.dispute.receiver}}">复制</view>
+                </view>
+            </view>
+        </view>
+        <view class="margin-top-sm" wx:if="{{Order.dispute&&Order.dispute.buyer_uid!=0||Order.status==-1&&Order.reason!=''}}">
+            <view class="cu-bar">
+                <view class="action">买家申请</view>
+            </view>
+            <view>
+                <view class="cu-form-group text-left">
+                    <view class="service_title title">申请理由</view>
+                    <view class="service_message padding-tb-sm" wx:if="{{Order.dispute.buyer_message}}">{{Order.dispute.buyer_message}}</view>
+                    <block wx:else>
+                        <view class="service_message padding-tb-sm" wx:if="{{Order.reason}}">{{Order.reason}}</view>
+                    </block>
+                </view>
+                <view class="cu-form-group" wx:if="{{Order.dispute.buyer_imgs.length}}">
+                    <view class="grid col-4 grid-square flex-sub margin-top-sm">
+                        <view class="bg-img" wx:for="{{Order.dispute.buyer_imgs}}" wx:key="index">
+                            <image mode="aspectFill" src="{{item}}"></image>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <view class="margin-top-sm" wx:if="{{Order.dispute&&Order.dispute.seller_uid!=0}}">
+            <view class="cu-bar">
+                <view class="action">卖家申诉</view>
+            </view>
+            <view>
+                <view class="cu-form-group text-left">
+                    <view class="service_title title">申诉理由</view>
+                    <view class="service_message padding-tb-sm">{{Order.dispute.seller_message}}</view>
+                </view>
+                <view class="cu-form-group" wx:if="{{Order.dispute.seller_imgs.length}}">
+                    <view class="grid col-4 grid-square flex-sub margin-top-sm">
+                        <view class="bg-img" wx:for="{{Order.dispute.seller_imgs}}" wx:key="index">
+                            <image mode="aspectFill" src="{{item}}"></image>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view wx:if="{{Order.is_buyer}}">
+        <view class="flex margin-top-lg text-center" wx:if="{{Order.status==-5}}">
+            <view class="flex-sub">
+                <button bindtap="cancelBuy" class="cu-btn lg line-orange">不要了</button>
+            </view>
+            <view class="flex-sub">
+                <button class="cu-btn lg bg-white text-black">等待确认</button>
+            </view>
+        </view>
+        <view wx:if="{{Order.status==-4||Order.status==-1}}">
+            <block wx:if="{{Order.dispute.seller_uid==0}}">
+                <view class="flex margin-top-lg text-center">
+                    <view class="flex-sub">
+                        <button bindtap="showCancelRefund" class="cu-btn lg bg-red">取消退款</button>
+                    </view>
+                </view>
+                <view class="margin-top-sm padding-sm">
+                    提示：等待卖家回应，若 <text class="text-red">{{Order.dispute.reply_remain_time}}</text> 未回应，则自动退款
+                </view>
+            </block>
+            <block wx:else>
+                <view class="flex margin-top-lg text-center">
+                    <view class="flex-sub">
+                        <button class="cu-btn lg line-red" openType="contact">联系客服</button>
+                    </view>
+                    <view class="flex-sub" wx:if="{{Order.dispute.refund==1&&Order.dispute.express_no==''&&Order.express_no!=''}}">
+                        <button bindtap="showBuyerShipModal" class="cu-btn lg bg-{{ThemeStyle.color}}">确认发出</button>
+                    </view>
+                    <view class="flex-sub" wx:if="{{!Order.dispute||Order.dispute.updatetime==0}}">
+                        <button bindtap="showCancelRefund" class="cu-btn lg bg-red">取消退款</button>
+                    </view>
+                    <view class="flex-sub" wx:if="{{Order.trade_type==2&&Order.dispute.refund==1&&Order.dispute.shiptime==0}}">
+                        <button bindtap="confirmShipped" class="cu-btn lg bg-red">确认送达</button>
+                    </view>
+                </view>
+                <view class="margin-top-sm padding-sm" wx:if="{{Order.refund_remain_time}}">
+                    提示：等待卖家回应，若 <text class="text-red">{{Order.refund_remain_time}}</text> 未回应，则自动退款
+                </view>
+                <view class="margin-top-sm padding-sm" wx:if="{{Order.dispute.ship_remain_time}}">
+                    提示：等待买家{{Order.trade_type==2?'退还':'寄回'}}物品，若 <text class="text-red">{{Order.dispute.ship_remain_time}}</text> 未回应，则退款自动终止
+                </view>
+                <block wx:if="{{Order.dispute.express_no==''}}">
+                    <view class="margin-top-sm padding-sm" wx:if="{{Order.dispute.refund_remain_time}}">
+                        提示：等待卖家确认收到退货，若 <text class="text-red">{{Order.dispute.refund_remain_time}}</text> 未回应，则自动退款
+                    </view>
+                </block>
+                <block wx:else>
+                    <view class="margin-top-sm padding-sm" wx:if="{{Order.dispute.remain_receive_time}}">
+                        提示：等待卖家确认收到退货，若 <text class="text-red">{{Order.dispute.remain_receive_time}}</text> 未回应，则自动退款
+                    </view>
+                </block>
+            </block>
+        </view>
+        <view wx:if="{{Order.status==0}}">
+            <view class="flex margin-top-lg text-center">
+                <view class="flex-sub">
+                    <button bindtap="cancelBuy" class="cu-btn lg bg-white">不要了</button>
+                </view>
+                <view class="flex-sub">
+                    <button bindtap="toPay" class="cu-btn lg bg-{{ThemeStyle.color}}">立即付款</button>
+                </view>
+            </view>
+            <view class="margin-top-sm padding-sm">
+                提示：支付订单将于 <text class="text-red">{{Order._pay_expiretime}}</text> 后失效，请尽快支付，如过期后请重新下单。
+            </view>
+        </view>
+        <view wx:if="{{Order.status==1}}">
+            <view class="flex margin-top-lg text-center">
+                <view class="flex-sub">
+                    <button bindtap="showRefundModal" class="cu-btn lg bg-red">申请退款</button>
+                </view>
+            </view>
+        </view>
+        <view wx:if="{{Order.status==2}}">
+            <view class="flex margin-top-lg text-center">
+                <view class="flex-sub" wx:if="{{!Order.dispute}}">
+                    <button bindtap="showServiceModal" class="cu-btn lg bg-red">申请售后</button>
+                </view>
+                <view class="flex-sub">
+                    <button bindtap="confirmReceive" class="cu-btn lg bg-{{ThemeStyle.color}}">确认收货</button>
+                </view>
+            </view>
+            <view class="margin-top-sm padding-sm" wx:if="{{Order.remain_receive_time}}">
+                提示：卖家已发货，将于 <text class="text-red">{{Order.remain_receive_time}}</text> 后自动确认收货，如对闲置物品存在争议，请尽快申请售后。
+            </view>
+        </view>
+    </view>
+    <view wx:if="{{Order.is_seller}}">
+        <view class="flex margin-top-lg text-center" wx:if="{{Order.status==-5}}">
+            <view class="flex-sub">
+                <button bindtap="openConfirmPrice" class="cu-btn lg bg-{{ThemeStyle.color}}" data-price="{{Order.price}}">设置运费</button>
+            </view>
+        </view>
+        <view wx:if="{{Order.status==-4||Order.status==-1}}">
+            <view class="flex margin-top-lg text-center">
+                <block wx:if="{{Order.dispute.seller_uid==0}}">
+                    <view class="flex-sub">
+                        <button bindtap="showAgreementRefund" class="cu-btn lg line-red">同意退款</button>
+                    </view>
+                    <view class="flex-sub">
+                        <button bindtap="showServiceModal" class="cu-btn lg bg-{{ThemeStyle.color}}">申诉理由</button>
+                    </view>
+                </block>
+                <block wx:else>
+                    <view class="flex-sub">
+                        <button class="cu-btn lg line-red" openType="contact">联系客服</button>
+                    </view>
+                    <view class="flex-sub" wx:if="{{!Order.express_no}}">
+                        <button bindtap="showAgreementRefund" class="cu-btn lg bg-red">同意退款</button>
+                    </view>
+                    <block wx:else>
+                        <view class="flex-sub" wx:if="{{!Order.dispute.receiver}}">
+                            <button bindtap="showAddressModal" class="cu-btn lg bg-{{ThemeStyle.color}}">提交地址</button>
+                        </view>
+                        <view class="flex-sub" wx:else>
+                            <button bindtap="confirmReceiver" class="cu-btn lg bg-{{ThemeStyle.color}}">确认收到</button>
+                        </view>
+                    </block>
+                </block>
+            </view>
+            <view class="margin-top-sm padding-sm" wx:if="{{Order.refund_remain_time}}">
+                提示：等待卖家回应，若 <text class="text-red">{{Order.refund_remain_time}}</text> 未回应，则自动退款
+            </view>
+            <view class="margin-top-sm padding-sm" wx:if="{{Order.dispute.reply_remain_time}}">
+                提示：等待卖家回应，若 <text class="text-red">{{Order.dispute.reply_remain_time}}</text> 未回应，则自动退款
+            </view>
+            <view class="margin-top-sm padding-sm" wx:if="{{Order.dispute.remain_receive_time}}">
+                提示：等待卖家确认收到退货，若 <text class="text-red">{{Order.dispute.remain_receive_time}}</text> 未回应，则自动退款
+            </view>
+            <view class="margin-top-sm padding-sm" wx:if="{{Order.dispute.ship_remain_time}}">
+                提示：等待买家{{Order.trade_type==2?'退还':'寄回'}}物品，若 <text class="text-red">{{Order.dispute.ship_remain_time}}</text> 未回应，则退款自动终止
+            </view>
+        </view>
+        <view class="flex margin-top-lg text-center" wx:if="{{Order.status==0}}">
+            <view class="flex-sub">
+                <button class="cu-btn lg bg-white text-black">等待付款</button>
+            </view>
+        </view>
+        <view class="flex margin-top-lg text-center" wx:if="{{Order.status==1}}">
+            <view class="flex-sub" wx:if="{{Order.trade_type==2}}">
+                <button class="cu-btn lg bg-white text-black">等待自提</button>
+            </view>
+            <view class="flex-sub" wx:else>
+                <button bindtap="showShipModal" class="cu-btn lg bg-{{ThemeStyle.color}}">点击发货</button>
+            </view>
+        </view>
+        <view class="flex margin-top-lg text-center" wx:if="{{Order.status==2}}">
+            <view class="flex-sub">
+                <button class="cu-btn lg bg-white text-black">已发货</button>
+            </view>
+        </view>
+    </view>
+</view>
+<view class="confirm_price_modal cu-modal {{showConfirmPrice?'show':''}}">
+    <form bindsubmit="setOrderExpressFee">
+        <view class="cu-dialog">
+            <view class="cu-bar bg-white justify-end">
+                <view class="content">设置运费</view>
+                <view bindtap="closeConfirmPrice" class="action">
+                    <text class="cuIcon-close text-red"></text>
+                </view>
+            </view>
+            <view>
+                <view class="cu-form-group">
+                    <view class="title">物品价格</view>
+                    <input disabled class="text-red" value="{{confirmItemPrice}}" wx:if="{{showConfirmPrice}}"></input>
+                </view>
+                <view class="cu-form-group">
+                    <view class="title">运费</view>
+                    <input bindinput="inputExpressFee" placeholder="请输入" wx:if="{{showConfirmPrice}}"></input>
+                </view>
+                <view class="cu-form-group">
+                    <view class="title">总价</view>
+                    <input disabled class="text-right text-red" value="{{OrderPrice}}" wx:if="{{showConfirmPrice}}"></input>
+                </view>
+            </view>
+            <view class="cu-bar bg-white justify-center padding-tb">
+                <view class="action">
+                    <button bindtap="closeConfirmPrice" class="cu-btn margin-right">取消</button>
+                    <button class="cu-btn bg-{{ThemeStyle.color}}" formType="submit">确定</button>
+                </view>
+            </view>
+        </view>
+    </form>
+</view>
+<view class="refund_modal cu-modal {{showRefundModal?'show':''}}">
+    <view class="cu-dialog">
+        <form bindsubmit="applyRefund">
+            <view class="cu-bar bg-white justify-end">
+                <view class="content">申请退款</view>
+                <view bindtap="hideRefundModal" class="action">
+                    <text class="cuIcon-close text-gray"></text>
+                </view>
+            </view>
+            <view>
+                <view class="cu-form-group">
+                    <textarea autoFocus="{{true}}" class="text-left" maxlength="500" name="content" placeholder="退款原因" wx:if="{{showRefundModal}}"></textarea>
+                </view>
+            </view>
+            <view class="cu-bar bg-white justify-center padding-tb">
+                <view class="action">
+                    <button bindtap="hideRefundModal" class="cu-btn lg margin-right">取消</button>
+                    <button class="cu-btn lg margin-left bg-{{ThemeStyle.color}}" formType="submit">提交</button>
+                </view>
+            </view>
+        </form>
+    </view>
+</view>
+<view class="service_modal cu-modal {{showServiceModal?'show':''}}">
+    <view class="cu-dialog">
+        <form bindsubmit="applyService">
+            <view class="cu-bar bg-white justify-end">
+                <view class="content">申请售后</view>
+                <view bindtap="hideServiceModal" class="action">
+                    <text class="cuIcon-close text-gray"></text>
+                </view>
+            </view>
+            <view>
+                <view class="cu-bar bg-white">
+                    <view class="action">
+                        图片
+                    </view>
+                </view>
+                <view class="cu-form-group">
+                    <view class="grid col-4 grid-square flex-sub">
+                        <view bindtap="ViewImage" data-url="{{ServiceImgList[index]}}" wx:for="{{ServiceImgList}}" wx:key="{{index}}">
+                            <image mode="widthFix" src="{{ServiceImgList[index]}}"></image>
+                            <view catchtap="DelImg" class="cu-tag bg-red" data-index="{{index}}">
+                                <text class="cuIcon-close"></text>
+                            </view>
+                        </view>
+                        <view bindtap="ChooseImg" class="solids" wx:if="{{ServiceImgList.length<UploadImgTotal}}">
+                            <text class="cuIcon-cameraadd"></text>
+                        </view>
+                    </view>
+                </view>
+                <view class="cu-form-group">
+                    <textarea autoFocus="{{true}}" class="text-left" maxlength="500" name="content" placeholder="售后原因" wx:if="{{showServiceModal}}"></textarea>
+                </view>
+            </view>
+            <view class="cu-bar bg-white justify-center padding-tb">
+                <view class="action">
+                    <button bindtap="hideServiceModal" class="cu-btn lg margin-right">取消</button>
+                    <button class="cu-btn lg margin-left bg-{{ThemeStyle.color}}" formType="submit">提交</button>
+                </view>
+            </view>
+        </form>
+    </view>
+</view>
+<view class="ship_modal cu-modal {{showShipModal?'show':''}}">
+    <view class="cu-dialog">
+        <form bindsubmit="sendOrder">
+            <view class="cu-bar bg-white justify-end">
+                <view class="content">订单发货</view>
+                <view bindtap="hideShipModal" class="action">
+                    <text class="cuIcon-close text-red"></text>
+                </view>
+            </view>
+            <view class="cu-form-group">
+                <view class="title">快递公司</view>
+                <picker bindchange="PickerChange" range="{{expressList}}" rangeKey="name" value="{{epIndex}}">
+                    <view class="picker">
+                        {{epIndex!=undefined?expressList[epIndex].name:'请选择'}}
+                    </view>
+                </picker>
+            </view>
+            <view class="cu-form-group">
+                <view class="title">快递单号</view>
+                <input name="express_no" placeholder="请输入" wx:if="{{showShipModal}}"></input>
+            </view>
+            <view class="cu-bar bg-white justify-center padding-tb">
+                <view class="action">
+                    <button bindtap="hideShipModal" class="cu-btn margin-right">取消</button>
+                    <button class="cu-btn bg-{{ThemeStyle.color}}" formType="submit">确定</button>
+                </view>
+            </view>
+        </form>
+    </view>
+</view>
+<view class="address_modal cu-modal {{showAddressModal?'show':''}}">
+    <view class="cu-dialog">
+        <form bindsubmit="submitAddress">
+            <view class="cu-bar bg-white justify-end">
+                <view class="content">收货信息</view>
+                <view bindtap="hideAddressModal" class="action">
+                    <text class="cuIcon-close text-red"></text>
+                </view>
+            </view>
+            <view class="cu-form-group">
+                <view class="title">收件人</view>
+                <input name="receiver" placeholder="请输入" wx:if="{{showAddressModal}}"></input>
+            </view>
+            <view class="cu-form-group">
+                <view class="title">联系电话</view>
+                <input name="mobile" placeholder="请输入" wx:if="{{showAddressModal}}"></input>
+            </view>
+            <view class="cu-form-group">
+                <view class="title">收货地址</view>
+                <input name="address" placeholder="请输入" wx:if="{{showAddressModal}}"></input>
+            </view>
+            <view class="cu-bar bg-white justify-center padding-tb">
+                <view class="action">
+                    <button bindtap="hideAddressModal" class="cu-btn margin-right">取消</button>
+                    <button class="cu-btn bg-{{ThemeStyle.color}}" formType="submit">确定</button>
+                </view>
+            </view>
+        </form>
+    </view>
+</view>
+<view class="buyer_ship_modal cu-modal {{showBuyerShipModal?'show':''}}">
+    <view class="cu-dialog">
+        <form bindsubmit="sendOrderBuyer">
+            <view class="cu-bar bg-white justify-end">
+                <view class="content">物品发货</view>
+                <view bindtap="hideBuyerShipModal" class="action">
+                    <text class="cuIcon-close text-red"></text>
+                </view>
+            </view>
+            <view class="cu-form-group">
+                <view class="title">快递公司</view>
+                <picker bindchange="PickerChangeBuyer" range="{{expressList}}" rangeKey="name" value="{{epIndexBuyer}}">
+                    <view class="picker">
+                        {{epIndexBuyer!=undefined?expressList[epIndexBuyer].name:'请选择'}}
+                    </view>
+                </picker>
+            </view>
+            <view class="cu-form-group">
+                <view class="title">快递单号</view>
+                <input name="express_no" placeholder="请输入" wx:if="{{showBuyerShipModal}}"></input>
+            </view>
+            <view class="cu-bar bg-white justify-center padding-tb">
+                <view class="action">
+                    <button bindtap="hideBuyerShipModal" class="cu-btn margin-right">取消</button>
+                    <button class="cu-btn bg-{{ThemeStyle.color}}" formType="submit">确定</button>
+                </view>
+            </view>
+        </form>
+    </view>
+</view>
+<view class="reveive_modal cu-modal {{showReceiveModal?'show':''}}">
+    <view class="cu-dialog">
+        <view class="cu-bar bg-white justify-end">
+            <view class="content">收货信息</view>
+            <view bindtap="hideReceiveInfo" class="action">
+                <text class="cuIcon-close text-red"></text>
+            </view>
+        </view>
+        <view class="flex flex-wrap bg-white padding-sm text-left">
+            <view class="basis-xs">联系人</view>
+            <view class="basis-xl">{{Order.name}}</view>
+        </view>
+        <view class="flex flex-wrap bg-white padding-sm text-left">
+            <view class="basis-xs">电话</view>
+            <view class="basis-xl">{{Order.mobile}}</view>
+        </view>
+        <view class="flex flex-wrap bg-white padding-sm text-left">
+            <view class="basis-xs">收货地址</view>
+            <view class="basis-xl">{{Order.address}}</view>
+        </view>
+        <view class="cu-bar bg-white justify-center padding-tb">
+            <view class="action">
+                <button bindtap="hideReceiveInfo" class="cu-btn margin-right">关闭</button>
+                <button bindtap="copy" class="cu-btn bg-{{ThemeStyle.color}}" data-content="{{Order.name}} {{Order.mobile}} {{Order.address}}">复制</button>
+            </view>
+        </view>
+    </view>
+</view>

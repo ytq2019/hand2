@@ -1,0 +1,50 @@
+<include src="../templates/page-meta.wxml"></include>
+<view class="container" wx:if="{{!Loading}}">
+    <cu-custom bgColor="bg-gradual-{{ThemeStyle.gradual}}" isBack="{{true}}">
+        <view slot="backText"></view>
+        <view slot="content">商家入驻申请</view>
+    </cu-custom>
+    <form bindsubmit="submitForm">
+        <view class="cu-form-group">
+            <view class="title">姓名</view>
+            <input name="realname" value="{{Shop.realname}}"></input>
+        </view>
+        <view class="cu-form-group">
+            <view class="title">电话</view>
+            <input disabled="true" name="phone" value="{{Shop.phone||PhoneNumber}}"></input>
+            <button bindgetphonenumber="getPhoneNumber" class="cu-btn bg-green shadow" openType="getPhoneNumber">获取手机号</button>
+        </view>
+        <view class="cu-form-group">
+            <view class="title">商家名称</view>
+            <input name="title" value="{{Shop.title}}"></input>
+        </view>
+        <view class="cu-form-group">
+            <view class="title">地址</view>
+            <input name="address" value="{{Shop.address}}"></input>
+        </view>
+        <view class="cu-bar bg-white margin-top">
+            <view class="action">
+                资质（身份证正反面和营业执照）
+            </view>
+            <view class="action">
+                {{imgList.length||0}}/{{UploadImgTotal}}
+            </view>
+        </view>
+        <view class="cu-form-group">
+            <view class="grid col-4 grid-square flex-sub">
+                <view bindtap="ViewImage" data-url="{{imgList[index]}}" wx:for="{{imgList}}" wx:key="index">
+                    <image mode="widthFix" src="{{imgList[index]}}"></image>
+                    <view catchtap="DelImg" class="cu-tag bg-red" data-index="{{index}}">
+                        <text class="cuIcon-close"></text>
+                    </view>
+                </view>
+                <view bindtap="ChooseImg" class="solids" wx:if="{{imgList.length<UploadImgTotal}}">
+                    <text class="cuIcon-cameraadd"></text>
+                </view>
+            </view>
+        </view>
+        <view class="flex flex-direction padding">
+            <button class="cu-btn bg-{{ThemeStyle.color}} lg" formType="submit">提交申请</button>
+        </view>
+    </form>
+</view>

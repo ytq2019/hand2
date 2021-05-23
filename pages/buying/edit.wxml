@@ -1,0 +1,8 @@
+<include src="../templates/page-meta.wxml"></include>
+<view class="container" wx:if="{{!Loading}}">
+    <cu-custom bgColor="bg-gradual-{{ThemeStyle.gradual}}" isBack="{{true}}">
+        <view slot="backText"></view>
+        <view slot="content">编辑求购</view>
+    </cu-custom>
+    <buying-form categoryData="{{categoryData}}" itemData="{{itemData}}" themeStyle="{{ThemeStyle}}" wxadInfo="{{wxadInfo}}"></buying-form>
+</view>

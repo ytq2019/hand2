@@ -1,0 +1,37 @@
+.head_wrap {
+    position: relative;
+}
+
+.left_wrap {
+    width: 120rpx;
+}
+
+.left_wrap .cu-avatar {
+    width: 120rpx;
+    height: 120rpx;
+}
+
+.right_wrap {
+    width: 100%;
+    overflow: hidden;
+}
+
+.btn_wrap {
+    position: absolute;
+    right: 20rpx;
+    top: 80rpx;
+    z-index: 1;
+}
+
+.mpcode_wrap {
+    padding: 200rpx 100rpx;
+}
+
+.mpcode_wrap image {
+    width: 400rpx;
+    height: 400rpx;
+}
+
+.cu-form-group .title {
+    min-width: calc(4em + 30rpx);
+}

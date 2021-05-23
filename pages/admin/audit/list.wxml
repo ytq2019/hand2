@@ -1,0 +1,249 @@
+<include src="../../templates/page-meta.wxml"></include>
+<cu-custom bgColor="bg-gradual-{{ThemeStyle.gradual}}" isCustom="{{true}}">
+    <view slot="backText"></view>
+    <view slot="content">待审核</view>
+</cu-custom>
+<view class="container" wx:if="{{!Loading}}">
+    <scroll-view scrollX class="bg-white nav fixed" style="top: {{CustomBar}}px;">
+        <view class="flex text-center">
+            <view bindtap="tabSelect" class="cu-item flex-sub {{index==TabCur?'text-'+ThemeStyle.gradual+' cur':''}}" data-index="{{index}}" wx:for="{{TabList}}" wx:key="index">
+                {{item.title}}
+                <view class="cu-tag badge" wx:if="{{totalData[item.act]>0}}">{{totalData[item.act]<=99?totalData[item.act]:'99+'}}</view>
+            </view>
+        </view>
+    </scroll-view>
+    <view class="list_wrap" wx:if="{{(TabList[TabCur].act=='post'||TabList[TabCur].act=='buying')&&List.length}}">
+        <view class="flex cu-card dynamic" wx:for="{{List}}" wx:key="index">
+            <view class="list_left padding-left margin-top" wx:if="{{showBatch}}">
+                <checkbox-group bindchange="checkItem" data-index="{{index}}">
+                    <checkbox checked="{{item.checked?true:false}}" class="round red"></checkbox>
+                </checkbox-group>
+            </view>
+            <view class="cu-item shadow">
+                <view class="cu-list menu-avatar">
+                    <view class="cu-item">
+                        <view catchtap="toPage" class="cu-avatar round" data-url="/pages/my_list/index?uid={{item.seller_uid}}" style="background-image:url({{item.avatar?item.avatar:LogoUrl}});"></view>
+                        <view catchtap="toPage" class="content text-cut" data-url="/pages/my_list/index?uid={{item.seller_uid}}">{{item.nickname}}</view>
+                        <view class="action text-gray text-sm">{{item.left_time=='刚刚'?item.left_time:item.left_time+'前'}}发布</view>
+                        <view class="category_wrap cu-tag sm bg-{{ThemeStyle.gradual}} radius" wx:if="{{item.category}}">{{item.category.title}}</view>
+                    </view>
+                </view>
+                <view class="text-content">
+                    <rich-text nodes="{{item.title}}"></rich-text>
+                </view>
+                <view class="text-content" wx:if="{{item.description}}">
+                    <rich-text nodes="{{item.description}}"></rich-text>
+                </view>
+                <view class="grid flex-sub padding-lr col-3 grid-square padding-bottom" wx:if="{{item.thumb.length||item.album.length}}">
+                    <view bindtap="previewImg" data-index="{{index}}" data-sub-index="{{idx}}" style="background-image:url({{photo}});background-repeat:no-repeat;background-size:cover;" wx:for="{{item.thumb.length?item.thumb:item.album}}" wx:for-index="idx" wx:for-item="photo" wx:key="index"></view>
+                </view>
+                <view class="sidebar_wrap flex">
+                    <view class="left">
+                        <view catchtap="toPage" class="padding-sm text-grey" data-url="/pages/detail/index?id={{item.id}}">
+                            查看详情<text class="cuIcon-right"></text>
+                        </view>
+                    </view>
+                    <view class="right">
+                        <view class="operate_wrap padding-sm text-right" wx:if="{{!showBatch}}">
+                            <button catchtap="showCategoryDialog" class="cu-btn sm round bg-brown text-xs" data-category-title="{{item.category?item.category.title:''}}" data-id="{{item.id}}" wx:if="{{item.type==1}}">分类</button>
+                            <button catchtap="showAcceptDialog" class="cu-btn sm round bg-green text-xs" data-id="{{item.id}}">通过</button>
+                            <button catchtap="showRefuseDialog" class="cu-btn sm round bg-red text-xs" data-id="{{item.id}}">拒绝</button>
+                            <button catchtap="showDeleteDialog" class="cu-btn sm round bg-black text-xs" data-id="{{item.id}}">删除</button>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <view class="padding-tb-sm text-center text-gray text-sm" wx:if="{{Paging||Gone}}">
+            <text wx:if="{{Gone}}">没有了</text>
+            <text wx:else>加载中</text>
+        </view>
+    </view>
+    <view class="list_wrap" wx:elif="{{TabList[TabCur].act=='comment'&&List.length}}">
+        <view class="flex cu-card dynamic" wx:for="{{List}}" wx:key="index">
+            <view class="list_left padding-left margin-top" wx:if="{{showBatch}}">
+                <checkbox-group bindchange="checkItem" data-index="{{index}}">
+                    <checkbox checked="{{item.checked?true:false}}" class="round red"></checkbox>
+                </checkbox-group>
+            </view>
+            <view class="cu-item shadow">
+                <view class="cu-list menu-avatar">
+                    <view class="cu-item">
+                        <view catchtap="toPage" class="cu-avatar round" data-url="/pages/my_list/index?uid={{item.seller_uid}}" style="background-image:url({{item.avatar?item.avatar:LogoUrl}});"></view>
+                        <view catchtap="toPage" class="content text-cut" data-url="/pages/my_list/index?uid={{item.seller_uid}}">{{item.nickname}}</view>
+                        <view class="action text-gray text-sm">{{item.left_time=='刚刚'?item.left_time:item.left_time+'前'}}发布</view>
+                    </view>
+                </view>
+                <view class="text-content">{{item.message}}</view>
+                <view class="text-content padding-bottom" wx:if="{{item.reply}}">
+                    <view class="reply_wrap padding-xs bg-gray">卖家回复：{{item.reply}}</view>
+                </view>
+                <view class="flex">
+                    <view class="basis-sm">
+                        <view catchtap="toPage" class="padding-sm text-grey" data-url="/pages/detail/index?id={{item.item_id}}">
+                            查看详情<text class="cuIcon-right"></text>
+                        </view>
+                    </view>
+                    <view class="basis-lg">
+                        <view class="operate_wrap padding-sm text-right" wx:if="{{!showBatch}}">
+                            <button catchtap="showAcceptDialog" class="cu-btn sm round bg-green text-xs" data-id="{{item.id}}">通过</button>
+                            <button catchtap="showNoReasonRefuseDialog" class="cu-btn sm round bg-red text-xs" data-id="{{item.id}}">拒绝</button>
+                            <button catchtap="showDeleteDialog" class="cu-btn sm round bg-black text-xs" data-id="{{item.id}}">删除</button>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <view class="padding-tb-sm text-center text-gray text-sm" wx:if="{{Paging||Gone}}">
+            <text wx:if="{{Gone}}">没有了</text>
+            <text wx:else>加载中</text>
+        </view>
+    </view>
+    <view class="list_wrap" wx:elif="{{TabList[TabCur].act=='shop'&&List.length}}">
+        <view class="flex cu-card dynamic" wx:for="{{List}}" wx:key="index">
+            <view class="list_left padding-left margin-top" wx:if="{{showBatch}}">
+                <checkbox-group bindchange="checkItem" data-index="{{index}}">
+                    <checkbox checked="{{item.checked?true:false}}" class="round red"></checkbox>
+                </checkbox-group>
+            </view>
+            <view class="cu-item shadow">
+                <view class="cu-list menu-avatar">
+                    <view class="cu-item">
+                        <view catchtap="toPage" class="cu-avatar round" data-url="/pages/my_list/index?uid={{item.uid}}" style="background-image:url({{item.avatar}});"></view>
+                        <view catchtap="toPage" class="content text-cut" data-url="/pages/my_list/index?uid={{item.uid}}">{{item.nickname}}</view>
+                        <view class="action text-gray text-sm">{{item.left_time=='刚刚'?item.left_time:item.left_time+'前'}}</view>
+                    </view>
+                </view>
+                <view class="text-content">商家名称：{{item.title}}</view>
+                <view class="text-content">手机号：<text catchtap="callPhone" class="text-blue" data-phone="{{item.phone}}">{{item.phone}}</text>
+                </view>
+                <view class="text-content">地址：{{item.address}}</view>
+                <view class="grid flex-sub padding-lr col-3 grid-square padding-bottom" wx:if="{{item.album.length}}">
+                    <view bindtap="previewImg" data-index="{{index}}" data-sub-index="{{idx}}" style="background-image:url({{photo}});background-repeat:no-repeat;background-size:contain;" wx:for="{{item.album}}" wx:for-index="idx" wx:for-item="photo" wx:key="idx"></view>
+                </view>
+                <view class="flex">
+                    <view class="basis-sm"></view>
+                    <view class="basis-lg">
+                        <view class="operate_wrap padding-sm text-right" wx:if="{{!showBatch}}">
+                            <button catchtap="showAcceptDialog" class="cu-btn sm round bg-green text-xs" data-id="{{item.id}}">通过</button>
+                            <button catchtap="showNoReasonRefuseDialog" class="cu-btn sm round bg-red text-xs" data-id="{{item.id}}">拒绝</button>
+                            <button catchtap="showDeleteDialog" class="cu-btn sm round bg-black text-xs" data-id="{{item.id}}">删除</button>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <view class="padding-tb-sm text-center text-gray text-sm" wx:if="{{Paging||Gone}}">
+            <text wx:if="{{Gone}}">没有了</text>
+            <text wx:else>加载中</text>
+        </view>
+    </view>
+    <view class="list_wrap" wx:elif="{{TabList[TabCur].act=='service'&&List.length}}">
+        <view class="flex cu-card dynamic" wx:for="{{List}}" wx:key="index">
+            <view class="list_left padding-left margin-top" wx:if="{{showBatch}}">
+                <checkbox-group bindchange="checkItem" data-index="{{index}}">
+                    <checkbox checked="{{item.checked?true:false}}" class="round red"></checkbox>
+                </checkbox-group>
+            </view>
+            <view class="cu-item shadow">
+                <view class="cu-list menu-avatar">
+                    <view class="cu-item">
+                        <view catchtap="toPage" class="cu-avatar round" data-url="/pages/my_list/index?uid={{item.uid}}" style="background-image:url({{item.face_img}});"></view>
+                        <view catchtap="toPage" class="content text-cut" data-url="/pages/my_list/index?uid={{item.uid}}">{{item.name}}</view>
+                        <view class="action text-gray text-sm">{{item.left_time=='刚刚'?item.left_time:item.left_time+'前'}}</view>
+                    </view>
+                </view>
+                <view class="text-content">电话：<text catchtap="callPhone" class="text-blue" data-phone="{{item.phone}}">{{item.phone}}</text>
+                </view>
+                <view class="text-content">地址：<text catchtap="toMap" class="text-blue" data-lat="{{item.lat}}" data-lng="{{item.lng}}">{{item.address}}</text>
+                </view>
+                <view class="text-content">服务项目：
+                    <view class="cu-tag bg-gray radius" wx:for="{{item.categorys}}" wx:for-index="idx" wx:for-item="category" wx:key="index">{{category.title}}</view>
+                </view>
+                <view class="text-content">服务范围：{{item.desc}}</view>
+                <view class="grid flex-sub padding-lr col-3 grid-square padding-bottom" wx:if="{{item.album.length}}">
+                    <view bindtap="previewImg" data-index="{{index}}" data-sub-index="{{idx}}" style="background-image:url({{photo}});background-repeat:no-repeat;background-size:contain;" wx:for="{{item.album}}" wx:for-index="idx" wx:for-item="photo" wx:key="idx"></view>
+                </view>
+                <view class="flex">
+                    <view class="basis-sm"></view>
+                    <view class="basis-lg">
+                        <view class="operate_wrap padding-sm text-right" wx:if="{{!showBatch}}">
+                            <button catchtap="showAcceptDialog" class="cu-btn sm round bg-green text-xs" data-id="{{item.id}}">通过</button>
+                            <button catchtap="showRefuseDialog" class="cu-btn sm round bg-red text-xs" data-id="{{item.id}}">拒绝</button>
+                            <button catchtap="showDeleteDialog" class="cu-btn sm round bg-black text-xs" data-id="{{item.id}}">删除</button>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <view class="padding-tb-sm text-center text-gray text-sm" wx:if="{{Paging||Gone}}">
+            <text wx:if="{{Gone}}">没有了</text>
+            <text wx:else>加载中</text>
+        </view>
+    </view>
+    <empty wx:else></empty>
+    <view class="foot_wrap flex bg-white padding solid-top" wx:if="{{showBatch}}">
+        <view class="flex-sub padding-right-xs" wx:if="{{TabList[TabCur].act=='post'}}">
+            <button bindtap="showCategoryDialog" class="cu-btn round bg-brown">批量分类</button>
+        </view>
+        <view class="flex-sub padding-lr-xs">
+            <button bindtap="showAcceptDialog" class="cu-btn round bg-green">批量通过</button>
+        </view>
+        <view class="flex-sub padding-lr-xs" wx:if="{{TabList[TabCur].act=='post'||TabList[TabCur].act=='buying'||TabList[TabCur].act=='service'}}">
+            <button bindtap="showRefuseDialog" class="cu-btn round bg-red">批量拒绝</button>
+        </view>
+        <view class="flex-sub padding-lr-xs" wx:else>
+            <button bindtap="showNoReasonRefuseDialog" class="cu-btn round bg-red">批量拒绝</button>
+        </view>
+        <view class="flex-sub padding-left-xs">
+            <button bindtap="showDeleteDialog" class="cu-btn round bg-black">批量删除</button>
+        </view>
+    </view>
+    <view bindtap="checkAll" class="show_batch checkall" wx:if="{{showBatch}}">全选</view>
+    <view bindtap="uncheckAll" class="show_batch uncheckall" wx:if="{{showBatch}}">反选</view>
+    <view bindtap="showBatch" class="show_batch">{{showBatch?'取消':'批量'}}</view>
+    <view bindtap="goTop" class="back-home" wx:if="{{showGoTop}}">
+        <text class="cuIcon-fold"></text>
+    </view>
+</view>
+<dialog id="dialog"></dialog>
+<dialog useSlot show="{{showRefuseDialog}}" showCancelButton="{{false}}" showConfirmButton="{{false}}" title="审核拒绝">
+    <form bindsubmit="toRefuse">
+        <view class="dialog_body padding-tb">
+            <view class="cu-form-group">
+                <view class="title">拒绝原因</view>
+                <input class="text-left" name="reason" placeholder="请输入"></input>
+            </view>
+        </view>
+        <view class="cu-bar bg-white justify-end">
+            <view class="action">
+                <button bindtap="hideRefuseDialog" class="cu-btn bg-grey" data-status="online">取消</button>
+                <button class="cu-btn bg-{{ThemeStyle.gradual}} margin-left-lg" formType="submit">确认</button>
+            </view>
+        </view>
+    </form>
+</dialog>
+<dialog useSlot show="{{showCategoryDialog}}" showCancelButton="{{false}}" showConfirmButton="{{false}}" title="设置分类">
+    <form bindsubmit="toCategory">
+        <view class="dialog_body padding-tb">
+            <view class="cu-form-group" wx:if="{{!showBatch}}">
+                <view class="title">当前分类</view>
+                <input disabled class="text-right" placeholder="{{CategoryTitleCur}}"></input>
+            </view>
+            <view class="cu-form-group">
+                <view class="title">修改为</view>
+                <picker bindchange="changeCategory" range="{{categoryList}}" rangeKey="title" value="{{CategoryCur}}">
+                    <view class="picker">
+                        {{CategoryCur!==null?categoryList[CategoryCur].title:'请选择'}}
+                    </view>
+                </picker>
+            </view>
+        </view>
+        <view class="cu-bar bg-white justify-end">
+            <view class="action">
+                <button bindtap="hideCategoryDialog" class="cu-btn bg-grey" data-status="online">取消</button>
+                <button class="cu-btn bg-{{ThemeStyle.gradual}} margin-left-lg" formType="submit">确认</button>
+            </view>
+        </view>
+    </form>
+</dialog>

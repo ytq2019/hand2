@@ -1,0 +1,48 @@
+.container {
+    padding-bottom: calc(100rpx + env(safe-area-inset-bottom) / 2);
+}
+
+.cu-card {
+    margin-top: 100rpx;
+}
+
+.cu-card>.cu-item {
+    position: relative;
+    margin-bottom: 20rpx!important;
+}
+
+.item_sold {
+    position: absolute;
+    top: 60rpx;
+    left: 40%;
+    z-index: 1;
+    width: 240rpx;
+    height: 188rpx;
+}
+
+.item_nickname {
+    width: 60%;
+    display: block!important;
+}
+
+.item_price {
+    position: absolute;
+    top: 30rpx;
+    right: 30rpx;
+    z-index: 1;
+}
+
+.video_thumb .bg-img {
+    position: relative;
+}
+
+.video_thumb .bg-img .cuIcon-videofill {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    font-size: 80rpx;
+    margin-top: -40rpx;
+    margin-left: -40rpx;
+    color: #fff!important;
+}

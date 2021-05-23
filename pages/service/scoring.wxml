@@ -1,0 +1,8 @@
+<include src="../templates/page-meta.wxml"></include>
+<view class="container" wx:if="{{!Loading}}">
+    <cu-custom bgColor="bg-gradual-{{ThemeStyle.gradual}}" isBack="{{true}}">
+        <view slot="backText"></view>
+        <view slot="content">服务评价</view>
+    </cu-custom>
+    <scoring-form bind:score="score" serviceData="{{serviceData}}" settingData="{{settingData}}" themeStyle="{{ThemeStyle}}"></scoring-form>
+</view>

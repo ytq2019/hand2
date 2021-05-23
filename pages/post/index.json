@@ -1,0 +1,9 @@
+{
+    "usingComponents": {
+        "zan-popup": "../../libs/zanui/popup/index",
+        "footnav": "../../components/footnav/index",
+        "cu-custom": "/libs/colorui/components/cu-custom",
+        "dialog": "/components/dialog/index",
+        "empty": "/components/empty/index"
+    }
+}

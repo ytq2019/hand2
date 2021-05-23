@@ -1,0 +1,26 @@
+.container {
+    padding-bottom: 0;
+}
+
+.picker {
+    height: 2.58823529em;
+    min-height: 2.58823529em;
+    line-height: 2.58823529em;
+}
+
+.weui-textarea {
+    height: 3.3rem;
+}
+
+.weui-select_in-select-after {
+    text-align: right;
+}
+
+.post-ft {
+    padding: 10px 10px 0 10px;
+}
+
+.rule_wrap .message {
+    max-height: 720rpx;
+    overflow-y: auto;
+}

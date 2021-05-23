@@ -1,0 +1,64 @@
+<!-- <include src="../templates/page-meta.wxml"></include>
+<view class="container" style="padding-bottom: calc({{isFromFootnav?120:20}}rpx + env(safe-area-inset-bottom) / 2)" wx:if="{{!Loading}}">
+    <cu-custom bgColor="bg-gradual-{{ThemeStyle.gradual}}" isBack="{{!isFromFootnav}}" wx:if="{{!showReplayVideo}}">
+        <view slot="backText"></view>
+        <view slot="content">直播大厅</view>
+    </cu-custom>
+    <view class="margin-top" wx:if="{{Rooms.length}}">
+        <view class="play_item cu-card dynamic" wx:for="{{Rooms}}" wx:key="index">
+            <view class="cu-item shadow">
+                <view class="cu-list menu shadow-lg radius">
+                    <view catchtap="openRoom" class="cu-item arrow" data-room-id="{{item.roomid}}">
+                        <view class="content cf">
+                            <view class="fl status_wrap playing_status text-center" wx:if="{{item.live_status==101}}">
+                                <image class="status_icon" src="{{AssetsUrl}}/playing_icon.gif"></image>
+                                <text class="text-sm text-white">直播中</text>
+                            </view>
+                            <view class="fl status_wrap preplay_status text-center" wx:if="{{item.live_status==102}}">
+                                <image class="status_icon" src="{{AssetsUrl}}/preplay_icon.png"></image>
+                                <text class="text-sm text-white margin-left-xs">预 告</text>
+                            </view>
+                            <view class="fl status_wrap replay_status text-center" wx:if="{{item.live_status==103}}">
+                                <image class="status_icon" src="{{AssetsUrl}}/replay_icon.png"></image>
+                                <text class="text-sm text-white">已结束</text>
+                            </view>
+                            <view class="fl padding-left-xs">
+                                <text class="text-df">主播：{{item.anchorName}}</text>
+                            </view>
+                        </view>
+                        <view class="action text-gray text-sm" wx:if="{{item.live_status==101}}">点击观看</view>
+                        <view class="action text-gray text-sm" wx:if="{{item.live_status==102}}">开播订阅</view>
+                        <view class="action text-gray text-sm" wx:if="{{item.live_status==103}}">观看回放</view>
+                    </view>
+                </view>
+                <view catchtap="openRoom" class="text-content solid-top padding-top-sm text-cut" data-room-id="{{item.roomid}}">
+                    {{item.name}}
+                </view>
+                <view catchtap="openRoom" class="grid flex-sub padding-lr col-1" data-room-id="{{item.roomid}}">
+                    <view class="bg-img only-img" style="background-image:url({{item.shareImg}});"></view>
+                </view>
+                <view class="item_foot flex padding-sm justify-between text-gray text-sm">
+                    <view class="margin-left-xs">
+                        <text class="text-left">开播时间：{{item.startTime}}</text>
+                    </view>
+                    <view class="margin-right-xs">
+                        <button class="btn_share cu-btn line-yellow round text-sm" data-room-id="{{item.roomid}}" data-share-img="{{item.shareImg}}" data-title="{{item.name}}" openType="share">
+                            <text class="cuIcon-share margin-right-xs"></text> 分享
+                        </button>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <view class="padding-tb-sm text-center text-gray text-sm" wx:if="{{Paging}}">
+            <text wx:if="{{Gone}}">没有了</text>
+            <text wx:else>加载中</text>
+        </view>
+    </view>
+    <empty wx:else></empty>
+    <footnav themeStyle="{{ThemeStyle}}" wx:if="{{isFromFootnav}}"></footnav>
+</view>
+<view class="video_wrap" wx:if="{{showReplayVideo}}">
+    <view class="video_tips">当前直播已结束，正在播出回放。</view>
+    <text bindtap="hideReplayVideo" class="cuIcon-roundclosefill text-white"></text>
+    <video autoplay controls="{{true}}" objectFit="cover" showPlayBtn="{{true}}" src="{{MediaUrl}}"></video>
+</view> -->
