@@ -30,7 +30,7 @@ Page({
             AppName: wx.getStorageSync("AppName"),
             ThemeStyle: app.getThemeStyle(),
             itemType: t.type,
-            pageTitle: 1 == t.type ? "转让" : "求购",
+            pageTitle: "广场",
             SoldImg: wx.getStorageSync("SoldImg") || app.globalData.AssetsUrl + "/yz.png"
         }), this.getIndexData(), app.viewCount();
     },

@@ -52,7 +52,7 @@
         <view catchtap="toLogin" class="cu-item arrow" data-url="/pages/my/post?type=1" wx:if="{{!Audit.open&&PostInfo.open}}">
             <view class="content">
                 <image class="png" mode="aspectFit" src="{{AssetsUrl}}/icon/{{ThemeStyle.color}}/post.png"></image>
-                <text class="text-grey">我转让的</text>
+                <text class="text-grey">我出售的</text>
             </view>
         </view>
         <view catchtap="toLogin" class="cu-item arrow" data-url="/pages/my/post?type=2" wx:if="{{!Audit.open&&Buying.open}}">
