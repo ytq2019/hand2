@@ -6,9 +6,7 @@
     <cu-custom bgColor="bg-gradual-{{ThemeStyle.gradual}}" wx:else>
         <view slot="content">{{Title}}</view>
     </cu-custom>
-    <view class="bg-white" wx:if="{{noticeList.length}}">
-        <notice bind:click="clickNotice" noticeList="{{noticeList}}"></notice>
-    </view>
+
     <view class="cu-bar search bg-white solid-bottom">
         <block wx:if="{{ShowLocation}}">
             <view catchtap="selectRegion" class="action">
@@ -42,6 +40,23 @@
             </view>
         </view>
     </view>
+
+
+    <view class="swWrap swiper">
+        <swiper indicator-dots="{{true}}"
+                autoplay="true" interval="10000">
+            <block wx:for="{{SwiperList}}" wx:key="index">
+                <swiper-item class="swList">
+                    <image mode="widthFix" src="{{item.img}}" style="width:100%"></image>
+                </swiper-item>
+            </block>
+        </swiper>
+    </view>
+
+    <view class="bg-white margin-tb-xs" wx:if="{{noticeList.length}}">
+        <notice bind:click="clickNotice" noticeList="{{noticeList}}"></notice>
+    </view>
+
     <plugin-tide wx:if="{{Plugin.tide.enable&&Plugin.tide.config.switch==1}}"></plugin-tide>
     <include src="../templates/cube_ad.wxml" wx:if="{{CubeInfo.open&&CubeInfo.list.length&&Keyword==''}}"></include>
     <view class="filter_wrap {{showFilterFixed?'fixed':''}}" style="top: {{showFilterFixed?CustomBar:0}}px">
@@ -82,13 +97,7 @@
             </view>
         </view>
     </view>
-    <swiper autoplay="true" bindchange="cardSwiper" circular="true" class="banner_swiper card-swiper round-dot" duration="500" indicatorActiveColor="{{ThemeStyle.value}}" indicatorColor="#b3b3b3" indicatorDots="true" interval="5000" wx:if="{{SwiperList.length&&Keyword==''}}">
-        <swiper-item class="{{SwiperCur==index?'cur':''}}" wx:for="{{SwiperList}}" wx:key="index">
-            <view class="swiper-item">
-                <image bindtap="toPage" data-appid="{{item.appid}}" data-url="{{item.url}}" mode="aspectFill" src="{{item.img}}" wx:if="{{item.type=='image'}}"></image>
-            </view>
-        </swiper-item>
-    </swiper>
+
     <view catchtap="clickBanner" class="banner_wrap padding-lr-sm margin-top-sm" data-appid="{{IndexBanner.appid}}" data-url="{{IndexBanner.path}}" wx:if="{{IndexBanner.image&&Keyword==''}}">
         <image mode="aspectFill" src="{{IndexBanner.image}}"></image>
     </view>

@@ -207,8 +207,8 @@
 }
 
 .nav image.icon {
-    width: 60rpx;
-    height: 60rpx;
+    width: 75rpx;
+    height: 75rpx;
     vertical-align: bottom;
 }
 
@@ -434,4 +434,46 @@ swiper.banner_swiper.round-dot .wx-swiper-dot.wx-swiper-dot-active::after {
 
 .float_btn {
     margin-bottom: 240rpx;
+}
+.swWrap {
+    margin-top: 0;
+    /*height: 580rpx;*/
+    border-bottom: 1rpx solid #ececec;
+}
+
+.swList image {
+    /*margin: 0 20rpx;*/
+    display: block;
+    width: 710rpx;
+    /*border-radius: 10rpx;*/
+}
+
+.swList .swList-title {
+    padding: 0 20rpx;
+    margin-top: 30rpx;
+    line-height: 36rpx;
+    font-size: 32rpx;
+    color: #222;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.swList-title {
+    display: flex;
+    justify-content: space-between;
+}
+
+.swList-title view {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.nav .cu-item {
+    position: relative;
+    width: 126rpx;
+    height: 170rpx;
+    line-height: normal;
+    padding: 0;
 }

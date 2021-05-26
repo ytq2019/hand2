@@ -186,7 +186,7 @@
                 </view>
             </zan-col>
             <zan-col class="text-right" col="16">
-                <block wx:if="{{!detail.seller_uid&&detail.item_type==-1}}">
+                <block wx:if="true">
                     <form bindsubmit="makePhone" data-phone="{{detail.phone}}" wx:if="{{detail.phone}}">
                         <button class="zan-btn bg-cyan" disabled="{{detail.status==2?true:false}}" formType="submit">卖家电话</button>
                     </form>
