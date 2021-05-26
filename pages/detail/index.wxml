@@ -85,7 +85,7 @@
         <view class="item-footer text-gray text-sm">
             <view class="flex flex-wrap">
                 <view style="flex-basis: 65%;">
-                    <view bindtap="toMap" data-lat="{{detail.lat}}" data-lng="{{detail.lng}}" wx:if="{{detail.address}}">
+                    <view bindtap="toMap" data-lat="{{detail.lat}}" data-lng="{{detail.lng}}" data-address="{{detail.address}}" wx:if="{{detail.address}}">
                         <text class="cuIcon-location"></text> {{detail.address}}
                     </view>
                 </view>

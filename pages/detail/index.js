@@ -37,7 +37,7 @@ Page({
         try {
             wx.removeStorageSync("PostSuccessData-" + a);
         } catch (t) {}
-        e.data.shareUid && e.data.userInfo && e.data.userInfo.memberInfo.uid != e.data.shareUid && app.updateShare(e.data.shareUid, e.data.item_id), 
+        e.data.shareUid && e.data.userInfo && e.data.userInfo.memberInfo.uid != e.data.shareUid && app.updateShare(e.data.shareUid, e.data.item_id),
         t.share && "timeline" == t.share && null === e.data.isSinglePage && wx.login({
             success: function() {
                 e.setData({
@@ -56,7 +56,7 @@ Page({
     },
     imageLoad: function(t) {
         var e = t.detail.width / t.detail.height, a = this.data.imgheights;
-        a[t.target.dataset.index] = 750 / e, 375 < a[t.target.dataset.index] && (a[t.target.dataset.index] = 375), 
+        a[t.target.dataset.index] = 750 / e, 375 < a[t.target.dataset.index] && (a[t.target.dataset.index] = 375),
         this.setData({
             imgheights: a
         });
@@ -145,8 +145,9 @@ Page({
         });
     },
     toMap: function(t) {
-        var e = parseFloat(t.currentTarget.dataset.lat), t = parseFloat(t.currentTarget.dataset.lng);
+        var  f = t.currentTarget.dataset.address ,e = parseFloat(t.currentTarget.dataset.lat), t = parseFloat(t.currentTarget.dataset.lng);
         wx.openLocation({
+            name: f,
             latitude: e,
             longitude: t,
             scale: 24
@@ -154,7 +155,7 @@ Page({
     },
     submitAppreciateAndFavor: function(t) {
         var e, a, i = this;
-        i.data.options.share && "timeline" == i.data.options.share && !0 === i.data.isSinglePage ? app.toast("请前往小程序使用完整服务") : wx.getStorageSync("userInfo") ? (e = t.currentTarget.dataset.type, 
+        i.data.options.share && "timeline" == i.data.options.share && !0 === i.data.isSinglePage ? app.toast("请前往小程序使用完整服务") : wx.getStorageSync("userInfo") ? (e = t.currentTarget.dataset.type,
         a = {
             m: "superman_hand2",
             act: "detail",
@@ -168,7 +169,7 @@ Page({
             success: function(t) {
                 console.log(t);
                 t = 1 == e ? "点赞" : "收藏";
-                1 == e ? i.data.detail.is_favour = 0 == a.status ? 1 : 0 : 2 == e && (i.data.detail.is_collect = 0 == a.status ? 1 : 0), 
+                1 == e ? i.data.detail.is_favour = 0 == a.status ? 1 : 0 : 2 == e && (i.data.detail.is_collect = 0 == a.status ? 1 : 0),
                 i.setData({
                     detail: i.data.detail
                 }), app.toast(0 == a.status ? t + "成功" : "取消" + t);
@@ -455,7 +456,7 @@ Page({
     },
     buy: function(t) {
         var e, a = t.currentTarget.dataset.id, t = t.currentTarget.dataset.type;
-        0 != this.data.detail.stock ? (e = "/pages/cashier/index?type=" + t + "&id=" + a, 
+        0 != this.data.detail.stock ? (e = "/pages/cashier/index?type=" + t + "&id=" + a,
         this.checkMobile(function() {
             wx.navigateTo({
                 url: "/pages/bind_phone/index?redirect=" + encodeURIComponent(e)
@@ -512,7 +513,7 @@ Page({
                 success: function(t) {
                     console.log(t);
                     t = t.data.data;
-                    console.log("rewardedVideoAd: " + e.data.creditInfo.title + "+" + t.credit_value), 
+                    console.log("rewardedVideoAd: " + e.data.creditInfo.title + "+" + t.credit_value),
                     app.toast(e.data.creditInfo.title + "+" + t.credit_value);
                 },
                 fail: function(t) {
