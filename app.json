@@ -1,6 +1,7 @@
 {
     "pages": [
         "pages/home/index",
+        "pages/kufang/index",
         "pages/post/index",
         "pages/post/success",
         "pages/buying/add",

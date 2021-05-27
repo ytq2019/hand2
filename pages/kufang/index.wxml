@@ -28,7 +28,7 @@
                         <view>
                             <image class="operaIcon" src="{{item.icon}}"></image>
                         </view>
-                        <view>{{item.name}}</view>
+                        <view class="{{aid == item.id ? 'text-red' : ''}} text-bold ">{{item.name}}</view>
                     </view>
                 </swiper-item>
             </swiper>
@@ -46,37 +46,37 @@
         <view class="solid-top bg-white padding-sm margin-top-xs" wx:if="{{shopList.length>0}}" wx:for="{{shopList}}" wx:for-index="f_index" wx:key="id">
             <view class="flex justify-between">
                 <view class="text-lg">
-                    <view class="padding-xs" catchtap="toShop" data-id="{{item.bid}}">
-                            <text class="cu-tag bg-gradual-blue radius text-bold">{{item.uid}}</text>
+                    <view class="padding-xs" catchtap="toPage" data-url="/pages/my_list/index?uid={{item.uid}}">
+                            <text class="cu-tag bg-gradual-red radius text-bold">{{item.uid}}</text>
                             <text class="text-black text-bold padding-left-sm">{{item.title}}</text>
                     </view>
                 </view>
                 <view class="padding-xs">
-                    <view class="cu-btn round bg-blue sm " catchtap="toShop" data-id="{{item.bid}}">进入仓库 ></view>
+                    <view class="cu-btn round bg-red sm " catchtap="toPage" data-url="/pages/my_list/index?uid={{item.uid}}">进入仓库 ></view>
 
                 </view>
             </view>
             <view class="flex justify-between padding-xs text-center">
                     <view class="padding-tb-sm text-cut">地址：{{item.address}}</view>
-                <view class="cu-btn radius line-blue xs" bindtap="max" data-viptype="{{viptype.viptype}}" data-address="{{item.address}}" data-latitude="{{item.latitude}}" data-longitude="{{item.longitude}}">去导航</view>
+                <view class="cu-btn radius line-red xs" bindtap="max" data-viptype="{{viptype.viptype}}" data-address="{{item.address}}" data-latitude="{{item.latitude}}" data-longitude="{{item.longitude}}">去导航</view>
             </view>
             <view class="flex justify-between padding-xs">
                 <view class="padding-tb-sm">
                     <text class="text-cut">电话：{{item.phone}}</text>
                 </view>
-                <view class="cu-btn radius line-blue xs" bindtap="dialogue" data-viptype="{{viptype.viptype}}" data-phone="{{item.phone}}">打电话</view>
+                <view class="cu-btn radius line-red xs" bindtap="dialogue" data-viptype="{{viptype.viptype}}" data-phone="{{item.phone}}">打电话</view>
             </view>
             <view class="flex justify-between padding-xs">
                 <view class="padding-tb-sm">
                     <text class="text-cut">微信：{{item.wechat}}</text>
                 </view>
-                <view class="cu-btn radius line-blue xs" bindtap="copyshipnum" data-viptype="{{viptype.viptype}}" data-wechat="{{item.wechat}}">加微信</view>
+                <view class="cu-btn radius line-red xs" bindtap="copyshipnum" data-viptype="{{viptype.viptype}}" data-wechat="{{item.wechat}}">加微信</view>
             </view>
 <!--            <view class="padding-tb-sm">-->
-<!--                <text class="text-blue">→看商家位置街景图</text>-->
+<!--                <text class="text-red">→看商家位置街景图</text>-->
 <!--            </view>-->
             <view class="padding-xs">
-                <text class="cu-btn radius line-blue sm text-bold margin-right-xs" wx:if="{{item.facility.length>0}}" wx:for="{{item.facility}}" wx:for-item="item1"  wx:for-index="id" wx:key="id">{{item1.facilityname}}</text>
+                <text class="cu-btn radius line-red sm text-bold margin-right-xs" wx:if="{{item.facility.length>0}}" wx:for="{{item.facility}}" wx:for-item="item1"  wx:for-index="id" wx:key="id">{{item1.facilityname}}</text>
             </view>
         </view>
 

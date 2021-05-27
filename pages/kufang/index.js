@@ -58,7 +58,6 @@ Page({
         var a = t.currentTarget.dataset.tid, e = t.currentTarget.dataset.id;
         app.func.gotourl(app, a, e);
     },
-
     hidden: function (t) {
         this.setData({
             hidden: !0
@@ -74,56 +73,60 @@ Page({
                 openid: t
             },
             success: function (t) {
-                a.setData({
-                    shopList: t.data.data,
-                    page_near: a.data.page + 1
-                })
-
+                if (t.data.data.length > 0){
+                    a.setData({
+                        shopList: t.data.data,
+                        page_near: a.data.page + 1
+                    })
+                }else{
+                    wx.showToast({
+                        title: "已经没有内容了哦！！！",
+                        icon: "none"
+                    })
+                }
             }
         });
     },
     navTap: function (t) {
-        var a, e, o = parseInt(t.currentTarget.dataset.index), n = this, s = wx.getStorageSync("openid"),
-            r = n.data.store_id;
-        n.data.selectstatus;
+        var a, e, o = parseInt(t.currentTarget.dataset.index), n = this, s = wx.getStorageSync("openid"), c = n.data.curIndex;
+        var typeid = c
+        if (c == 0){
+            typeid = 1;
+            n.setData({
+                curIndex: 1
+            })
+        }else{
+            typeid = 0;
+            n.setData({
+                curIndex: 0
+            })
+        }
         app.util.request({
             url: "entry/wxapp/Shop",
             cachetime: "30",
             data: {
                 m: "superman_hand2",
-                act: "getShop"
+                act: "getShop",
+                typeid: typeid,
+                aid: n.data.aid,
             },
             success: function (t) {
-                if (console.log("获取店铺数据"), console.log(t.data), 2 == t.data) {
+                console.log(t)
+                if (t.data.data.length > 0){
                     n.setData({
-                        goodsList: []
-                    });
-                } else {
-                    t.data.map(item => {
-                        item.phone = n.desensitization(item.phone, 3, 7);
-                        item.address = n.desensitization(item.address, 3, 7);
-                        item.wechat = n.desensitization(item.wechat, 1, 5);
-                    });
-                    n.setData({
-                        goodsList: t.data,
-                        page: 1
-                    });
+                        shopList: t.data.data,
+                        page: 1,
+                        page_near: 1
+                    })
+                }else{
+                    wx.showToast({
+                        title: "已经没有内容了哦！！！",
+                        icon: "none"
+                    })
                 }
             }
         })
-        n.setData({
-            curIndex: o,
-            selectstatus: "",
-            searchCont: "",
-        });
     },
-    toShop: function (t) {
-        var a = t.currentTarget.dataset.id;
-        wx.navigateTo({
-            url: "../index/shop/shop?id=" + a
-        });
-    },
-
     onHide: function () {
         this.setData({
             page: 1,
@@ -134,10 +137,10 @@ Page({
         console.log("下拉刷新");
         this.shopdata();
         this.setData({
-            cate_id: 0,
             curIndex: 0,
             selectstatus: "",
-            searchCont: ""
+            searchCont: "",
+            aid: 0,
         });
         wx.stopPullDownRefresh();
     },
@@ -160,23 +163,21 @@ Page({
                 lon: r,
                 page: e.data.page + 1,
                 aid: a,
-                bname: bname,
             },
             success: function (t) {
                 console.log("获取店铺数据");
-                if (0 !== t.data.errno) {
-                    wx.showToast({
-                        title: "已经没有内容了哦！！！",
-                        icon: "none"
-                    })
-                } else {
+                if (t.data.data.length > 0) {
                     var a = t.data.data;
                     n = n.concat(a)
                     e.setData({
                         shopList: n,
                         page: e.data.page + 1
                     });
-
+                } else {
+                    wx.showToast({
+                        title: "已经没有内容了哦！！！",
+                        icon: "none"
+                    })
                 }
             }
         });
@@ -244,6 +245,9 @@ Page({
                 })
             }
         });
+    },
+    toPage: function(t) {
+        app.superman.toPage(t);
     },
 
 });

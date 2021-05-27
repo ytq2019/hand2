@@ -232,8 +232,8 @@
 }
 
 .order-nav .on {
-    border-bottom: 4rpx solid #0081ff;
-    color: #0081ff;
+    border-bottom: 4rpx solid var(--red);
+    color: var(--red);
 }
 
 .order-nav text {
