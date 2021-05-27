@@ -1,0 +1,7 @@
+{
+    "usingComponents": {
+        "footnav": "../../components/footnav/index",
+        "cu-custom": "/libs/colorui/components/cu-custom"
+    },
+    "enablePullDownRefresh": true
+}

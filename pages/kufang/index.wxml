@@ -1,0 +1,98 @@
+<include src="../templates/page-meta.wxml"></include>
+<view class="container" style="padding-bottom:{{containerPaddingBottom}}px">
+    <cu-custom bgColor="bg-white" wx:if="{{!ThemeStyle.home_top_style}}">
+        <view class="text-black" slot="content">{{Title}}</view>
+    </cu-custom>
+    <cu-custom bgColor="bg-gradual-{{ThemeStyle.gradual}}" wx:else>
+        <view slot="content">{{Title}}</view>
+    </cu-custom>
+    <view>
+        <view class="goods-search">
+            <view >
+                <view class="_search showSearch  padding-lr-sm">
+                    <image bindtap="commitSearch" class="searchIcon" src="../../../style/images/search.png"></image>
+                    <input bindconfirm="commitSearch" bindinput="getSearch" maxlength="20" placeholder="请输入库房编码或库房名称" value="{{searchCont}}"></input>
+                </view>
+            </view>
+        </view>
+        <template is="backcard-img" data="{{adbackcardimg:adbackcardimg}}" wx:if="{{openblackcard==0}}"></template>
+
+        <view class="bg-white margin-top-xs padding-sm" wx:if="{{operation}}">
+
+            <swiper indicatorDots="{{true}}" style="width:100%;height:{{operation[0].length>5?360:'180'}}rpx;">
+                <swiper-item class="opear-swiper-item" wx:for="{{operation}}" wx:key="id">
+                    <view bindtap="toClassify" class="opearList" data-id="{{item.id}}" style="position:relative" wx:for="{{item}}" wx:key="id">
+                        <form bindsubmit="oddPushFormSubmit" reportSubmit="true" style="width: 100%; height:100%; position: absolute; top: 0; left: 0">
+                            <button formType="submit" plain="true" style="width: 100%;height:100%;border:1px solid transparent;background-color:transparent;position: absolute; top: 0; left: 0;-webkit-transform: scale(0.5);transform:scale(1);content:\"\";z-index:10;"></button>
+                        </form>
+                        <view>
+                            <image class="operaIcon" src="{{item.icon}}"></image>
+                        </view>
+                        <view>{{item.name}}</view>
+                    </view>
+                </swiper-item>
+            </swiper>
+        </view>
+        <view class="rel margin-top-sm">
+            <view class="navWrap">
+                <view class="order-nav">
+                    <view bindtap="navTap" class="{{curIndex===index?'on':''}}" data-index="{{index}}" data-lat="{{lat}}" data-lon="{{lon}}" wx:for="{{nav}}" wx:key="id">
+                        <text class="nav">{{item}}</text>
+                    </view>
+                </view>
+            </view>
+        </view>
+
+        <view class="solid-top bg-white padding-sm margin-top-xs" wx:if="{{shopList.length>0}}" wx:for="{{shopList}}" wx:for-index="f_index" wx:key="id">
+            <view class="flex justify-between">
+                <view class="text-lg">
+                    <view class="padding-xs" catchtap="toShop" data-id="{{item.bid}}">
+                            <text class="cu-tag bg-gradual-blue radius text-bold">{{item.uid}}</text>
+                            <text class="text-black text-bold padding-left-sm">{{item.title}}</text>
+                    </view>
+                </view>
+                <view class="padding-xs">
+                    <view class="cu-btn round bg-blue sm " catchtap="toShop" data-id="{{item.bid}}">进入仓库 ></view>
+
+                </view>
+            </view>
+            <view class="flex justify-between padding-xs text-center">
+                    <view class="padding-tb-sm text-cut">地址：{{item.address}}</view>
+                <view class="cu-btn radius line-blue xs" bindtap="max" data-viptype="{{viptype.viptype}}" data-address="{{item.address}}" data-latitude="{{item.latitude}}" data-longitude="{{item.longitude}}">去导航</view>
+            </view>
+            <view class="flex justify-between padding-xs">
+                <view class="padding-tb-sm">
+                    <text class="text-cut">电话：{{item.phone}}</text>
+                </view>
+                <view class="cu-btn radius line-blue xs" bindtap="dialogue" data-viptype="{{viptype.viptype}}" data-phone="{{item.phone}}">打电话</view>
+            </view>
+            <view class="flex justify-between padding-xs">
+                <view class="padding-tb-sm">
+                    <text class="text-cut">微信：{{item.wechat}}</text>
+                </view>
+                <view class="cu-btn radius line-blue xs" bindtap="copyshipnum" data-viptype="{{viptype.viptype}}" data-wechat="{{item.wechat}}">加微信</view>
+            </view>
+<!--            <view class="padding-tb-sm">-->
+<!--                <text class="text-blue">→看商家位置街景图</text>-->
+<!--            </view>-->
+            <view class="padding-xs">
+                <text class="cu-btn radius line-blue sm text-bold margin-right-xs" wx:if="{{item.facility.length>0}}" wx:for="{{item.facility}}" wx:for-item="item1"  wx:for-index="id" wx:key="id">{{item1.facilityname}}</text>
+            </view>
+        </view>
+
+        <view bindtap="toApply" class="mask" data-statu="0" wx:if="{{showModalStatus==1}}"></view>
+        <view class="d_box" wx:if="{{showModalStatus==1}}">
+            <view class="d_cont">
+                <view class="d_title">须知</view>
+                <view class="d_content">
+                    <rich-text nodes="{{storenotice}}" type="text"></rich-text>
+                </view>
+                <navigator class="apply" url="/mzhk_sun/pages/user/apply/apply">申请</navigator>
+            </view>
+        </view>
+        <view class="foot"></view>
+    </view>
+<footnav themeStyle="{{ThemeStyle}}"></footnav>
+
+</view>
+<login bindtogetuserinfo="updateUserInfo" modalHidden="{{is_modal_Hidden}}"></login>
