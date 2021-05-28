@@ -4,17 +4,17 @@
         <view class="text-black" slot="content">{{Title}}</view>
     </cu-custom>
     <cu-custom bgColor="bg-gradual-{{ThemeStyle.gradual}}" wx:else>
-        <view slot="content">{{Title}}</view>
+        <view slot="content">{{pageTitle}}</view>
     </cu-custom>
     <view>
-        <view class="goods-search">
-            <view >
-                <view class="_search showSearch  padding-lr-sm">
-                    <image bindtap="commitSearch" class="searchIcon" src="../../../style/images/search.png"></image>
-                    <input bindconfirm="commitSearch" bindinput="getSearch" maxlength="20" placeholder="请输入库房编码或库房名称" value="{{searchCont}}"></input>
-                </view>
-            </view>
-        </view>
+<!--        <view class="goods-search">-->
+<!--            <view >-->
+<!--                <view class="_search showSearch  padding-lr-sm">-->
+<!--                    <image bindtap="commitSearch" class="searchIcon" src="../../../style/images/search.png"></image>-->
+<!--                    <input bindconfirm="commitSearch" bindinput="getSearch" maxlength="20" placeholder="请输入库房编码或库房名称" value="{{searchCont}}"></input>-->
+<!--                </view>-->
+<!--            </view>-->
+<!--        </view>-->
         <template is="backcard-img" data="{{adbackcardimg:adbackcardimg}}" wx:if="{{openblackcard==0}}"></template>
 
         <view class="bg-white margin-top-xs padding-sm" wx:if="{{operation}}">
@@ -33,7 +33,7 @@
                 </swiper-item>
             </swiper>
         </view>
-        <view class="rel margin-top-sm">
+        <view class="rel margin-top-xs">
             <view class="navWrap">
                 <view class="order-nav">
                     <view bindtap="navTap" class="{{curIndex===index?'on':''}}" data-index="{{index}}" data-lat="{{lat}}" data-lon="{{lon}}" wx:for="{{nav}}" wx:key="id">
@@ -56,17 +56,17 @@
 
                 </view>
             </view>
-            <view class="flex justify-between padding-xs text-center">
+            <view class="flex justify-between padding-xs text-center text-cut">
                     <view class="padding-tb-sm text-cut">地址：{{item.address}}</view>
                 <view class="cu-btn radius line-red xs" bindtap="max" data-viptype="{{viptype.viptype}}" data-address="{{item.address}}" data-latitude="{{item.latitude}}" data-longitude="{{item.longitude}}">去导航</view>
             </view>
-            <view class="flex justify-between padding-xs">
+            <view class="flex justify-between padding-xs text-cut">
                 <view class="padding-tb-sm">
                     <text class="text-cut">电话：{{item.phone}}</text>
                 </view>
                 <view class="cu-btn radius line-red xs" bindtap="dialogue" data-viptype="{{viptype.viptype}}" data-phone="{{item.phone}}">打电话</view>
             </view>
-            <view class="flex justify-between padding-xs">
+            <view class="flex justify-between padding-xs text-cut">
                 <view class="padding-tb-sm">
                     <text class="text-cut">微信：{{item.wechat}}</text>
                 </view>
@@ -81,16 +81,6 @@
         </view>
 
         <view bindtap="toApply" class="mask" data-statu="0" wx:if="{{showModalStatus==1}}"></view>
-        <view class="d_box" wx:if="{{showModalStatus==1}}">
-            <view class="d_cont">
-                <view class="d_title">须知</view>
-                <view class="d_content">
-                    <rich-text nodes="{{storenotice}}" type="text"></rich-text>
-                </view>
-                <navigator class="apply" url="/mzhk_sun/pages/user/apply/apply">申请</navigator>
-            </view>
-        </view>
-        <view class="foot"></view>
     </view>
 <footnav themeStyle="{{ThemeStyle}}"></footnav>
 

@@ -2,7 +2,6 @@ var app = getApp();
 
 Page({
     data: {
-        Title: "查库房",
         curIndex: 0,
         nav: ["推荐库房", "最新入驻"],
         shopList: [],
@@ -23,6 +22,16 @@ Page({
     },
     onLoad: function (t) {
         var i = this;
+
+        i.setData({
+            userInfo: wx.getStorageSync("userInfo"),
+            AppName: wx.getStorageSync("AppName"),
+            ThemeStyle: app.getThemeStyle(),
+            itemType: t.type,
+            pageTitle: "查库房",
+            SoldImg: wx.getStorageSync("SoldImg") || app.globalData.AssetsUrl + "/yz.png"
+        })
+
         i.setData({
             options: t
         }), wx.setNavigationBarTitle({
@@ -73,12 +82,12 @@ Page({
                 openid: t
             },
             success: function (t) {
-                if (t.data.data.length > 0){
+                if (t.data.data.length > 0) {
                     a.setData({
                         shopList: t.data.data,
                         page_near: a.data.page + 1
                     })
-                }else{
+                } else {
                     wx.showToast({
                         title: "已经没有内容了哦！！！",
                         icon: "none"
@@ -88,14 +97,15 @@ Page({
         });
     },
     navTap: function (t) {
-        var a, e, o = parseInt(t.currentTarget.dataset.index), n = this, s = wx.getStorageSync("openid"), c = n.data.curIndex;
+        var a, e, o = parseInt(t.currentTarget.dataset.index), n = this, s = wx.getStorageSync("openid"),
+            c = n.data.curIndex;
         var typeid = c
-        if (c == 0){
+        if (c == 0) {
             typeid = 1;
             n.setData({
                 curIndex: 1
             })
-        }else{
+        } else {
             typeid = 0;
             n.setData({
                 curIndex: 0
@@ -112,13 +122,13 @@ Page({
             },
             success: function (t) {
                 console.log(t)
-                if (t.data.data.length > 0){
+                if (t.data.data.length > 0) {
                     n.setData({
                         shopList: t.data.data,
                         page: 1,
                         page_near: 1
                     })
-                }else{
+                } else {
                     wx.showToast({
                         title: "已经没有内容了哦！！！",
                         icon: "none"
@@ -145,6 +155,7 @@ Page({
         wx.stopPullDownRefresh();
     },
     onReachBottom: function () {
+        console.log("触发触底事件");
         var e = this, o = e.data.curIndex, t = wx.getStorageSync("openid"), a = e.data.aid, n = e.data.shopList,
             s = e.data.lat, r = e.data.lon;
         if (typeof (e.searchCont) == "undefined" || e.searchCont === '') {
@@ -165,7 +176,6 @@ Page({
                 aid: a,
             },
             success: function (t) {
-                console.log("获取店铺数据");
                 if (t.data.data.length > 0) {
                     var a = t.data.data;
                     n = n.concat(a)
@@ -179,6 +189,11 @@ Page({
                         icon: "none"
                     })
                 }
+            }, fail: function (t) {
+                wx.showToast({
+                    title: "已经没有内容了哦！！！",
+                    icon: "none"
+                })
             }
         });
     },
@@ -246,7 +261,7 @@ Page({
             }
         });
     },
-    toPage: function(t) {
+    toPage: function (t) {
         app.superman.toPage(t);
     },
 
