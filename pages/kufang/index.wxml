@@ -85,4 +85,3 @@
 <footnav themeStyle="{{ThemeStyle}}"></footnav>
 
 </view>
-<login bindtogetuserinfo="updateUserInfo" modalHidden="{{is_modal_Hidden}}"></login>

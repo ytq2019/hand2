@@ -11,7 +11,8 @@ Page({
         Loading: !0,
         credit_on: !1,
         bindPhone: !1,
-        showWxad: !0
+        showWxad: !0,
+        isVip: 0,
     },
     onLoad: function(a) {
         console.log("onLoad", a);
@@ -19,6 +20,7 @@ Page({
             userInfo: wx.getStorageSync("userInfo"),
             ThemeStyle: app.getThemeStyle()
         }), this.getIndexData(), app.viewCount();
+        this.getVip();
     },
     getIndexData: function() {
         var t = this;
@@ -145,5 +147,22 @@ Page({
                 console.error(a), app.util.message("未获取用户信息，无法执行", "", "error");
             }
         });
-    }
+    },
+    getVip: function () {
+        var a = this, e = wx.getStorageSync("openid");
+        console.log(e), app.util.request({
+            url: "entry/wxapp/demo",
+            showLoading: !1,
+            data: {
+                m: "superman_hand2",
+                act: "isVip",
+                openid: a.data.userInfo.memberInfo.openid
+            },
+            success: function (e) {
+                console.log("获取vip数据"), console.log(e), a.setData({
+                    isVip: e.data.data.vip_type,
+                });
+            }
+        });
+    },
 });

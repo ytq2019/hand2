@@ -18,7 +18,8 @@ Page({
         tabBar: app.globalData.tabBar,
         selectstatus: "",
         dropdown: !1,
-        adflashimg: []
+        adflashimg: [],
+        isVip: 0,
     },
     onLoad: function (t) {
         var i = this;
@@ -55,6 +56,7 @@ Page({
                 });
             }
         });
+        i.getVip();
         i.shopdata();
     },
     onShow: function () {
@@ -62,6 +64,7 @@ Page({
         var t = this, a = t.data.curIndex;
         var e = t.data.options;
         e.d_id && app.distribution.distribution_parsent(app, e.d_id);
+        t.getVip();
     },
     gotoadinfo: function (t) {
         var a = t.currentTarget.dataset.tid, e = t.currentTarget.dataset.id;
@@ -82,6 +85,11 @@ Page({
                 openid: t
             },
             success: function (t) {
+                t.data.data.map(item => {
+                    item.phone = a.desensitization(item.phone, 3, 7);
+                    item.address = a.desensitization(item.address, 3, 7);
+                    item.wechat = a.desensitization(item.wechat, 1, 5);
+                });
                 if (t.data.data.length > 0) {
                     a.setData({
                         shopList: t.data.data,
@@ -123,6 +131,11 @@ Page({
             success: function (t) {
                 console.log(t)
                 if (t.data.data.length > 0) {
+                    t.data.data.map(item => {
+                        item.phone = n.desensitization(item.phone, 3, 7);
+                        item.address = n.desensitization(item.address, 3, 7);
+                        item.wechat = n.desensitization(item.wechat, 1, 5);
+                    });
                     n.setData({
                         shopList: t.data.data,
                         page: 1,
@@ -178,6 +191,12 @@ Page({
             success: function (t) {
                 if (t.data.data.length > 0) {
                     var a = t.data.data;
+                    a.map(item => {
+                        item.phone = e.desensitization(item.phone, 3, 7);
+                        item.address = e.desensitization(item.address, 3, 7);
+                        item.wechat = e.desensitization(item.wechat, 1, 5);
+                    });
+
                     n = n.concat(a)
                     e.setData({
                         shopList: n,
@@ -198,6 +217,20 @@ Page({
         });
     },
     max: function (e) {
+        if (0 === this.data.isVip) {
+            wx.showModal({
+                title: "提示",
+                content: "您还未购买线下到店专业版，请先购买（可查看全部上架线下库房）",
+                success: function (res) {
+                    if (res.confirm) {
+                        wx.navigateTo({
+                            url: "/pages/member/index"
+                        });
+                    }
+                }
+            });
+            return;
+        }
         var a = e.currentTarget.dataset.address, t = Number(e.currentTarget.dataset.longitude),
             i = Number(e.currentTarget.dataset.latitude);
         if (0 == t && 0 == i) return wx.showToast({
@@ -214,12 +247,40 @@ Page({
         });
     },
     dialogue: function (e) {
+        if (0 === this.data.isVip) {
+            wx.showModal({
+                title: "提示",
+                content: "您还未购买线下到店专业版，请先购买（可查看全部上架线下库房）",
+                success: function (res) {
+                    if (res.confirm) {
+                        wx.navigateTo({
+                            url: "/pages/member/index"
+                        });
+                    }
+                }
+            });
+            return;
+        }
         var a = e.currentTarget.dataset.phone;
         wx.makePhoneCall({
             phoneNumber: a
         });
     },
     copyshipnum: function (t) {
+        if (0 === this.data.isVip) {
+            wx.showModal({
+                title: "提示",
+                content: "您还未购买线下到店专业版，请先购买（可查看全部上架线下库房）",
+                success: function (res) {
+                    if (res.confirm) {
+                        wx.navigateTo({
+                            url: "/pages/member/index"
+                        });
+                    }
+                }
+            });
+            return;
+        }
         t = t.currentTarget.dataset.wechat;
         wx.setClipboardData({
             data: t
@@ -249,7 +310,12 @@ Page({
                 aid: n
             },
             success: function (t) {
-                console.log("获取店铺数据")
+                console.log("获取店铺数据");
+                t.data.data.map(item => {
+                    item.phone = a.desensitization(item.phone, 3, 7);
+                    item.address = a.desensitization(item.address, 3, 7);
+                    item.wechat = a.desensitization(item.wechat, 1, 5);
+                });
                 a.setData({
                     shopList: t.data.data,
                     page_near: 1,
@@ -261,5 +327,31 @@ Page({
     toPage: function (t) {
         app.superman.toPage(t);
     },
+    getVip: function () {
+        var a = this, e = wx.getStorageSync("openid");
+        console.log(e), app.util.request({
+            url: "entry/wxapp/demo",
+            showLoading: !1,
+            data: {
+                m: "superman_hand2",
+                act: "isVip",
+                openid: a.data.userInfo.memberInfo.openid
+            },
+            success: function (e) {
+                console.log("获取vip数据"), console.log(e), a.setData({
+                    isVip: e.data.data.vip_type,
+                });
+            }
+        });
+    },
+    desensitization: function (str, beginLen, endLen) {
+        if (this.data.isVip === 0) {
+            var firstStr = str.substr(0, beginLen);
+            var lastStr = str.substr(endLen);
+            let tempStr = firstStr + "****" + lastStr;
+            return tempStr;
+        }
+        return str;
+    }
 
 });

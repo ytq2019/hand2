@@ -1,6 +1,8 @@
 {
     "pages": [
         "pages/home/index",
+        "pages/member/index",
+        "pages/vip/index",
         "pages/kufang/index",
         "pages/post/index",
         "pages/post/success",

@@ -16,7 +16,8 @@ Page({
         showWxad: !0,
         showHelpSellGuide: !1,
         contentReportComment: "",
-        showVideoAd: !1
+        showVideoAd: !1,
+        isVip: 0,
     },
     onLoad: function(t) {
         var e = this, a = t.id, i = wx.getStorageSync("userInfo");
@@ -50,6 +51,10 @@ Page({
                 });
             }
         }), app.viewCount();
+        e.getVip();
+    },
+    onShow: function () {
+        this.getVip();
     },
     toPage: function(t) {
         app.superman.toPage(t);
@@ -182,12 +187,40 @@ Page({
         });
     },
     makePhone: function(t) {
+        if (0 === this.data.isVip) {
+            wx.showModal({
+                title: "提示",
+                content: "您还未购买线下到店专业版，请先购买（可查看全部上架线下库房）",
+                success: function (res) {
+                    if (res.confirm) {
+                        wx.navigateTo({
+                            url: "/pages/member/index"
+                        });
+                    }
+                }
+            });
+            return;
+        }
         t = t.currentTarget.dataset.phone;
         wx.makePhoneCall({
             phoneNumber: t
         });
     },
     copyWechat: function(t) {
+        if (0 === this.data.isVip) {
+            wx.showModal({
+                title: "提示",
+                content: "您还未购买线下到店专业版，请先购买（可查看全部上架线下库房）",
+                success: function (res) {
+                    if (res.confirm) {
+                        wx.navigateTo({
+                            url: "/pages/member/index"
+                        });
+                    }
+                }
+            });
+            return;
+        }
         t = t.currentTarget.dataset.wechat;
         wx.setClipboardData({
             data: t
@@ -566,5 +599,22 @@ Page({
                 console.error(t), app.util.message("未获取用户信息，无法执行", "", "error");
             }
         });
-    }
+    },
+    getVip: function () {
+        var a = this, e = wx.getStorageSync("openid");
+        console.log(e), app.util.request({
+            url: "entry/wxapp/demo",
+            showLoading: !1,
+            data: {
+                m: "superman_hand2",
+                act: "isVip",
+                openid: a.data.userInfo.memberInfo.openid
+            },
+            success: function (e) {
+                console.log("获取vip数据"), console.log(e), a.setData({
+                    isVip: e.data.data.vip_type,
+                });
+            }
+        });
+    },
 });
