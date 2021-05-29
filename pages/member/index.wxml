@@ -2,21 +2,21 @@
 <view class="container bg-black">
     <view class="padding-top-sm">
         <view class="cu-card padding margin-lr radius  text-center bg-white">
-            <view class="text-black text-bold padding text-lg">{{title}}</view>
+            <view class="text-black text-bold padding-xs text-lg">临期宝终身vip会员</view>
             <view class="padding bg-black text-center radius">
                 <view class="text-yellow text-sl padding-lr">
                     <text class="text-bold text-price">{{price}}.00</text>
                 </view>
-                <view class="text-gray text-lg padding-lr">
+                <view class="text-gray text-lg padding-xs">
                     <text class="text-price" style="text-decoration:line-through;">{{oriPrice}}.00</text>
                 </view>
                 <view>
-                    <text class="cu-tag round bg-yellow padding-lr-lg">临期食品商家专业版，到店使用，享更多折扣</text>
+                    <text class="cu-tag round bg-yellow padding-lr-lg">终身解锁本站所有特权，从此找货不愁！</text>
                 </view>
             </view>
         </view>
         <view class="cu-card  margin radius text-center bg-white">
-            <view class="text-black text-bold padding text-lg">填写会员信息，便于到店与商家使用</view>
+            <view class="text-black text-bold padding text-lg">填写会员信息，便于享受vip特权</view>
             <view class="padding text-center radius wrap">
                 <view class="wrap-name-list padding-bottom">
                     <view class="wrap-tel">手机号码 <text class="text-red text-center">*</text></view>

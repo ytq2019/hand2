@@ -11,7 +11,7 @@
             <view catchtap="toPage" class="margin-top-xs" data-url="/pages/credit_log/index" wx:if="{{CreditInfo.open&&Member.avatar}}">
                 <text class="text-df">{{CreditInfo.balance}}</text> {{CreditInfo.title}}
                 <text class="text-df" wx:if="{{isVip===0}}">普通会员</text>
-                <text class="text-df text-yellow text-bold" wx:else="{{isVip===1}}">VIP会员</text>
+                <text class="text-df text-yellow text-bold" wx:else="{{isVip===1}}">终身VIP会员</text>
             </view>
             <view catchtap="toPage" class="text-xs" data-url="/pages/credit_log/index" wx:if="{{CreditInfo.open&&CreditInfo.block_credit>0}}">
                 冻结{{CreditInfo.block_credit}}{{CreditInfo.title}}

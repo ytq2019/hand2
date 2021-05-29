@@ -190,7 +190,7 @@ Page({
         if (0 === this.data.isVip) {
             wx.showModal({
                 title: "提示",
-                content: "您还未购买线下到店专业版，请先购买（可查看全部上架线下库房）",
+                content: "您还未购买临期宝VIP会员，请先购买（可查看全部上架线下库房以及联系方式）",
                 success: function (res) {
                     if (res.confirm) {
                         wx.navigateTo({
@@ -210,7 +210,7 @@ Page({
         if (0 === this.data.isVip) {
             wx.showModal({
                 title: "提示",
-                content: "您还未购买线下到店专业版，请先购买（可查看全部上架线下库房）",
+                content: "您还未购买临期宝VIP会员，请先购买（可查看全部上架线下库房以及联系方式）",
                 success: function (res) {
                     if (res.confirm) {
                         wx.navigateTo({
