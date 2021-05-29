@@ -197,13 +197,20 @@ Page({
             }
         });
     },
-    toMap: function(t) {
-        var  f = t.currentTarget.dataset.address ,e = parseFloat(t.currentTarget.dataset.lat), t = parseFloat(t.currentTarget.dataset.lng);
+    max: function (e) {
+        var a = e.currentTarget.dataset.address, t = Number(e.currentTarget.dataset.longitude),
+            i = Number(e.currentTarget.dataset.latitude);
+        if (0 == t && 0 == i) return wx.showToast({
+            title: "该地址有问题，可能无法显示~",
+            icon: "none",
+            duration: 1e3
+        }), !1;
         wx.openLocation({
-            name: f,
-            latitude: e,
+            name: a,
+            latitude: i,
             longitude: t,
-            scale: 24
+            scale: 18,
+            address: a
         });
     },
     dialogue: function (e) {
