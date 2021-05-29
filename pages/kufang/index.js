@@ -23,7 +23,6 @@ Page({
     },
     onLoad: function (t) {
         var i = this;
-
         i.setData({
             userInfo: wx.getStorageSync("userInfo"),
             AppName: wx.getStorageSync("AppName"),
@@ -31,12 +30,6 @@ Page({
             itemType: t.type,
             pageTitle: "查库房",
             SoldImg: wx.getStorageSync("SoldImg") || app.globalData.AssetsUrl + "/yz.png"
-        })
-
-        i.setData({
-            options: t
-        }), wx.setNavigationBarTitle({
-            title: i.data.navTile
         });
         app.util.request({
             url: "entry/wxapp/area",
@@ -56,15 +49,19 @@ Page({
                 });
             }
         });
-        i.getVip();
-        i.shopdata();
+
     },
     onShow: function () {
-        wx.hideHomeButton();
-        var t = this, a = t.data.curIndex;
-        var e = t.data.options;
-        e.d_id && app.distribution.distribution_parsent(app, e.d_id);
-        t.getVip();
+        console.log("onShow");
+        var t = this;
+        if (wx.getStorageSync("userInfo")){
+            t.getVip();
+            t.shopdata();
+        }else{
+            app.util.getUserInfo(function () {
+                t.onShow(t);
+            });
+        }
     },
     gotoadinfo: function (t) {
         var a = t.currentTarget.dataset.tid, e = t.currentTarget.dataset.id;
@@ -335,7 +332,7 @@ Page({
             data: {
                 m: "superman_hand2",
                 act: "isVip",
-                openid: a.data.userInfo.memberInfo.openid
+                openid: e
             },
             success: function (e) {
                 console.log("获取vip数据"), console.log(e), a.setData({

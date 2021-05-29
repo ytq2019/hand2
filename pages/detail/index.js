@@ -54,7 +54,15 @@ Page({
         e.getVip();
     },
     onShow: function () {
-        this.getVip();
+        console.log("onShow");
+        var t = this;
+        if (wx.getStorageSync("userInfo")){
+            t.getVip();
+        }else{
+            app.util.getUserInfo(function () {
+                t.onShow(t);
+            });
+        }
     },
     toPage: function(t) {
         app.superman.toPage(t);
@@ -608,7 +616,7 @@ Page({
             data: {
                 m: "superman_hand2",
                 act: "isVip",
-                openid: a.data.userInfo.memberInfo.openid
+                openid: e
             },
             success: function (e) {
                 console.log("获取vip数据"), console.log(e), a.setData({
