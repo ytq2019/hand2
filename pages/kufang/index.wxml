@@ -58,7 +58,7 @@
             </view>
             <view class="flex justify-between padding-xs text-center">
                     <view class="padding-tb-sm text-cut">地址：{{item.address}}</view>
-                <view class="cu-btn radius line-red xs" bindtap="max" data-viptype="{{viptype.viptype}}" data-address="{{item.address}}" data-latitude="{{item.latitude}}" data-longitude="{{item.longitude}}">去导航</view>
+                <view class="cu-btn radius line-red xs" bindtap="toMap" data-lat="{{item.latitude}}" data-lng="{{item.longitude}}"  data-address="{{item.address}}" >去导航</view>
             </view>
             <view class="flex justify-between padding-xs">
                 <view class="padding-tb-sm">

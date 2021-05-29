@@ -182,20 +182,13 @@ Page({
             }
         });
     },
-    max: function (e) {
-        var a = e.currentTarget.dataset.address, t = Number(e.currentTarget.dataset.longitude),
-            i = Number(e.currentTarget.dataset.latitude);
-        if (0 == t && 0 == i) return wx.showToast({
-            title: "该地址有问题，可能无法显示~",
-            icon: "none",
-            duration: 1e3
-        }), !1;
+    toMap: function(t) {
+        var  f = t.currentTarget.dataset.address ,e = parseFloat(t.currentTarget.dataset.lat), t = parseFloat(t.currentTarget.dataset.lng);
         wx.openLocation({
-            name: a,
-            latitude: i,
+            name: f,
+            latitude: e,
             longitude: t,
-            scale: 18,
-            address: a
+            scale: 24
         });
     },
     dialogue: function (e) {
@@ -204,17 +197,14 @@ Page({
             phoneNumber: a
         });
     },
-    copyshipnum: function (e) {
-        var a = e.currentTarget.dataset.wechat;
+    copyshipnum: function (t) {
+        t = t.currentTarget.dataset.wechat;
         wx.setClipboardData({
-            data: a,
-            success: function (e) {
-                wx.showToast({
-                    title: "复制成功！",
-                    icon: "none",
-                    duration: 2e3
-                });
-            }
+            data: t
+        }), wx.showModal({
+            title: "系统提示",
+            content: "已经复制卖家微信到剪贴板，请去微信添加好友与其联系吧",
+            showCancel: !1
         });
     },
     toClassify: function (t) {
