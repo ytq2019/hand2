@@ -31,6 +31,12 @@ Page({
             pageTitle: "查库房",
             SoldImg: wx.getStorageSync("SoldImg") || app.globalData.AssetsUrl + "/yz.png"
         });
+        if (wx.getStorageSync("userInfo") ===""){
+            var a = "/pages/kufang/index";
+            return wx.navigateTo({
+                url: "/pages/login/index?redirect=" + encodeURIComponent(a)
+            });
+        }
         app.util.request({
             url: "entry/wxapp/area",
             data: {
@@ -217,7 +223,7 @@ Page({
         if (0 === this.data.isVip) {
             wx.showModal({
                 title: "提示",
-                content: "您还未购买临期宝VIP会员，请先购买（可查看全部上架线下库房以及联系方式）",
+                content: "您还未购买临期宝VIP会员，终身会员仅需￥99元",
                 success: function (res) {
                     if (res.confirm) {
                         wx.navigateTo({
@@ -247,7 +253,7 @@ Page({
         if (0 === this.data.isVip) {
             wx.showModal({
                 title: "提示",
-                content: "您还未购买临期宝VIP会员，请先购买（可查看全部上架线下库房以及联系方式）",
+                content: "您还未购买临期宝VIP会员，终身会员仅需￥99元",
                 success: function (res) {
                     if (res.confirm) {
                         wx.navigateTo({
@@ -267,7 +273,7 @@ Page({
         if (0 === this.data.isVip) {
             wx.showModal({
                 title: "提示",
-                content: "您还未购买临期宝VIP会员，请先购买（可查看全部上架线下库房以及联系方式）",
+                content: "您还未购买临期宝VIP会员，终身会员仅需￥99元",
                 success: function (res) {
                     if (res.confirm) {
                         wx.navigateTo({

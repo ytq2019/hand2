@@ -105,9 +105,9 @@
 <view class="container-loading" wx:else>
     <image mode="aspectFill" src="{{LoadingImg}}"></image>
 </view>
-<view class="flex bg-white text-xxl padding justify-center flex-direction vd">
-    <view class="flex">
-        <view class="flex-sub cu-btn bg-gradual-{{ThemeStyle.gradual}} padding margin-xs round text-bold" bindtap="dialogue" bindtap="callPhone" data-phone="{{Member.phone}}">打电话</view>
-        <view class="flex-sub cu-btn bg-gradual-{{ThemeStyle.gradual}} padding margin-xs round text-bold" bindtap="copyshipnum" bindtap="copyWechatNo" data-wechat="{{Member.wechat}}">加微信</view>
-    </view>
-</view>
+<!--<view class="flex bg-white text-xxl padding justify-center flex-direction vd">-->
+<!--    <view class="flex">-->
+<!--        <view class="flex-sub cu-btn bg-gradual-{{ThemeStyle.gradual}} padding margin-xs round text-bold" bindtap="dialogue" bindtap="callPhone" data-phone="{{Member.phone}}">打电话</view>-->
+<!--        <view class="flex-sub cu-btn bg-gradual-{{ThemeStyle.gradual}} padding margin-xs round text-bold" bindtap="copyshipnum" bindtap="copyWechatNo" data-wechat="{{Member.wechat}}">加微信</view>-->
+<!--    </view>-->
+<!--</view>-->

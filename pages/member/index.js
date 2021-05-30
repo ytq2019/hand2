@@ -19,17 +19,17 @@ Page({
             pageTitle: "开通会员",
             userInfo: wx.getStorageSync("userInfo"),
         });
-        if (o.userInfo == {}){
-            app.util.getUserInfo(function() {
-                o.onShow();
+        if (wx.getStorageSync("userInfo") ===""){
+            var a = "/pages/member/index";
+            return wx.navigateTo({
+                url: "/pages/login/index?redirect=" + encodeURIComponent(a)
             });
         }
     },
     onShow: function () {
-        this.setData({
-            userInfo: wx.getStorageSync("userInfo"),
-        });
-        this.getVip();
+        console.log("onShow");
+        var t = this;
+        t.getVip();
     },
     bindInput: function (e) {
         var a = parseInt(e.currentTarget.dataset.type);
@@ -64,7 +64,7 @@ Page({
             data: {
                 m: "superman_hand2",
                 act: "isVip",
-                openid: a.data.userInfo.memberInfo.openid
+                openid: e
             },
             success: function (e) {
                 console.log("获取vip数据"), console.log(e), a.setData({

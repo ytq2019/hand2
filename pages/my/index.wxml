@@ -17,7 +17,7 @@
                 冻结{{CreditInfo.block_credit}}{{CreditInfo.title}}
             </view>
         </block>
-        <view catchtap="toLogin" wx:else>
+        <view catchtap="getUserProfile" wx:else>
             <image class="cu-avatar shadow png" mode="widthFix" src="{{AssetsUrl}}/icon/avatar-2.png"></image>
             <view class="text-df text-bold margin-top-sm">点击登录</view>
         </view>
