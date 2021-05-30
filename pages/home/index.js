@@ -168,12 +168,11 @@ Page({
         console.log("onShow");
         var e, t = this;
         wx.getStorageSync("userInfo") ? (t.setData({
-            Page: 1
+
         }), wx.getStorageSync("RegionSelected") ? (wx.removeStorageSync("RegionSelected"),
             e = wx.getStorageSync("LocationInfo"), t.setData({
             locationInfo: e,
             City: t.getCurrentCity(e),
-            Page: 1,
             Paging: !1,
             ItemList: []
         })) : void 0 !== t.data.options.scene || t.data.options.redirect, t.getIndexData(),
