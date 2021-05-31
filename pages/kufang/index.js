@@ -31,7 +31,7 @@ Page({
             pageTitle: "查库房",
             SoldImg: wx.getStorageSync("SoldImg") || app.globalData.AssetsUrl + "/yz.png"
         });
-        if (wx.getStorageSync("userInfo") ===""){
+        if (!wx.getStorageSync("userInfo")){
             var a = "/pages/kufang/index";
             return wx.navigateTo({
                 url: "/pages/login/index?redirect=" + encodeURIComponent(a)
@@ -61,6 +61,9 @@ Page({
         console.log("onShow");
         var t = this;
         if (wx.getStorageSync("userInfo")){
+            t.setData({
+                userInfo : wx.getStorageSync("userInfo"),
+            })
             t.getVip();
             t.shopdata();
         }else{
@@ -331,17 +334,17 @@ Page({
         app.superman.toPage(t);
     },
     getVip: function () {
-        var a = this, e = wx.getStorageSync("openid");
+        var a = this, e = a.data.userInfo.memberInfo.uid;
         console.log(e), app.util.request({
             url: "entry/wxapp/demo",
             showLoading: !1,
             data: {
                 m: "superman_hand2",
-                act: "isVip",
-                openid: e
+                act: "isVip2",
+                uid: e
             },
             success: function (e) {
-                console.log("获取vip数据"), console.log(e), a.setData({
+                console.log("获取vip数据啦"), console.log(e), a.setData({
                     isVip: e.data.data.vip_type,
                 });
             }

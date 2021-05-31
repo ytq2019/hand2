@@ -17,7 +17,6 @@ Page({
         showHelpSellGuide: !1,
         contentReportComment: "",
         showVideoAd: !1,
-        isVip: 0,
     },
     onLoad: function(t) {
         var e = this, a = t.id, i = wx.getStorageSync("userInfo");
@@ -51,18 +50,17 @@ Page({
                 });
             }
         }), app.viewCount();
-        e.getVip();
     },
     onShow: function () {
         console.log("onShow");
         var t = this;
-        if (wx.getStorageSync("userInfo")){
-            t.getVip();
-        }else{
-            app.util.getUserInfo(function () {
-                t.onShow(t);
-            });
-        }
+        // if (wx.getStorageSync("userInfo")){
+        //     t.getVip();
+        // }else{
+        //     app.util.getUserInfo(function () {
+        //         t.onShow(t);
+        //     });
+        // }
     },
     toPage: function(t) {
         app.superman.toPage(t);
@@ -608,21 +606,21 @@ Page({
             }
         });
     },
-    getVip: function () {
-        var a = this, e = wx.getStorageSync("openid");
-        console.log(e), app.util.request({
-            url: "entry/wxapp/demo",
-            showLoading: !1,
-            data: {
-                m: "superman_hand2",
-                act: "isVip",
-                openid: e
-            },
-            success: function (e) {
-                console.log("获取vip数据"), console.log(e), a.setData({
-                    isVip: e.data.data.vip_type,
-                });
-            }
-        });
-    },
+    // getVip: function () {
+    //     var a = this, e = wx.getStorageSync("openid");
+    //     console.log(e), app.util.request({
+    //         url: "entry/wxapp/demo",
+    //         showLoading: !1,
+    //         data: {
+    //             m: "superman_hand2",
+    //             act: "isVip",
+    //             openid: e
+    //         },
+    //         success: function (e) {
+    //             console.log("获取vip数据"), console.log(e), a.setData({
+    //                 isVip: e.data.data.vip_type,
+    //             });
+    //         }
+    //     });
+    // },
 });

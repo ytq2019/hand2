@@ -76,7 +76,7 @@
         </view>
     </view>
     <empty wx:else></empty>
-    <post-button needAvatar="{{true}}" themeStyle="{{ThemeStyle}}" url="{{itemType==1?'/pages/post/index':'/pages/buying/add'}}" wx:if="{{showPostButton}}"></post-button>
+<!--    <post-button needAvatar="{{true}}" themeStyle="{{ThemeStyle}}" url="{{itemType==1?'/pages/post/index':'/pages/buying/add'}}" wx:if="{{showPostButton}}"></post-button>-->
     <view bindtap="goTop" class="back-home" wx:if="{{showGoTop}}">
         <text class="cuIcon-fold"></text>
     </view>
