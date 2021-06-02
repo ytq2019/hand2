@@ -23,6 +23,13 @@ Page({
     },
     onLoad: function (t) {
         var i = this;
+
+        if (!wx.getStorageSync("userInfo")){
+            var a = "/pages/kufang/index";
+            return wx.navigateTo({
+                url: "/pages/login/index?redirect=" + encodeURIComponent(a)
+            });
+        }
         i.setData({
             userInfo: wx.getStorageSync("userInfo"),
             AppName: wx.getStorageSync("AppName"),
@@ -31,12 +38,7 @@ Page({
             pageTitle: "查库房",
             SoldImg: wx.getStorageSync("SoldImg") || app.globalData.AssetsUrl + "/yz.png"
         });
-        if (!wx.getStorageSync("userInfo")){
-            var a = "/pages/kufang/index";
-            return wx.navigateTo({
-                url: "/pages/login/index?redirect=" + encodeURIComponent(a)
-            });
-        }
+
         app.util.request({
             url: "entry/wxapp/area",
             data: {
@@ -60,17 +62,18 @@ Page({
     onShow: function () {
         console.log("onShow");
         var t = this;
-        if (wx.getStorageSync("userInfo")){
-            t.setData({
-                userInfo : wx.getStorageSync("userInfo"),
-            })
-            t.getVip();
-            t.shopdata();
-        }else{
-            app.util.getUserInfo(function () {
-                t.onShow(t);
-            });
-        }
+        t.getVip();
+        t.shopdata();
+        // if (wx.getStorageSync("userInfo")){
+        //     t.setData({
+        //         userInfo : wx.getStorageSync("userInfo"),
+        //     })
+        //
+        // }else{
+        //     app.util.getUserInfo(function () {
+        //         t.onShow(t);
+        //     });
+        // }
     },
     gotoadinfo: function (t) {
         var a = t.currentTarget.dataset.tid, e = t.currentTarget.dataset.id;

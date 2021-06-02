@@ -20,6 +20,12 @@ Page({
     },
     onLoad: function(t) {
         var e = this, a = t.id, i = wx.getStorageSync("userInfo");
+        if (!wx.getStorageSync("userInfo")){
+            var a = "/pages/my/index";
+            return wx.navigateTo({
+                url: "/pages/login/index?redirect=" + encodeURIComponent(a)
+            });
+        }
         e.setData({
             uid: i ? i.memberInfo.uid : 0,
             item_id: a,
@@ -54,13 +60,13 @@ Page({
     onShow: function () {
         console.log("onShow");
         var t = this;
-        // if (wx.getStorageSync("userInfo")){
-        //     t.getVip();
-        // }else{
-        //     app.util.getUserInfo(function () {
-        //         t.onShow(t);
-        //     });
-        // }
+        if (wx.getStorageSync("userInfo")){
+            t.getVip();
+        }else{
+            app.util.getUserInfo(function () {
+                t.onShow(t);
+            });
+        }
     },
     toPage: function(t) {
         app.superman.toPage(t);
@@ -606,21 +612,21 @@ Page({
             }
         });
     },
-    // getVip: function () {
-    //     var a = this, e = wx.getStorageSync("openid");
-    //     console.log(e), app.util.request({
-    //         url: "entry/wxapp/demo",
-    //         showLoading: !1,
-    //         data: {
-    //             m: "superman_hand2",
-    //             act: "isVip",
-    //             openid: e
-    //         },
-    //         success: function (e) {
-    //             console.log("获取vip数据"), console.log(e), a.setData({
-    //                 isVip: e.data.data.vip_type,
-    //             });
-    //         }
-    //     });
-    // },
+    getVip: function () {
+        var a = this, e = a.data.userInfo.memberInfo.uid;
+        console.log(e), app.util.request({
+            url: "entry/wxapp/demo",
+            showLoading: !1,
+            data: {
+                m: "superman_hand2",
+                act: "isVip2",
+                uid: e
+            },
+            success: function (e) {
+                console.log("获取vip数据"), console.log(e), a.setData({
+                    isVip: e.data.data.vip_type,
+                });
+            }
+        });
+    },
 });

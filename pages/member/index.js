@@ -11,7 +11,13 @@ Page({
         oriPrice: 1999.00,
         userInfo: {},
     },
-    onLoad: function (options)  {
+    onLoad: function (options) {
+        if (!wx.getStorageSync("userInfo")) {
+            var a = "/pages/member/index";
+            return wx.navigateTo({
+                url: "/pages/login/index?redirect=" + encodeURIComponent(a)
+            });
+        }
         var o = this;
         o.setData({
             AppName: wx.getStorageSync("AppName"),
@@ -19,12 +25,6 @@ Page({
             pageTitle: "开通会员",
             userInfo: wx.getStorageSync("userInfo"),
         });
-        if (wx.getStorageSync("userInfo") ===""){
-            var a = "/pages/member/index";
-            return wx.navigateTo({
-                url: "/pages/login/index?redirect=" + encodeURIComponent(a)
-            });
-        }
     },
     onShow: function () {
         console.log("onShow");
@@ -57,14 +57,14 @@ Page({
         a.toPay()
     },
     getVip: function () {
-        var a = this, e = wx.getStorageSync("openid");
+        var a = this, e = a.data.userInfo.memberInfo.uid;
         console.log(e), app.util.request({
             url: "entry/wxapp/demo",
             showLoading: !1,
             data: {
                 m: "superman_hand2",
-                act: "isVip",
-                openid: e
+                act: "isVip2",
+                uid: e
             },
             success: function (e) {
                 console.log("获取vip数据"), console.log(e), a.setData({
@@ -82,6 +82,7 @@ Page({
                 act: "payOrder",
                 orderid: a.data.OrderId,
                 openid: a.data.userInfo.memberInfo.openid,
+                uid: a.data.userInfo.memberInfo.uid,
                 phone: a.data.phoneNum,
             },
             showLoading: !0,
@@ -113,7 +114,7 @@ Page({
             }
         });
     },
-    toSign: function(a) {
+    toSign: function (a) {
         var o = this;
         wx.getStorageSync("userInfo") ? app.util.request({
             method: "POST",
@@ -123,7 +124,7 @@ Page({
                 act: "sign_submit"
             },
             showLoading: !0,
-            success: function(a) {
+            success: function (a) {
                 console.log(a);
                 a = a.data.data;
                 o.setData({
@@ -133,7 +134,7 @@ Page({
                     "SignInfo.is_sign": !0
                 });
             },
-            fail: function(a) {
+            fail: function (a) {
                 var t;
                 console.error(a), 31 == a.data.errno ? (t = a.data.data, o.setData({
                     signCreditValue: t.credit_value,
@@ -142,7 +143,7 @@ Page({
                     "SignInfo.is_sign": !0
                 })) : app.util.message(a.data.errmsg, "", "error");
             }
-        }) : app.util.getUserInfo(function() {
+        }) : app.util.getUserInfo(function () {
             o.toSign(a);
         });
     },

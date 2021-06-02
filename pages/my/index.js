@@ -20,6 +20,14 @@ Page({
             userInfo: wx.getStorageSync("userInfo"),
             ThemeStyle: app.getThemeStyle()
         }), this.getIndexData(), app.viewCount();
+    },
+    onShow: function () {
+        if (!wx.getStorageSync("userInfo")){
+            var a = "/pages/my/index";
+            return wx.navigateTo({
+                url: "/pages/login/index?redirect=" + encodeURIComponent(a)
+            });
+        }
         this.getVip();
     },
     getIndexData: function() {
@@ -149,14 +157,14 @@ Page({
         });
     },
     getVip: function () {
-        var a = this, e = wx.getStorageSync("openid");
+        var a = this, e = a.data.userInfo.memberInfo.uid;
         console.log(e), app.util.request({
             url: "entry/wxapp/demo",
             showLoading: !1,
             data: {
                 m: "superman_hand2",
-                act: "isVip",
-                openid: a.data.userInfo.memberInfo.openid
+                act: "isVip2",
+                uid: e
             },
             success: function (e) {
                 console.log("获取vip数据"), console.log(e), a.setData({
