@@ -57,13 +57,12 @@ Page({
                 });
             }
         });
-
+        i.shopdata();
     },
     onShow: function () {
         console.log("onShow");
         var t = this;
         t.getVip();
-        t.shopdata();
         // if (wx.getStorageSync("userInfo")){
         //     t.setData({
         //         userInfo : wx.getStorageSync("userInfo"),
