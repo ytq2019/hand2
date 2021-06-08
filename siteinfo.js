@@ -4,5 +4,5 @@ module.exports = {
     acid: "2",
     multiid: "0",
     version: "6.13.3",
-    siteroot: "https://linqi.yingtejia.cn/app/index.php"
+    siteroot: "https://linqi.yutianqi.net/app/index.php"
 };
