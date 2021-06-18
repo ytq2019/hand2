@@ -20,25 +20,108 @@ Page({
         dropdown: !1,
         adflashimg: [],
         isVip: 0,
+        Title: "查库房",
+        pageTitle: "查库房",
     },
     onLoad: function (t) {
-        var i = this;
-
+        this.loadBaseInfo();
+        this.getArea();
+    },
+    onShow: function () {
+        var t = this;
         if (!wx.getStorageSync("userInfo")){
-            var a = "/pages/kufang/index";
-            return wx.navigateTo({
-                url: "/pages/login/index?redirect=" + encodeURIComponent(a)
+            app.util.getUserInfo(function () {
+                t.onShow();
             });
+        }else{
+            t.setData({
+                ThemeStyle: app.getThemeStyle(),
+                userInfo: wx.getStorageSync("userInfo"),
+                AppName: wx.getStorageSync("AppName"),
+                SoldImg: wx.getStorageSync("SoldImg") || app.globalData.AssetsUrl + "/yz.png"
+            });
+            t.getVip();
+            t.shopdata();
         }
-        i.setData({
-            userInfo: wx.getStorageSync("userInfo"),
-            AppName: wx.getStorageSync("AppName"),
-            ThemeStyle: app.getThemeStyle(),
-            itemType: t.type,
-            pageTitle: "查库房",
-            SoldImg: wx.getStorageSync("SoldImg") || app.globalData.AssetsUrl + "/yz.png"
+    },
+    onShareAppMessage: function (e) {
+        var t = {
+            title: this.data.shareInfo.title,
+            imageUrl: this.data.shareInfo.imgUrl
+        };
+        return console.log("onShareAppMessage", t), t;
+    },
+    loadBaseInfo: function () {
+        var n = this, e = n.data.locationInfo;
+        app.util.request({
+            url: "entry/wxapp/index",
+            data: {
+                m: "superman_hand2",
+                act: "display",
+                lat: e && e.location.lat || "",
+                lng: e && e.location.lng || ""
+            },
+            cacheTime: 1500,
+            showLoading: !1,
+            success: function (e) {
+                console.log(e);
+                var t = e.data.data, a = t.plugin || {};
+                // n.towerSwiper(t.slide_list);
+                var o, e = (e = n.data.listStyleCur) || (1 == t.list_type ? "single" : "double");
+                n.setData({
+                    Title: "" != t.title ? t.title : "超人二手市场",
+                    Logo: "" != t.logo ? t.logo : n.data.AssetsUrl + "/../icon.jpg",
+                    ThemeStyle: t.theme_style || app.getThemeStyle(),
+                    ShowCategory: t.show_category,
+                    CategoryList: t.category_list || [],
+                    ShowLocation: t.show_location,
+                    PostTime: t.post_time,
+                    SoldImg: t.sold_img || n.data.SoldImg,
+                    ServiceInfo: t.service_info || {},
+                    CubeInfo: t.cube_info || {},
+                    IndexBanner: t.index_banner || {},
+                    Plugin: a,
+                    FloatBtn: t.float_btn || {},
+                    Audit: t.audit || {},
+                    NewMessage: t.new_message,
+                    ShowPageView: t.show_page_view,
+                    listStyleCur: e,
+                    LoadingImg: t.loading_img || n.data.AssetsUrl + "/loading.gif",
+                    WxadInfo: t.wxad_info,
+                    noticeList: t.notice_list,
+                    searchPlaceholder: t.search_placeholder,
+                    imagePopup: t.image_popup || "",
+                    homeShowCredit: 1 == t.home_show_credit,
+                    shareInfo: t.share_info,
+                    currencyInfo: t.currency_info,
+                    doubleStyleRight: t.double_style_right,
+                    showSinglePrice: t.show_single_price,
+                    showSingleDesc: t.show_single_desc
+                }), n.data.CategoryId && n.data.CategoryList && (o = 0, n.data.CategoryList.forEach(function (e, t) {
+                    if (e.id == n.data.CategoryId) return o = 60 * (t - 1), !1;
+                }), n.setData({
+                    CategoryIdCur: n.data.CategoryId,
+                    CategoryScrollLeft: o,
+                    Page: 1,
+                    Paging: !1,
+                    ItemList: [],
+                    Gone: !1
+                }), n.loadItemInfo()), n.data.ThemeStyle.home_top_style || wx.setNavigationBarColor({
+                    backgroundColor: "#ffffff",
+                    frontColor: "#000000"
+                }), app.globalData.LogoUrl = n.data.Logo, wx.setStorageSync("Logo", n.data.Logo),
+                    wx.setStorageSync("ThemeStyle", n.data.ThemeStyle), wx.setStorageSync("Plugin", n.data.Plugin),
+                    wx.setStorageSync("Audit", n.data.Audit), wx.setStorageSync("AppName", n.data.Title),
+                    wx.setStorageSync("SoldImg", n.data.SoldImg), wx.setStorageSync("LoadingImg", n.data.LoadingImg),
+                t.map_key && wx.setStorageSync("QQMAP_KEY", t.map_key);
+            },
+            fail: function (e) {
+                app.util.message(e.data.errmsg, "", "error");
+            }
         });
-
+    },
+    getArea:function(){
+        var i = this;
         app.util.request({
             url: "entry/wxapp/area",
             data: {
@@ -57,22 +140,6 @@ Page({
                 });
             }
         });
-        i.shopdata();
-    },
-    onShow: function () {
-        console.log("onShow");
-        var t = this;
-        t.getVip();
-        // if (wx.getStorageSync("userInfo")){
-        //     t.setData({
-        //         userInfo : wx.getStorageSync("userInfo"),
-        //     })
-        //
-        // }else{
-        //     app.util.getUserInfo(function () {
-        //         t.onShow(t);
-        //     });
-        // }
     },
     gotoadinfo: function (t) {
         var a = t.currentTarget.dataset.tid, e = t.currentTarget.dataset.id;

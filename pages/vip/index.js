@@ -9,7 +9,7 @@ Page({
         var i = wx.getStorageSync("userInfo");
         this.setData({
             userInfo:i
-        })
+        });
         this.toPay()
     },
     toPay: function(e) {
