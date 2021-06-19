@@ -1,7 +1,0 @@
-{
-    "usingComponents": {
-        "header": "../../components/header/header",
-        "status": "../../components/status/status"
-    },
-    "navigationStyle": "custom"
-}

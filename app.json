@@ -46,18 +46,12 @@
         "pages/notice/detail",
         "pages/help_sell/index",
         "pages/admin/audit/list",
-        "pages/broadcast/index",
-        "__plugin__/wx76a9a06e5b4e693e/pages/index/index",
-        "__plugin__/wx76a9a06e5b4e693e/pages/search/search",
-        "__plugin__/wx2b03c6e691cd7370/pages/live-player-plugin",
-        "__plugin__/wx2b03c6e691cd7370/wxlive-components/ext-player/address-preview/address-preview",
-        "__plugin__/wx2b03c6e691cd7370/wxlive-components/ext-player/complaint-comment/complaint-comment",
-        "__plugin__/wx2b03c6e691cd7370/wxlive-components/ext-player/complaint-room/complaint-room"
+        "pages/broadcast/index"
     ],
     "window": {
         "backgroundTextStyle": "dark",
         "navigationBarBackgroundColor": "#ffffff",
-        "navigationBarTitleText": "超人二手市场",
+        "navigationBarTitleText": "临期宝",
         "navigationStyle": "custom",
         "navigationBarTextStyle": "black",
         "backgroundColor": "#ffffff"
