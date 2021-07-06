@@ -14,35 +14,37 @@ Page({
         aid: 0,
         store_id: 0,
         operation: [],
-        showModalStatus: 0,
         tabBar: app.globalData.tabBar,
         selectstatus: "",
         dropdown: !1,
-        adflashimg: [],
         isVip: 0,
         Title: "查库房",
-        pageTitle: "查库房",
+        keyword: ""
     },
     onLoad: function (t) {
         this.loadBaseInfo();
         this.getArea();
-    },
-    onShow: function () {
         var t = this;
-        if (!wx.getStorageSync("userInfo")){
+        if (!wx.getStorageSync("userInfo")) {
             app.util.getUserInfo(function () {
-                t.onShow();
+                t.onLoad();
             });
-        }else{
+        } else {
             t.setData({
                 ThemeStyle: app.getThemeStyle(),
                 userInfo: wx.getStorageSync("userInfo"),
                 AppName: wx.getStorageSync("AppName"),
                 SoldImg: wx.getStorageSync("SoldImg") || app.globalData.AssetsUrl + "/yz.png"
+            }, function () {
+                // t.getVip();
+                // t.shopdata();
+                t.getVipAndShopData();
             });
-            t.getVip();
-            t.shopdata();
         }
+
+    },
+    onShow: function () {
+        this.getVip();
     },
     onShareAppMessage: function (e) {
         var t = {
@@ -69,7 +71,6 @@ Page({
                 // n.towerSwiper(t.slide_list);
                 var o, e = (e = n.data.listStyleCur) || (1 == t.list_type ? "single" : "double");
                 n.setData({
-                    Title: "" != t.title ? t.title : "超人二手市场",
                     Logo: "" != t.logo ? t.logo : n.data.AssetsUrl + "/../icon.jpg",
                     ThemeStyle: t.theme_style || app.getThemeStyle(),
                     ShowCategory: t.show_category,
@@ -120,7 +121,7 @@ Page({
             }
         });
     },
-    getArea:function(){
+    getArea: function () {
         var i = this;
         app.util.request({
             url: "entry/wxapp/area",
@@ -141,29 +142,24 @@ Page({
             }
         });
     },
-    gotoadinfo: function (t) {
-        var a = t.currentTarget.dataset.tid, e = t.currentTarget.dataset.id;
-        app.func.gotourl(app, a, e);
-    },
-    hidden: function (t) {
-        this.setData({
-            hidden: !0
-        });
-    },
     shopdata: function () {
         var a = this, t = wx.getStorageSync("openid");
+        if (typeof (a.keyword) == "undefined" || a.keyword === '') {
+            a.keyword = ""
+        }
         app.util.request({
             url: "entry/wxapp/Shop",
             data: {
                 m: "superman_hand2",
                 act: "getShop",
-                openid: t
+                openid: t,
+                title: a.keyword
             },
             success: function (t) {
                 t.data.data.map(item => {
-                    item.phone = a.desensitization(item.phone, 3, 7);
-                    item.address = a.desensitization(item.address, 3, 7);
-                    item.wechat = a.desensitization(item.wechat, 1, 5);
+                    item.phone = a.desensitization(item.phone, 2, 7);
+                    item.address = a.desensitization(item.address, 2, 7);
+                    item.wechat = a.desensitization(item.wechat, 2, 5);
                 });
                 if (t.data.data.length > 0) {
                     a.setData({
@@ -207,9 +203,9 @@ Page({
                 console.log(t)
                 if (t.data.data.length > 0) {
                     t.data.data.map(item => {
-                        item.phone = n.desensitization(item.phone, 3, 7);
-                        item.address = n.desensitization(item.address, 3, 7);
-                        item.wechat = n.desensitization(item.wechat, 1, 5);
+                        item.phone = n.desensitization(item.phone, 2, 7);
+                        item.address = n.desensitization(item.address, 2, 7);
+                        item.wechat = n.desensitization(item.wechat, 2, 7);
                     });
                     n.setData({
                         shopList: t.data.data,
@@ -225,25 +221,21 @@ Page({
             }
         })
     },
-    onHide: function () {
-        this.setData({
-            page: 1,
-            page_near: 1
-        });
-    },
     onPullDownRefresh: function () {
         console.log("下拉刷新");
+        this.getVip();
         this.shopdata();
         this.setData({
             curIndex: 0,
             selectstatus: "",
-            searchCont: "",
+            keyword: "",
             aid: 0,
         });
         wx.stopPullDownRefresh();
     },
     onReachBottom: function () {
         console.log("触发触底事件");
+        this.getVip();
         var e = this, o = e.data.curIndex, t = wx.getStorageSync("openid"), a = e.data.aid, n = e.data.shopList,
             s = e.data.lat, r = e.data.lon;
         if (typeof (e.searchCont) == "undefined" || e.searchCont === '') {
@@ -267,9 +259,9 @@ Page({
                 if (t.data.data.length > 0) {
                     var a = t.data.data;
                     a.map(item => {
-                        item.phone = e.desensitization(item.phone, 3, 7);
-                        item.address = e.desensitization(item.address, 3, 7);
-                        item.wechat = e.desensitization(item.wechat, 1, 5);
+                        item.phone = e.desensitization(item.phone, 2, 7);
+                        item.address = e.desensitization(item.address, 2, 7);
+                        item.wechat = e.desensitization(item.wechat, 2, 7);
                     });
 
                     n = n.concat(a)
@@ -387,9 +379,9 @@ Page({
             success: function (t) {
                 console.log("获取店铺数据");
                 t.data.data.map(item => {
-                    item.phone = a.desensitization(item.phone, 3, 7);
-                    item.address = a.desensitization(item.address, 3, 7);
-                    item.wechat = a.desensitization(item.wechat, 1, 5);
+                    item.phone = a.desensitization(item.phone, 2, 7);
+                    item.address = a.desensitization(item.address, 2, 7);
+                    item.wechat = a.desensitization(item.wechat, 2, 7);
                 });
                 a.setData({
                     shopList: t.data.data,
@@ -403,7 +395,8 @@ Page({
         app.superman.toPage(t);
     },
     getVip: function () {
-        var a = this, e = a.data.userInfo.memberInfo.uid;
+        var a = this;
+        var e = a.data.userInfo.memberInfo.uid;
         console.log(e), app.util.request({
             url: "entry/wxapp/demo",
             showLoading: !1,
@@ -413,8 +406,66 @@ Page({
                 uid: e
             },
             success: function (e) {
-                console.log("获取vip数据啦"), console.log(e), a.setData({
+                console.log("获取vip数据啦");
+                console.log(e);
+                a.setData({
                     isVip: e.data.data.vip_type,
+                });
+            }
+        });
+    },
+    getVipAndShopData: function () {
+        var a = this;
+        var e = a.data.userInfo.memberInfo.uid;
+        console.log(e), app.util.request({
+            url: "entry/wxapp/demo",
+            showLoading: !1,
+            data: {
+                m: "superman_hand2",
+                act: "isVip2",
+                uid: e
+            },
+            success: function (e) {
+                console.log("获取vip数据啦");
+                console.log(e);
+                a.setData({
+                    isVip: e.data.data.vip_type,
+                },function () {
+                    var t = wx.getStorageSync("openid");
+                    if (typeof (a.keyword) == "undefined" || a.keyword === '') {
+                        a.keyword = ""
+                    }
+                    app.util.request({
+                        url: "entry/wxapp/Shop",
+                        data: {
+                            m: "superman_hand2",
+                            act: "getShop",
+                            openid: t,
+                            title: a.keyword
+                        },
+                        success: function (t) {
+                            t.data.data.map(item => {
+                                item.phone = a.desensitization(item.phone, 2, 7);
+                                item.address = a.desensitization(item.address, 2, 7);
+                                item.wechat = a.desensitization(item.wechat, 2, 5);
+                            });
+                            if (t.data.data.length > 0) {
+                                a.setData({
+                                    shopList: t.data.data,
+                                    page_near: a.data.page + 1
+                                })
+                            } else {
+                                wx.showToast({
+                                    title: "已经没有内容了哦！！！",
+                                    icon: "none"
+                                })
+                            }
+                        }
+                    });
+
+
+
+
                 });
             }
         });
@@ -427,6 +478,19 @@ Page({
             return tempStr;
         }
         return str;
+    },
+    submitSearch: function () {
+        this.setData({
+            page: 1,
+            shopList: [],
+            page_near: 2,
+        }, this.shopdata());
+
+    },
+    inputKeyword: function (t) {
+        this.setData({
+            keyword: t.detail.value
+        });
     }
 
 });

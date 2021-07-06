@@ -1,7 +1,7 @@
 {
     "pages": [
-        "pages/home/index",
         "pages/kufang/index",
+        "pages/home/index",
         "pages/member/index",
         "pages/vip/index",
         "pages/post/index",

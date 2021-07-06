@@ -4,19 +4,20 @@
         <view class="text-black" slot="content">{{Title}}</view>
     </cu-custom>
     <cu-custom bgColor="bg-gradual-{{ThemeStyle.gradual}}" wx:else>
-        <view slot="content">{{pageTitle}}</view>
+        <view slot="content">{{Title}}</view>
     </cu-custom>
     <view>
-<!--        <view class="goods-search">-->
-<!--            <view >-->
-<!--                <view class="_search showSearch  padding-lr-sm">-->
-<!--                    <image bindtap="commitSearch" class="searchIcon" src="../../../style/images/search.png"></image>-->
-<!--                    <input bindconfirm="commitSearch" bindinput="getSearch" maxlength="20" placeholder="请输入库房编码或库房名称" value="{{searchCont}}"></input>-->
-<!--                </view>-->
-<!--            </view>-->
-<!--        </view>-->
-        <template is="backcard-img" data="{{adbackcardimg:adbackcardimg}}" wx:if="{{openblackcard==0}}"></template>
-
+        <form bindsubmit="submitSearch">
+            <view class="cu-bar search bg-white">
+                <view class="search-form round">
+                    <text class="cuIcon-search"></text>
+                    <input type="text" placeholder="请输入库房编码或库房名称" confirmType="search" name="keyword" bindinput="inputKeyword"></input>
+                </view>
+                <view class="action">
+                    <button class="cu-btn bg-gradual-{{ThemeStyle.gradual}} shadow-blur round" bindtap="submitSearch">搜索</button>
+                </view>
+            </view>
+        </form>
         <view class="bg-white margin-top-xs padding-sm" wx:if="{{operation}}">
 
             <swiper indicatorDots="{{true}}" style="width:100%;height:{{operation[0].length>5?360:'180'}}rpx;">
@@ -46,7 +47,7 @@
         <view class="solid-top bg-white padding-sm margin-top-xs" wx:if="{{shopList.length>0}}" wx:for="{{shopList}}" wx:for-index="f_index" wx:key="id">
             <view class="flex justify-between">
                 <view class="text-lg">
-                    <view class="padding-xs" catchtap="toPage" data-url="/pages/my_list/index?uid={{item.uid}}">
+                    <view class="padding-xs">
                             <text class="cu-tag bg-gradual-red radius text-bold">{{item.uid}}</text>
                             <text class="text-black text-bold padding-left-sm">{{item.title}}</text>
                     </view>

@@ -155,7 +155,7 @@
     flex-direction: column;
     align-items: center;
     padding-bottom: 10rpx;
-    font-size: 24rpx;
+    /*font-size: 24rpx;*/
 }
 
 .order-nav {

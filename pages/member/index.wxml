@@ -40,7 +40,7 @@
 <!--            </view>-->
 <!--        </view>-->
         <view class="flex bg-white text-xxl padding justify-center flex-direction vd">
-            <view class="cu-btn lg round bg-red padding" bindtap="buyVIP" data-price="{{price}}">立即支付{{price}}.00元</view>
+            <view class="cu-btn lg round bg-red padding margin-bottom-lg" bindtap="buyVIP" data-price="{{price}}">立即支付{{price}}.00元</view>
         </view>
     </view>
     <view>
